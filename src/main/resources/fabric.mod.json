@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "dazzle",
+	"version": "${version}",
+	
+	"name": "Dazzle 2",
+	"description": "Lights to heat up rocks with.",
+	"authors": [
+		"quaternary"
+	],
+	
+	"license": "LGPL-3.0-or-later",
+	"icon": "assets/dazzle/icon.png",
+
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"agency.highlysuspect.dazzle2.Init"
+		],
+		"client": [
+			"agency.highlysuspect.dazzle2.client.ClientInit"
+		]	 
+	},
+	"mixins": [
+		"dazzle.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.7.4",
+		"fabric": "*",
+		"minecraft": "1.16.x"
+	}
+}
