@@ -1,0 +1,7 @@
+{
+	"parent": "dazzle:block/lamp_base",
+	"textures": {
+		"base": "dazzle:block/lamp/classic/base",
+		"overlay": "dazzle:block/lamp/classic/overlay"
+	}
+}

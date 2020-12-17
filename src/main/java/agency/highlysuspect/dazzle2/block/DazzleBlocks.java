@@ -16,7 +16,6 @@ public class DazzleBlocks {
 	public static void onInitialize() {
 		for(LampBlock lamp : LAMPS) {
 			Registry.register(Registry.BLOCK, lamp.style.toIdentifier(), lamp);
-			
 		}
 	}
 }

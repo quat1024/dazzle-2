@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class LampStyle {
-	private LampStyle(ColorProp color, ThemeProp theme, ModeProp mode) {
+	private LampStyle(Color color, Theme theme, Mode mode) {
 		this.color = color;
 		this.theme = theme;
 		this.mode = mode;
@@ -24,7 +24,7 @@ public class LampStyle {
 	
 	private LampStyle(List<Prop> list) {
 		//Mfw no heterogenous tuples
-		this((ColorProp) list.get(0), (ThemeProp) list.get(1), (ModeProp) list.get(2));
+		this((Color) list.get(0), (Theme) list.get(1), (Mode) list.get(2));
 	}
 	
 	public static LampStyle fromName(String name) {
@@ -35,9 +35,9 @@ public class LampStyle {
 		return LOOKUP.get(id.getPath());
 	}
 	
-	public final ColorProp color;
-	public final ThemeProp theme;
-	public final ModeProp mode;
+	public final Color color;
+	public final Theme theme;
+	public final Mode mode;
 	
 	public String toName() {
 		return color.color.getName() + '_' + theme.name + '_' + mode.name + "_lamp";
@@ -48,44 +48,50 @@ public class LampStyle {
 	}
 	
 	public LampBlock instantiateBlock(Block.Settings settings) {
-		return mode.constructor.apply(this, settings);
+		return mode.constructor.apply(this, theme.processSettings(settings));
 	}
 	
-	public static List<LampStyle> ALL = Lists.cartesianProduct(ColorProp.ALL, ThemeProp.ALL, ModeProp.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
+	public static List<LampStyle> ALL = Lists.cartesianProduct(Color.ALL, Theme.ALL, Mode.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
 	public static Map<String, LampStyle> LOOKUP = ALL.stream().collect(Collectors.toMap(LampStyle::toName, Function.identity()));
 	
 	public interface Prop {}
 	
-	public static class ColorProp implements Prop {
-		public ColorProp(DyeColor color) {
+	public static class Color implements Prop {
+		public Color(DyeColor color) {
 			this.color = color;
 		}
 		
 		public final DyeColor color;
 		
-		public static final List<ColorProp> ALL = Arrays.stream(DyeColor.values()).map(ColorProp::new).collect(Collectors.toList());
+		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
 	}
 	
-	public static class ThemeProp implements Prop {
-		public ThemeProp(String name, boolean isTransparent) {
+	public static class Theme implements Prop {
+		public Theme(String name, boolean isTransparent) {
 			this.name = name;
 			this.isTransparent = isTransparent;
+		}
+		
+		public AbstractBlock.Settings processSettings(AbstractBlock.Settings in) {
+			if(isTransparent) {
+				return in.nonOpaque();
+			} else return in;
 		}
 		
 		public final String name;
 		public final boolean isTransparent; //kind of a hack rn
 		
-		public static final ThemeProp CLASSIC = new ThemeProp("classic", false);
-		public static final ThemeProp MODERN = new ThemeProp("modern", false);
-		public static final ThemeProp LANTERN = new ThemeProp("lantern", false);
-		public static final ThemeProp PULSATING = new ThemeProp("pulsating", false);
-		public static final ThemeProp ICY = new ThemeProp("icy", true);
+		public static final Theme CLASSIC = new Theme("classic", false);
+		public static final Theme MODERN = new Theme("modern", false);
+		public static final Theme LANTERN = new Theme("lantern", false);
+		public static final Theme PULSATING = new Theme("pulsating", false);
+		public static final Theme ICY = new Theme("icy", true);
 		
-		public static final List<ThemeProp> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
+		public static final List<Theme> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
 	}
 	
-	public static class ModeProp implements Prop {
-		public ModeProp(String name, BiFunction<LampStyle, Block.Settings, LampBlock> constructor) {
+	public static class Mode implements Prop {
+		public Mode(String name, BiFunction<LampStyle, Block.Settings, LampBlock> constructor) {
 			this.name = name;
 			this.constructor = constructor;
 		}
@@ -93,9 +99,9 @@ public class LampStyle {
 		public final String name;
 		public final BiFunction<LampStyle, Block.Settings, LampBlock> constructor;
 		
-		public static final ModeProp DIGITAL = new ModeProp("digital", LampBlock.Digital::new);
-		public static final ModeProp ANALOG = new ModeProp("analog", LampBlock.Analog::new);
+		public static final Mode DIGITAL = new Mode("digital", LampBlock.Digital::new);
+		public static final Mode ANALOG = new Mode("analog", LampBlock.Analog::new);
 		
-		public static final List<ModeProp> ALL = ImmutableList.of(DIGITAL, ANALOG);
+		public static final List<Mode> ALL = ImmutableList.of(DIGITAL, ANALOG);
 	}
 }

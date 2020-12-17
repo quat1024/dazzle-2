@@ -1,0 +1,8 @@
+{
+	"parent": "dazzle:block/lamp_base_pulsating",
+	"textures": {
+		"base": "dazzle:block/lamp/pulsating/base",
+		"side": "dazzle:block/lamp/pulsating/side",
+		"end": "dazzle:block/lamp/pulsating/top"
+	}
+}

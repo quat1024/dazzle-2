@@ -1,8 +1,11 @@
 package agency.highlysuspect.dazzle2.block;
 
 import agency.highlysuspect.dazzle2.LampStyle;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
@@ -14,6 +17,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 
@@ -34,6 +41,16 @@ public abstract class LampBlock extends Block implements Opcodes {
 		super.appendProperties(appendMoreProperties(builder.add(INVERTED)));
 	}
 	
+	@Environment(EnvType.CLIENT)
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+		return style.theme.isTransparent && (stateFrom.isOf(this) || super.isSideInvisible(state, stateFrom, direction));
+	}
+	
+	@Override
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+		return 1f;
+	}
+	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if(player.getStackInHand(hand).getItem() == Items.REDSTONE_TORCH) {
@@ -51,9 +68,11 @@ public abstract class LampBlock extends Block implements Opcodes {
 	@Override
 	public abstract void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify);
 	
+	public abstract int lightFromState(BlockState state);
+	
 	public static class Analog extends LampBlock {
 		public Analog(LampStyle style, Settings settings) {
-			super(style, settings.luminance(Analog::getLightValueForState));
+			super(style, settings.luminance(Analog::lightFromStateStatic));
 			setDefaultState(getDefaultState().with(POWER, 0));
 		}
 		
@@ -64,7 +83,13 @@ public abstract class LampBlock extends Block implements Opcodes {
 			return builder.add(POWER);
 		}
 		
-		private static int getLightValueForState(BlockState state) {
+		//annoyingly this is used in reference to a block.settings in the super() call, where non-static method references are illegal.
+		private static int lightFromStateStatic(BlockState state) {
+			return state.get(INVERTED) ? 15 - state.get(POWER) : state.get(POWER);
+		}
+		
+		@Override
+		public int lightFromState(BlockState state) {
 			return state.get(INVERTED) ? 15 - state.get(POWER) : state.get(POWER);
 		}
 		
@@ -89,7 +114,7 @@ public abstract class LampBlock extends Block implements Opcodes {
 	
 	public static class Digital extends LampBlock {
 		public Digital(LampStyle style, Settings settings) {
-			super(style, settings.luminance(Digital::getLightValueForState));
+			super(style, settings.luminance(Digital::lightFromStateStatic));
 			setDefaultState(getDefaultState().with(POWERED, false));
 		}
 		
@@ -100,7 +125,12 @@ public abstract class LampBlock extends Block implements Opcodes {
 			return builder.add(POWERED);
 		}
 		
-		public static int getLightValueForState(BlockState state) {
+		public static int lightFromStateStatic(BlockState state) {
+			return state.get(INVERTED) ^ state.get(POWERED) ? 15 : 0;
+		}
+		
+		@Override
+		public int lightFromState(BlockState state) {
 			return state.get(INVERTED) ^ state.get(POWERED) ? 15 : 0;
 		}
 		
