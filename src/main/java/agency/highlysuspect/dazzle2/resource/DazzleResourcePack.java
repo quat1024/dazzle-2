@@ -38,7 +38,7 @@ public class DazzleResourcePack implements ResourcePack {
 	private void initAssets(ResourceManager mgr) {
 		tryAddProvider(mgr, LampBlockstates::new);
 		tryAddProvider(mgr, LampItemModels::new);
-		tryAddProvider(mgr, LampEnUsLocalization::new);
+		tryAddProvider(mgr, LampEnglishLocalizations::new);
 	}
 	
 	private void initDatapack(ResourceManager mgr) {

@@ -48,8 +48,8 @@ public class LampStyle {
 		return Init.id(toName());
 	}
 	
-	public String toEnUsLocalization() {
-		return color.toEnUsLocalization() + " " + theme.toEnUsLocalization() + " " + mode.toEnUsLocalization() + " Lamp";
+	public String englishLocalization(boolean spellGrayWithAnE) {
+		return color.toEnUsLocalization(spellGrayWithAnE) + " " + theme.englishLocalization() + " " + mode.englishLocalization() + " Lamp";
 	}
 	
 	public LampBlock instantiateBlock(Block.Settings settings) {
@@ -70,9 +70,10 @@ public class LampStyle {
 		
 		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
 		
-		public String toEnUsLocalization() {
-			//This is horrible btw
-			return WordUtils.capitalizeFully(color.getName().replace('_', ' '));
+		public String toEnUsLocalization(boolean spellGrayWithAnE) {
+			String nameLowercase = color.getName().replace('_', ' ');
+			if(spellGrayWithAnE) nameLowercase = nameLowercase.replaceAll("gray", "grey");
+			return WordUtils.capitalizeFully(nameLowercase);
 		}
 	}
 	
@@ -99,7 +100,7 @@ public class LampStyle {
 		
 		public static final List<Theme> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
 		
-		public String toEnUsLocalization() {
+		public String englishLocalization() {
 			return WordUtils.capitalizeFully(name);
 		}
 	}
@@ -118,7 +119,7 @@ public class LampStyle {
 		
 		public static final List<Mode> ALL = ImmutableList.of(DIGITAL, ANALOG);
 		
-		public String toEnUsLocalization() {
+		public String englishLocalization() {
 			return WordUtils.capitalizeFully(name);
 		}
 	}
