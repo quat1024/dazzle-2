@@ -1,4 +1,4 @@
-package agency.highlysuspect.dazzle2.client.resource.provider;
+package agency.highlysuspect.dazzle2.resource.provider;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.LampStyle;
@@ -11,8 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -82,6 +80,23 @@ public abstract class ResourceProvider {
 			LampStyle style = LampStyle.fromName(name);
 			if(style == null) return Optional.empty();
 			else return Optional.of(() -> writeString(template.replaceAll("\\{}", style.theme.name)));
+		}
+	}
+	
+	public static class LampLootTables extends IdPathRegexMatch {
+		public LampLootTables(ResourceManager mgr) throws IOException {
+			super(mgr, Pattern.compile("^loot_tables/blocks/([a-z_]+)\\.json$"));
+			template = readResource(mgr.getResource(Init.id("templates/loot_table_template.json")));
+		}
+		
+		private final String template;
+		
+		@Override
+		protected Optional<Supplier<InputStream>> getMatcher(Identifier id, Matcher matcher) {
+			String name = matcher.group(1);
+			LampStyle style = LampStyle.fromName(name);
+			if(style == null) return Optional.empty();
+			else return Optional.of(() -> writeString(template.replaceAll("\\{}", style.toIdentifier().toString())));
 		}
 	}
 }

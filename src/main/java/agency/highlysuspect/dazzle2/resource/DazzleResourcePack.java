@@ -1,7 +1,8 @@
-package agency.highlysuspect.dazzle2.client.resource;
+package agency.highlysuspect.dazzle2.resource;
 
 import agency.highlysuspect.dazzle2.Init;
-import agency.highlysuspect.dazzle2.client.resource.provider.ResourceProvider;
+import agency.highlysuspect.dazzle2.LampStyle;
+import agency.highlysuspect.dazzle2.resource.provider.ResourceProvider;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class DazzleResourcePack implements ResourcePack {
 	public DazzleResourcePack(ResourceType type, ResourceManager mgr) {
@@ -27,10 +29,10 @@ public class DazzleResourcePack implements ResourcePack {
 	
 	private void ensureInit() {
 		if(isInitialized) return;
+		isInitialized = true;
 		
 		if(type == ResourceType.CLIENT_RESOURCES) initAssets(mgr);
-		initDatapack(mgr);
-		isInitialized = true;
+		if(type == ResourceType.SERVER_DATA) initDatapack(mgr);
 	}
 	
 	private void initAssets(ResourceManager mgr) {
@@ -39,7 +41,7 @@ public class DazzleResourcePack implements ResourcePack {
 	}
 	
 	private void initDatapack(ResourceManager mgr) {
-		
+		tryAddProvider(mgr, ResourceProvider.LampLootTables::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {
@@ -78,9 +80,21 @@ public class DazzleResourcePack implements ResourcePack {
 	@Override
 	public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
 		ensureInit();
+		
 		//TODO make an abstraction for providing entries to pass to findResources
 		// this is needed for things like recipes im pretty sure, which there is no fixed set of
-		Init.log("DazzleResourcePack#findResources " + prefix);
+		Init.log("DazzleResourcePack#findResources " + prefix + " ns " + namespace);
+		
+		if(prefix.equals("loot_tables")) {
+			return LampStyle.ALL.stream()
+				.map(LampStyle::toName)
+				.map(name -> "dazzle:loot_tables/blocks/" + name + ".json")
+				.filter(pathFilter)
+				.map(Identifier::new)
+				.collect(Collectors.toList());
+		}
+		
+		
 		return Collections.emptyList();
 	}
 	

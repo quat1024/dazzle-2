@@ -1,6 +1,6 @@
 package agency.highlysuspect.dazzle2.mixin.client;
 
-import agency.highlysuspect.dazzle2.client.resource.DazzleResourcePack;
+import agency.highlysuspect.dazzle2.resource.DazzleResourcePack;
 import net.minecraft.resource.*;
 import net.minecraft.util.Unit;
 import org.apache.logging.log4j.Logger;
