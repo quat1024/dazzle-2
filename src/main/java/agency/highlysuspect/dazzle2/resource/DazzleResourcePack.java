@@ -121,7 +121,7 @@ public class DazzleResourcePack implements ResourcePack {
 	
 	@Override
 	public String getName() {
-		return "Dazzle 2 - Generated resources";
+		return "Dazzle 2 - Generated " + type.getDirectory();
 	}
 	
 	@Override
