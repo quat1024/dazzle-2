@@ -2,7 +2,7 @@ package agency.highlysuspect.dazzle2.resource;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.LampStyle;
-import agency.highlysuspect.dazzle2.resource.provider.ResourceProvider;
+import agency.highlysuspect.dazzle2.resource.provider.*;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
@@ -36,12 +36,13 @@ public class DazzleResourcePack implements ResourcePack {
 	}
 	
 	private void initAssets(ResourceManager mgr) {
-		tryAddProvider(mgr, ResourceProvider.LampBlockstates::new);
-		tryAddProvider(mgr, ResourceProvider.LampItemModels::new);
+		tryAddProvider(mgr, LampBlockstates::new);
+		tryAddProvider(mgr, LampItemModels::new);
+		tryAddProvider(mgr, LampEnUsLocalization::new);
 	}
 	
 	private void initDatapack(ResourceManager mgr) {
-		tryAddProvider(mgr, ResourceProvider.LampLootTables::new);
+		tryAddProvider(mgr, LampLootTables::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {
@@ -81,9 +82,7 @@ public class DazzleResourcePack implements ResourcePack {
 	public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
 		ensureInit();
 		
-		//TODO make an abstraction for providing entries to pass to findResources
-		// this is needed for things like recipes im pretty sure, which there is no fixed set of
-		Init.log("DazzleResourcePack#findResources " + prefix + " ns " + namespace);
+		//TODO: An abstraction for this would be handy
 		
 		if(prefix.equals("loot_tables")) {
 			return LampStyle.ALL.stream()
@@ -93,7 +92,6 @@ public class DazzleResourcePack implements ResourcePack {
 				.map(Identifier::new)
 				.collect(Collectors.toList());
 		}
-		
 		
 		return Collections.emptyList();
 	}

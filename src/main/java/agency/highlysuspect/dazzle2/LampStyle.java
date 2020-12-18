@@ -7,6 +7,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +48,10 @@ public class LampStyle {
 		return Init.id(toName());
 	}
 	
+	public String toEnUsLocalization() {
+		return color.toEnUsLocalization() + " " + theme.toEnUsLocalization() + " " + mode.toEnUsLocalization() + " Lamp";
+	}
+	
 	public LampBlock instantiateBlock(Block.Settings settings) {
 		return mode.constructor.apply(this, theme.processSettings(settings));
 	}
@@ -64,6 +69,11 @@ public class LampStyle {
 		public final DyeColor color;
 		
 		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
+		
+		public String toEnUsLocalization() {
+			//This is horrible btw
+			return WordUtils.capitalizeFully(color.getName().replace('_', ' '));
+		}
 	}
 	
 	public static class Theme implements Prop {
@@ -88,6 +98,10 @@ public class LampStyle {
 		public static final Theme ICY = new Theme("icy", true);
 		
 		public static final List<Theme> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
+		
+		public String toEnUsLocalization() {
+			return WordUtils.capitalizeFully(name);
+		}
 	}
 	
 	public static class Mode implements Prop {
@@ -103,5 +117,9 @@ public class LampStyle {
 		public static final Mode ANALOG = new Mode("analog", LampBlock.Analog::new);
 		
 		public static final List<Mode> ALL = ImmutableList.of(DIGITAL, ANALOG);
+		
+		public String toEnUsLocalization() {
+			return WordUtils.capitalizeFully(name);
+		}
 	}
 }

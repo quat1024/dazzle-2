@@ -9,6 +9,8 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
@@ -54,7 +56,9 @@ public abstract class LampBlock extends Block implements Opcodes {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if(player.getStackInHand(hand).getItem() == Items.REDSTONE_TORCH) {
-			world.setBlockState(pos, state.cycle(INVERTED));
+			boolean newInverted = !state.get(INVERTED);
+			world.setBlockState(pos, state.with(INVERTED, newInverted));
+			world.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.9f, newInverted ? 1.3f : 1f);
 			return ActionResult.SUCCESS; //todo should it be the weird one that takes world.isclient for some reason
 		}
 		return ActionResult.PASS;
