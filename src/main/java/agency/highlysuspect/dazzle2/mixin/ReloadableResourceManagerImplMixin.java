@@ -1,4 +1,4 @@
-package agency.highlysuspect.dazzle2.mixin.client;
+package agency.highlysuspect.dazzle2.mixin;
 
 import agency.highlysuspect.dazzle2.resource.DazzleResourcePack;
 import net.minecraft.resource.*;
@@ -24,7 +24,7 @@ public abstract class ReloadableResourceManagerImplMixin {
 	@Inject(method = "beginMonitoredReload",
 		at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;"))
 	private void injectPack(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
-		LOGGER.info("Dazzle 2 is injecting a resource pack \uD83E\uDD2B");
+		LOGGER.info("Dazzle 2 is injecting a " + (type == ResourceType.CLIENT_RESOURCES ? "resource" : "data") + " pack \uD83E\uDD2B"); //:shushing_face:
 		addPack(new DazzleResourcePack(type, (ResourceManager) this));
 	}
 }

@@ -4,9 +4,10 @@
   "package": "agency.highlysuspect.dazzle2.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+		"ReloadableResourceManagerImplMixin"
   ],
   "client": [
-		"client.ReloadableResourceManagerImplMixin"
+		
   ],
   "injectors": {
     "defaultRequire": 1
