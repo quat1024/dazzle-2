@@ -2,6 +2,7 @@ package agency.highlysuspect.dazzle2.resource.provider;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.LampStyle;
+import com.google.common.collect.Iterators;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public abstract class ResourceProvider {
 	public ResourceProvider(ResourceManager mgr) throws IOException {
@@ -22,6 +24,10 @@ public abstract class ResourceProvider {
 	}
 	
 	public abstract Optional<Supplier<InputStream>> get(Identifier id);
+	
+	public Stream<String> enumerate(String prefix) {
+		return Stream.empty();
+	}
 	
 	protected static InputStream writeString(String s) {
 		return new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));

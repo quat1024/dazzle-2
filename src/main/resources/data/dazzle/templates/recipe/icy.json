@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "GROUP",
+	"ingredients": [
+		{
+			"item": "DYE"
+		},
+		{
+			"item": "minecraft:redstone_lamp"
+		},
+		{
+			"item": "minecraft:ice"
+		}
+	],
+	"result": {
+		"item": "OUT"
+	}
+}

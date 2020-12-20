@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"OUT"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "IN"
+					}
+				]
+			}
+		},
+		"has_dye": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:comparator"
+					}
+				]
+			}
+		}
+	}
+}
