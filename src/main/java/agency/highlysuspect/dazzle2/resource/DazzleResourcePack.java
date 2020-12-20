@@ -46,6 +46,7 @@ public class DazzleResourcePack implements ResourcePack {
 		tryAddProvider(mgr, LampLootTables::new);
 		tryAddProvider(mgr, LampRecipes::new);
 		tryAddProvider(mgr, LampRecipeAdvancements::new);
+		tryAddProvider(mgr, LampTags::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {
