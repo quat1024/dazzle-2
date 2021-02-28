@@ -1,0 +1,40 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:light_sensor"
+		]
+	},
+	"criteria": {
+		"has_observer": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:observer"
+					}
+				]
+			}
+		},
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:redstone_lamp"
+					}
+				]
+			}
+		},
+		"has_glowstone": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:glowstone_dust"
+					}
+				]
+			}
+		}
+	}
+}

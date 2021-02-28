@@ -1,0 +1,49 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"bottom": "dazzle:block/light_sensor/butt",
+		"side": "dazzle:block/light_sensor/side",
+		"front": "dazzle:block/light_sensor/face",
+		"particle": "dazzle:block/light_sensor/face"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"rotation": 90,
+					"texture": "#side",
+					"cullface": "down"
+				},
+				"up": {
+					"uv": [0, 16, 16, 0],
+					"rotation": 90,
+					"texture": "#side",
+					"cullface": "up"
+				},
+				"north": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#front",
+					"cullface": "north"
+				},
+				"south": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#bottom",
+					"cullface": "south"
+				},
+				"west": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#side",
+					"cullface": "west"
+				},
+				"east": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#side",
+					"cullface": "east"
+				}
+			}
+		}
+	]
+}
