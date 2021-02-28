@@ -13,11 +13,15 @@ fabric 1.16.4, yoinks a mixin from ARRP btw
 
 ## todo
 
-should really clean up the resource-gen code before i go adding more repetitive 16-colors content lmao. anyway
+should really clean up the resource-gen code before i go adding more repetitive 16-colors content lmao
+* tbh i basically wanna make arrp 2 "generates stuff on-demand" edition
+* the code is patently terrible, i left some notes in a readme in that package of the source tree
+
+anyway
 
 * more "natural" light sources, e.g. more types of lanterns and torches
   * something animated could be fun, like a lantern with a fire in it
-  * Spend MORE on candles
+  * ~~Spend MORE on candles~~i forgot they're in 1.17 lol
   * modern-style light bulbs and lampshades, maybe
   * art is hard ;)
 * invisible lights
