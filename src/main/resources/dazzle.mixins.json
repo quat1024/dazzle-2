@@ -4,7 +4,8 @@
   "package": "agency.highlysuspect.dazzle2.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-		"ReloadableResourceManagerImplMixin"
+		"ReloadableResourceManagerImplMixin",
+		"RedstoneWireBlockMixin"
   ],
   "client": [
 		
