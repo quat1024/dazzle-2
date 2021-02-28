@@ -33,7 +33,7 @@ public abstract class ResourceProvider {
 		return new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
 	}
 	
-	protected static String readResource(Resource in) throws IOException {
+	protected static String readResourceAsString(Resource in) throws IOException {
 		return IOUtils.toString(in.getInputStream(), StandardCharsets.UTF_8);
 	}
 	

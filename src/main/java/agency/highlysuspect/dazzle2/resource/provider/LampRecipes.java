@@ -20,10 +20,10 @@ public class LampRecipes extends ResourceProvider.IdPathRegexMatch {
 		super(mgr, Pattern.compile("^recipes/lamps/([a-z_]+)\\.json$"));
 		
 		for(LampStyle.Theme theme : LampStyle.Theme.ALL) {
-			digitalRecipeTemplates.put(theme, readResource(mgr.getResource(Init.id("templates/recipe/" + theme.name + ".json"))));
+			digitalRecipeTemplates.put(theme, readResourceAsString(mgr.getResource(Init.id("templates/recipe/" + theme.name + ".json"))));
 		}
 		
-		convertToAnalogTemplate = readResource(mgr.getResource(Init.id("templates/recipe/convert_to_analog.json")));
+		convertToAnalogTemplate = readResourceAsString(mgr.getResource(Init.id("templates/recipe/convert_to_analog.json")));
 	}
 	
 	private final Map<LampStyle.Theme, String> digitalRecipeTemplates = new HashMap<>();
@@ -34,28 +34,31 @@ public class LampRecipes extends ResourceProvider.IdPathRegexMatch {
 		String name = matcher.group(1);
 		LampStyle style = LampStyle.fromName(name);
 		if(style == null) return Optional.empty();
-		else return Optional.of(() -> {
-			if(style.mode == LampStyle.Mode.DIGITAL) {
-				String dyeId = style.color.itemId().toString();
-				String out = style.toIdentifier().toString();
-				String group = style.theme.name + '_' + style.mode.name;
-				
-				return writeString(digitalRecipeTemplates.get(style.theme)
-					.replaceAll("DYE", dyeId)
-					.replaceAll("OUT", out)
-					.replaceAll("GROUP", group)
-				);
-			} else {
-				String in = style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString();
-				String out = style.toIdentifier().toString();
-				String group = style.theme.name + '_' + style.mode.name + "_analog_convert";
-				
-				return writeString(convertToAnalogTemplate
-					.replaceAll("IN", in)
-					.replaceAll("OUT", out)
-					.replaceAll("GROUP", group)
-				);
-			}
+		
+		String template;
+		String in;
+		String groupSuffix;
+		if(style.mode == LampStyle.Mode.DIGITAL) {
+			template = digitalRecipeTemplates.get(style.theme);
+			
+			Optional<Identifier> in_ = style.color.findItemId();
+			if(!in_.isPresent()) return Optional.empty();
+			in = in_.get().toString();
+			
+			groupSuffix = "";
+		} else if(style.mode == LampStyle.Mode.ANALOG) {
+			template = convertToAnalogTemplate;
+			
+			in = style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString();
+			groupSuffix = "_analog_convert";
+		} else {
+			throw new IllegalStateException("Imagine if Java had exhaustiveness checking, lmao, anyway unknown lamp mode " + style.mode + " go hiss at quat");
+		}
+		
+		return Optional.of(() -> {
+			String out = style.toIdentifier().toString();
+			String group = style.theme.name + '_' + style.mode.name + groupSuffix;
+			return writeString(template.replaceAll("IN", in).replaceAll("OUT", out).replaceAll("GROUP", group));
 		});
 	}
 	

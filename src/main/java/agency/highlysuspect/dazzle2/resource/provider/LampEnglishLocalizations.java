@@ -34,12 +34,12 @@ public class LampEnglishLocalizations extends ResourceProvider {
 		
 		//Originally I kept two sets, for dialects that spell gray with an A and those that spell it with an E
 		//Apparently the united states is the only oddball, though, I actually didn't know that lol
-		boolean spellGrayWithAnE = !id.getPath().endsWith("en_us.json");
+		boolean murica = id.getPath().endsWith("en_us.json");
 		
 		return Optional.of(() -> {
 			JsonObject lang = new JsonObject();
 			for(LampStyle style : LampStyle.ALL) {
-				lang.addProperty("block.dazzle." + style.toName(), style.englishLocalization(spellGrayWithAnE));
+				lang.addProperty("block.dazzle." + style.toName(), style.englishLocalization(murica));
 			}
 			return writeString(lang.toString());
 		});

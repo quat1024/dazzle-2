@@ -12,10 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -52,8 +49,8 @@ public class LampStyle {
 		return Init.id(toName());
 	}
 	
-	public String englishLocalization(boolean spellGrayWithAnE) {
-		return color.englishLocalization(spellGrayWithAnE) + " " + theme.englishLocalization() + " " + mode.englishLocalization() + " Lamp";
+	public String englishLocalization(boolean murica) {
+		return color.englishLocalization(murica) + " " + theme.englishLocalization() + " " + mode.englishLocalization() + " Lamp";
 	}
 	
 	public LampBlock instantiateBlock(Block.Settings settings) {
@@ -104,30 +101,32 @@ public class LampStyle {
 		
 		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
 		
-		public String englishLocalization(boolean spellGrayWithAnE) {
+		public String englishLocalization(boolean murica) {
 			String nameLowercase = color.getName().replace('_', ' ');
-			if(spellGrayWithAnE) nameLowercase = nameLowercase.replaceAll("gray", "grey");
+			if(!murica) nameLowercase = nameLowercase.replaceAll("gray", "grey");
 			return WordUtils.capitalizeFully(nameLowercase);
 		}
 		
-		public Identifier itemId() {
+		public Optional<Identifier> findItemId() {
 			if(COLORS_TO_ITEM_IDS.containsKey(color)) {
-				return COLORS_TO_ITEM_IDS.get(color);
+				return Optional.of(COLORS_TO_ITEM_IDS.get(color));
 			}
 			
 			//I heard talk of mods that add their own dye colors by extending the enum.
 			//Who knows if that will come to fruition, but let's assume this hypothetical mod uses the
 			//same name format to the other minecraft dyes (that is, "somemod:flurple_dye", for example)
+			//Also yes, this ridiculous hypothetical is the only reason this method returns an Optional
 			String path = color.getName() + "_dye";
 			for(ModContainer mc : FabricLoader.getInstance().getAllMods()) {
 				Identifier maybeId = new Identifier(mc.getMetadata().getId(), path);
 				if(Registry.ITEM.containsId(maybeId)) {
 					COLORS_TO_ITEM_IDS.put(color, maybeId);
-					return maybeId;
+					return Optional.of(maybeId);
 				}
 			}
 			
-			throw new IllegalStateException("Can't find any item corresponding to the dye " + color);
+			Init.LOGGER.error("Can't find an item corresponding to the dye " + color);
+			return Optional.empty();
 		}
 		
 		private static final Map<DyeColor, Identifier> COLORS_TO_ITEM_IDS = new HashMap<>();

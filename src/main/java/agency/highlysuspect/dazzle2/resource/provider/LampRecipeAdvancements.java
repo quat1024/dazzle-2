@@ -21,10 +21,10 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 		super(mgr, Pattern.compile("^advancements/recipes/lamps/([a-z_]+)\\.json$"));
 		
 		for(LampStyle.Theme theme : LampStyle.Theme.ALL) {
-			recipeAdv.put(theme, readResource(mgr.getResource(Init.id("templates/advancement/" + theme.name + ".json"))));
+			recipeAdv.put(theme, readResourceAsString(mgr.getResource(Init.id("templates/advancement/" + theme.name + ".json"))));
 		}
 		
-		recipeAnalogAdv = readResource(mgr.getResource(Init.id("templates/advancement/convert_to_analog.json")));
+		recipeAnalogAdv = readResourceAsString(mgr.getResource(Init.id("templates/advancement/convert_to_analog.json")));
 	}
 	
 	private final Map<LampStyle.Theme, String> recipeAdv = new HashMap<>();
@@ -36,23 +36,24 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 		LampStyle style = LampStyle.fromName(name);
 		if(style == null) return Optional.empty();
 		
-		else return Optional.of(() -> {
-			if(style.mode == LampStyle.Mode.DIGITAL) {
-				String dyeId = style.color.itemId().toString();
-				//This is really fucking bad lmao
-				String unlockedRecipeId = Junk.mapPath(style.toIdentifier(), LampRecipeAdvancements::toRecipeId).toString();
-				return writeString(recipeAdv.get(style.theme)
-					.replaceAll("IN", dyeId)
-					.replaceAll("OUT", unlockedRecipeId)
-				);
-			} else {
-				String baseItemId = style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString();
-				String unlockedRecipeId = Junk.mapPath(style.toIdentifier(), LampRecipeAdvancements::toRecipeId).toString();
-				return writeString(recipeAnalogAdv
-					.replaceAll("IN", baseItemId)
-					.replaceAll("OUT", unlockedRecipeId)
-				);
-			}
+		String template;
+		String subst;
+		
+		if(style.mode == LampStyle.Mode.DIGITAL) {
+			template = recipeAdv.get(style.theme);
+			Optional<Identifier> subst_ = style.color.findItemId();
+			if(!subst_.isPresent()) return Optional.empty();
+			else subst = subst_.get().toString();
+		} else if(style.mode == LampStyle.Mode.ANALOG){
+			template = recipeAnalogAdv;
+			subst = style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString();
+		} else {
+			throw new IllegalStateException("Imagine if Java had exhaustiveness checking, lmao, anyway unknown lamp mode " + style.mode + " go hiss at quat");
+		}
+		
+		return Optional.of(() -> {
+			String unlockedRecipeId = Junk.mapPath(style.toIdentifier(), LampRecipeAdvancements::toRecipeId).toString();
+			return writeString(template.replaceAll("IN", subst).replaceAll("OUT", unlockedRecipeId));
 		});
 	}
 	

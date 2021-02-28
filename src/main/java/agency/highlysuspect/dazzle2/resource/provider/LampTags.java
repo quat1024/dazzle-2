@@ -54,8 +54,9 @@ public class LampTags extends ResourceProvider.IdPathRegexMatch {
 	
 	@Override
 	public Stream<String> enumerate(String prefix) {
-		//Why is this inconsistent LOLLLLLLLLLLL
-		if(prefix.startsWith("tags")) Init.log(prefix);
+		//TODO: Why does this not always..... work?????????????
+		// It's not that this method fails, but if you println "prefix", sometimes the game literally isn't even asking to load item tags??
+		// What??
 		
 		if(prefix.equals("tags/items") || prefix.equals("tags/blocks")) {
 			prefix = "dazzle:" + prefix;

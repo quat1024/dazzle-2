@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class LampLootTables extends ResourceProvider.IdPathRegexMatch {
 	public LampLootTables(ResourceManager mgr) throws IOException {
 		super(mgr, Pattern.compile("^loot_tables/blocks/([a-z_]+)\\.json$"));
-		template = readResource(mgr.getResource(Init.id("templates/lamp_loot_table_template.json")));
+		template = readResourceAsString(mgr.getResource(Init.id("templates/lamp_loot_table_template.json")));
 	}
 	
 	private final String template;

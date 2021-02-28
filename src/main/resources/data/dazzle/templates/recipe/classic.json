@@ -3,7 +3,7 @@
 	"group": "GROUP",
 	"ingredients": [
 		{
-			"item": "DYE"
+			"item": "IN"
 		},
 		{
 			"item": "minecraft:redstone_lamp"

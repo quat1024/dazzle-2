@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class LampItemModels extends ResourceProvider.IdPathRegexMatch {
 	public LampItemModels(ResourceManager mgr) throws IOException {
 		super(mgr, Pattern.compile("^models/item/([a-z_]+)\\.json$"));
-		template = readResource(mgr.getResource(Init.id("templates/lamp_item_model.json")));
+		template = readResourceAsString(mgr.getResource(Init.id("templates/lamp_item_model.json")));
 	}
 	
 	private final String template;
