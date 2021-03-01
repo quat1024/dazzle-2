@@ -1,5 +1,6 @@
 package agency.highlysuspect.dazzle2.block;
 
+import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
 import agency.highlysuspect.dazzle2.block.entity.LightSensorBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -31,7 +32,7 @@ public class LightSensorBlock extends Block implements BlockEntityProvider {
 	
 	@Override
 	public @Nullable BlockEntity createBlockEntity(BlockView world) {
-		return LightSensorBlockEntity.TYPE.instantiate();
+		return DazzleBlockEntityTypes.LIGHT_SENSOR.instantiate();
 	}
 	
 	@Override
@@ -57,7 +58,7 @@ public class LightSensorBlock extends Block implements BlockEntityProvider {
 	protected int power(BlockState state, BlockView world, BlockPos pos, Direction direction) {
 		if(state.get(FACING) != direction) return 0;
 		
-		LightSensorBlockEntity be = LightSensorBlockEntity.TYPE.get(world, pos);
+		LightSensorBlockEntity be = DazzleBlockEntityTypes.LIGHT_SENSOR.get(world, pos);
 		return be == null ? 0 : be.getPower();
 	}
 }

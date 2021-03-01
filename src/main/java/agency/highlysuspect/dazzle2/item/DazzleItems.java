@@ -16,6 +16,8 @@ public class DazzleItems {
 	
 	public static final List<BlockItem> LAMP_ITEMS = DazzleBlocks.LAMPS.stream().map(DazzleItems::blockItem).collect(Collectors.toList());
 	public static final BlockItem LIGHT_SENSOR = blockItem(DazzleBlocks.LIGHT_SENSOR);
+	public static final BlockItem HIDDEN_LIGHT = blockItem(DazzleBlocks.PLACEABLE_HIDDEN_LIGHT);
+	public static final BlockItem PROJECTED_LIGHT_PANEL = blockItem(DazzleBlocks.PROJECTED_LIGHT_PANEL);
 	
 	public static void onInitialize() {
 		for(BlockItem item : LAMP_ITEMS) {
@@ -24,6 +26,8 @@ public class DazzleItems {
 		}
 		
 		Registry.register(Registry.ITEM, Init.id("light_sensor"), LIGHT_SENSOR);
+		Registry.register(Registry.ITEM, Init.id("hidden_light"), HIDDEN_LIGHT);
+		Registry.register(Registry.ITEM, Init.id("projected_light_panel"), PROJECTED_LIGHT_PANEL);
 	}
 	
 	private static BlockItem blockItem(Block b) {

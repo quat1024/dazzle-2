@@ -1,27 +1,18 @@
 package agency.highlysuspect.dazzle2.block.entity;
 
 import agency.highlysuspect.dazzle2.Init;
-import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.LightSensorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LightType;
 
 public class LightSensorBlockEntity extends BlockEntity implements Tickable {
 	public LightSensorBlockEntity() {
-		super(TYPE);
-	}
-	
-	//TODO move this out if i ever end up with more block entity types.
-	public static final BlockEntityType<LightSensorBlockEntity> TYPE = BlockEntityType.Builder.create(LightSensorBlockEntity::new, DazzleBlocks.LIGHT_SENSOR).build(null);
-	public static void registerBlockEntityType() {
-		Registry.register(Registry.BLOCK_ENTITY_TYPE, Init.id("light_sensor"), TYPE);
+		super(DazzleBlockEntityTypes.LIGHT_SENSOR);
 	}
 	
 	private int light;
