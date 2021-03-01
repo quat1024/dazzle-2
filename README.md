@@ -10,6 +10,9 @@ fabric 1.16.4, yoinks a mixin from ARRP btw
 * an *all-new type of light!!!!*, we're up to 5 types of lights now!
 * as usual they come in 16 colors, digital/analog (craft with a comparator), regular/inverted (click with a redstone torch) variations
 * the Light Sensor. conceptually similar to a daylight sensor, but places like an observer, and detects blocklight instead of sky light
+* invisible lights (not craftable/drop anything at the moment, gotta get that in)
+* light panels, which project light up to 45 blocks away depending on signal strength
+  * should be a lot less buggy than the ones in dazzle 1, give em a look!
 
 ## todo
 
@@ -24,10 +27,8 @@ anyway
   * ~~Spend MORE on candles~~i forgot they're in 1.17 lol
   * modern-style light bulbs and lampshades, maybe
   * art is hard ;)
-* invisible lights
-  * but this time, with a craftable item to place and break them manually
-  * also i need better UX around em, it should be possible to make them visible under some condition
-  * was thinking about using sone Canvas features to give them a blockmodel that is visible under a "holding an invisible light item" condition, idk how well that will work. i can always fall back to using something similar to barrier particles. don't wanna use a block entity renderer.
+* some way to see the invisible lights (consider: like barrier blocks)
+* make the hitbox less funky on the invisible lights, especially the non-placeable ones
 * port the dim redstone torch
 * port the particle light flashes (maybe give em a block loot table this time lmao) 
 * port the panel lights, that project a bunch of invisible lights in a line when powered
