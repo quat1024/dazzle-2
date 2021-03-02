@@ -3,6 +3,7 @@ package agency.highlysuspect.dazzle2;
 import agency.highlysuspect.dazzle2.block.DazzleBlockTags;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
+import agency.highlysuspect.dazzle2.etc.DazzleParticleTypes;
 import agency.highlysuspect.dazzle2.item.DazzleItemTags;
 import agency.highlysuspect.dazzle2.item.DazzleItems;
 import net.fabricmc.api.ModInitializer;
@@ -30,5 +31,7 @@ public class Init implements ModInitializer {
 		
 		DazzleItems.onInitialize();
 		DazzleItemTags.onInitialize();
+		
+		DazzleParticleTypes.onInitialize();
 	}
 }

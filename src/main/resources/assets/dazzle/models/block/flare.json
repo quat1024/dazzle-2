@@ -1,0 +1,6 @@
+{
+	"parent": "dazzle:empty",
+	"textures": {
+		"particle": "dazzle:item/flare/color"
+	}
+}

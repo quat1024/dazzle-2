@@ -1,9 +1,11 @@
 package agency.highlysuspect.dazzle2.resource.provider;
 
 import agency.highlysuspect.dazzle2.Init;
+import agency.highlysuspect.dazzle2.Junk;
 import agency.highlysuspect.dazzle2.LampStyle;
 import com.google.gson.JsonObject;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
@@ -13,8 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class LampEnglishLocalizations extends ResourceProvider {
-	public LampEnglishLocalizations(ResourceManager mgr) throws IOException {
+public class EnglishLocalizations extends ResourceProvider {
+	public EnglishLocalizations(ResourceManager mgr) throws IOException {
 		super(mgr);
 	}
 	
@@ -41,6 +43,12 @@ public class LampEnglishLocalizations extends ResourceProvider {
 			for(LampStyle style : LampStyle.ALL) {
 				lang.addProperty("block.dazzle." + style.toName(), style.englishLocalization(murica));
 			}
+			
+			//fuck it, just shove it in here for now
+			for(DyeColor color : DyeColor.values()) {
+				lang.addProperty("block.dazzle." + color.getName() + "_flare", Junk.prettyPrintDyeColor(color, murica) + " Flare");
+			}
+			
 			return writeString(lang.toString());
 		});
 	}

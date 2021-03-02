@@ -37,7 +37,10 @@ public class DazzleResourcePack implements ResourcePack {
 	private void initAssets(ResourceManager mgr) {
 		tryAddProvider(mgr, LampBlockstates::new);
 		tryAddProvider(mgr, LampItemModels::new);
-		tryAddProvider(mgr, LampEnglishLocalizations::new);
+		tryAddProvider(mgr, EnglishLocalizations::new);
+		
+		tryAddProvider(mgr, FlareBlockstates::new);
+		tryAddProvider(mgr, FlareItemModels::new);
 	}
 	
 	private void initDatapack(ResourceManager mgr) {
@@ -45,6 +48,8 @@ public class DazzleResourcePack implements ResourcePack {
 		tryAddProvider(mgr, LampRecipes::new);
 		tryAddProvider(mgr, LampRecipeAdvancements::new);
 		tryAddProvider(mgr, LampTags::new);
+		
+		tryAddProvider(mgr, FlareLootTables::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {

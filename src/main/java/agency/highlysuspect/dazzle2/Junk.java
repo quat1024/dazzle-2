@@ -7,8 +7,11 @@ import net.minecraft.block.WallTorchBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
 import net.minecraft.item.WallStandingBlockItem;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -29,5 +32,16 @@ public class Junk {
 		} else if(torchState.isOf(Blocks.TORCH)) {
 			return Optional.of(Direction.DOWN);
 		} else return Optional.empty();
+	}
+	
+	public static String prettyPrintDyeColor(DyeColor color, boolean murica) {
+		String nameLowercase = color.getName().replace('_', ' ');
+		if(!murica) nameLowercase = nameLowercase.replaceAll("gray", "grey");
+		return WordUtils.capitalizeFully(nameLowercase);
+	}
+	
+	public static float rangeRemap(float value, float low1, float high1, float low2, float high2) {
+		float value2 = MathHelper.clamp(value, low1, high1);
+		return low2 + (value2 - low1) * (high2 - low2) / (high1 - low1);
 	}
 }

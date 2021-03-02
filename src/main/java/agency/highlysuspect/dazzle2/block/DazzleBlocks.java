@@ -5,11 +5,14 @@ import agency.highlysuspect.dazzle2.LampStyle;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +68,12 @@ public class DazzleBlocks {
 		}
 	};
 	
+	public static final EnumMap<DyeColor, FlareBlock> FLARES = Util.make(new EnumMap<>(DyeColor.class), map -> {
+		for(DyeColor color : DyeColor.values()) {
+			map.put(color, new FlareBlock(color, FabricBlockSettings.copyOf(INVISIBLE_TORCH).luminance(15)));
+		}
+	});
+	
 	public static void onInitialize() {
 		for(LampBlock lamp : LAMPS) {
 			Registry.register(Registry.BLOCK, lamp.style.toIdentifier(), lamp);
@@ -77,5 +86,7 @@ public class DazzleBlocks {
 		
 		Registry.register(Registry.BLOCK, Init.id("dim_redstone_torch"), DIM_REDSTONE_TORCH);
 		Registry.register(Registry.BLOCK, Init.id("dim_redstone_wall_torch"), DIM_REDSTONE_WALL_TORCH);
+		
+		FLARES.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_flare"), block));
 	}
 }

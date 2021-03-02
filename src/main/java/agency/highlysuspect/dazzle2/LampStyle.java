@@ -121,9 +121,7 @@ public class LampStyle {
 		}
 		
 		public String englishLocalization(boolean murica) {
-			String nameLowercase = color.getName().replace('_', ' ');
-			if(!murica) nameLowercase = nameLowercase.replaceAll("gray", "grey");
-			return WordUtils.capitalizeFully(nameLowercase);
+			return Junk.prettyPrintDyeColor(color, murica);
 		}
 		
 		public Optional<Identifier> findItemId() {

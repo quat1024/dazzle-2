@@ -1,11 +1,15 @@
 package agency.highlysuspect.dazzle2.client;
 
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
+import agency.highlysuspect.dazzle2.block.FlareBlock;
 import agency.highlysuspect.dazzle2.block.LampBlock;
+import agency.highlysuspect.dazzle2.etc.DazzleParticleTypes;
 import agency.highlysuspect.dazzle2.item.DazzleItems;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BlockItem;
 
@@ -51,5 +55,18 @@ public class ClientInit implements ClientModInitializer {
 				return lamp.style.color.color.getMaterialColor().color; //color
 			} else return 0xFFFFFF;
 		}, DazzleItems.LAMP_ITEMS.toArray(new BlockItem[0]));
+		
+		//Not normally used as part of the model, but tints the particle/blockcrack effect
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+			return ((FlareBlock) state.getBlock()).color.getMaterialColor().color;
+		}, DazzleBlocks.FLARES.values().toArray(new FlareBlock[0]));
+		
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+			if(tintIndex == 1) {
+				return ((FlareBlock) ((BlockItem) stack.getItem()).getBlock()).color.getMaterialColor().color; //color
+			} else return 0xFFFFFF;
+		}, DazzleItems.FLARES.values().toArray(new BlockItem[0]));
+		
+		ParticleFactoryRegistry.getInstance().register(DazzleParticleTypes.FLARE, FlareParticle.Factory::new);
 	}
 }

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class LampBlockstates extends ResourceProvider.IdPathRegexMatch {
 	public LampBlockstates(ResourceManager mgr) throws IOException {
-		super(mgr, Pattern.compile("^blockstates/([a-z_]+)\\.json$"));
+		super(mgr, Pattern.compile("^blockstates/([a-z_]+)\\.json$")); //TODO this regex matches too much
 		template = readResourceAsString(mgr.getResource(Init.id("templates/lamp_blockstate.json")));
 	}
 	
