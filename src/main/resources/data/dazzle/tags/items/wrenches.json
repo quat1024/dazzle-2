@@ -5,6 +5,8 @@
 			"id": "#c:wrenches",
 			"required": false
 		},
-		"minecraft:redstone_torch"
+		"minecraft:redstone_torch",
+		"dazzle:invisible_torch",
+		"dazzle:dim_redstone_torch"
 	]
 }	
