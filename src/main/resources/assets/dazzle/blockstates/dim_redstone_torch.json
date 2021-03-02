@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"lit=false": {
+			"model": "dazzle:block/dim_torch/off"
+		},
+		"lit=true": {
+			"model": "dazzle:block/dim_torch/on"
+		}
+	}
+}

@@ -10,9 +10,10 @@ fabric 1.16.4, yoinks a mixin from ARRP btw
 * an *all-new type of light!!!!*, we're up to 5 types of lights now!
 * as usual they come in 16 colors, digital/analog (craft with a comparator), regular/inverted (click with a redstone torch) variations
 * the Light Sensor. conceptually similar to a daylight sensor, but places like an observer, and detects blocklight instead of sky light
-* invisible lights (not craftable at the moment, gotta get that in)
+* invisible lights
 * light panels, which project light up to 45 blocks away depending on signal strength
   * should be a lot less buggy than the ones in dazzle 1, give em a look!
+* dim redstone torch - emits light level 3 and redstone signal 1
 
 ## todo
 
@@ -28,7 +29,4 @@ anyway
   * modern-style light bulbs and lampshades, maybe
   * art is hard ;)
 * some way to see the invisible lights (consider: like barrier blocks)
-* make the hitbox less funky on the invisible lights, especially the non-placeable ones
-* port the dim redstone torch
 * port the particle light flashes (maybe give em a block loot table this time lmao) 
-* port the panel lights, that project a bunch of invisible lights in a line when powered
