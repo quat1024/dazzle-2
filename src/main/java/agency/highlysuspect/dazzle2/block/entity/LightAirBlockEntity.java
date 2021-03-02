@@ -2,8 +2,8 @@ package agency.highlysuspect.dazzle2.block.entity;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
-import agency.highlysuspect.dazzle2.block.ProjectedLightPanelBlock;
 import agency.highlysuspect.dazzle2.block.LightAirBlock;
+import agency.highlysuspect.dazzle2.block.ProjectedLightPanelBlock;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -28,6 +28,22 @@ public class LightAirBlockEntity extends BlockEntity {
 	// might want to try something else instead
 	private BlockPos panelPos;
 	
+	private static Optional<Direction> findDirBetween(BlockPos selfPos, BlockPos panelPos) {
+		BlockPos diff = selfPos.subtract(panelPos);
+		
+		if(diff.getX() == 0 && diff.getY() == 0 && diff.getZ() == 0) return Optional.empty();
+			
+			//x
+		else if(diff.getY() == 0 && diff.getZ() == 0) return Optional.of(diff.getX() > 0 ? Direction.EAST : Direction.WEST);
+			//y
+		else if(diff.getX() == 0 && diff.getZ() == 0) return Optional.of(diff.getY() > 0 ? Direction.UP : Direction.DOWN);
+			//z
+		else if(diff.getX() == 0 && diff.getY() == 0)
+			return Optional.of(diff.getZ() > 0 ? Direction.SOUTH : Direction.NORTH);
+		
+		else return Optional.empty();
+	}
+	
 	//Returns TRUE when the light should stay, FALSE when it has been removed, and DEFAULT when it's indeterminate
 	public TriState check() {
 		assert world != null;
@@ -40,7 +56,7 @@ public class LightAirBlockEntity extends BlockEntity {
 		}
 		
 		//Make sure that I'm in line with the panel
-		Optional<Direction> dirBetween_ = findDirBetween(pos, panelPos); 
+		Optional<Direction> dirBetween_ = findDirBetween(pos, panelPos);
 		if(!dirBetween_.isPresent()) return TriState.FALSE;
 		Direction dirBetween = dirBetween_.get();
 		
@@ -81,7 +97,8 @@ public class LightAirBlockEntity extends BlockEntity {
 		ItemPlacementContext haha = new AutomaticItemPlacementContext(world, pos, Direction.UP, ItemStack.EMPTY, Direction.UP);
 		for(BlockPos iterpos : BlockPos.iterate(pos, panelPos)) {
 			BlockState there = world.getBlockState(iterpos);
-			if(there.isOf(DazzleBlocks.PROJECTED_LIGHT_PANEL) || there.isOf(DazzleBlocks.LIGHT_AIR) || there.canReplace(haha)) continue;
+			if(there.isOf(DazzleBlocks.PROJECTED_LIGHT_PANEL) || there.isOf(DazzleBlocks.LIGHT_AIR) || there.canReplace(haha))
+				continue;
 			
 			bail();
 			return TriState.FALSE;
@@ -101,28 +118,13 @@ public class LightAirBlockEntity extends BlockEntity {
 		return this.panelPos.equals(panelPos);
 	}
 	
-	public void setOwner(BlockPos panelPos) {
-		this.panelPos = panelPos;
-		markDirty();
-	}
-	
 	public BlockPos getOwner() {
 		return panelPos;
 	}
 	
-	private static Optional<Direction> findDirBetween(BlockPos selfPos, BlockPos panelPos) {
-		BlockPos diff = selfPos.subtract(panelPos);
-		
-		if(diff.getX() == 0 && diff.getY() == 0 && diff.getZ() == 0) return Optional.empty();
-		
-		//x
-		else if(diff.getY() == 0 && diff.getZ() == 0) return Optional.of(diff.getX() > 0 ? Direction.EAST : Direction.WEST);
-		//y
-		else if(diff.getX() == 0 && diff.getZ() == 0) return Optional.of(diff.getY() > 0 ? Direction.UP : Direction.DOWN);
-		//z
-		else if(diff.getX() == 0 && diff.getY() == 0) return Optional.of(diff.getZ() > 0 ? Direction.SOUTH : Direction.NORTH);
-		
-		else return Optional.empty();
+	public void setOwner(BlockPos panelPos) {
+		this.panelPos = panelPos;
+		markDirty();
 	}
 	
 	@Override

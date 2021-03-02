@@ -39,11 +39,15 @@ public class ProjectedLightPanelBlock extends Block {
 	
 	public static final int BEAM_SEGMENT_LENGTH = 3;
 	public static final int MAX_BEAM_LENGTH = BEAM_SEGMENT_LENGTH * 15;
-	
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder.add(FACING, POWER));
-	}
+	private static final double THICKNESS = 2 / 16d;
+	private static final VoxelShape[] SHAPES = new VoxelShape[]{
+		VoxelShapes.cuboid(0, 1 - THICKNESS, 0, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, 1, THICKNESS, 1),
+		VoxelShapes.cuboid(0, 0, 1 - THICKNESS, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, 1, 1, THICKNESS),
+		VoxelShapes.cuboid(1 - THICKNESS, 0, 0, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, THICKNESS, 1, 1)
+	};
 	
 	@Override
 	public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -53,8 +57,13 @@ public class ProjectedLightPanelBlock extends Block {
 	}
 	
 	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
+	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+		placeLightBlocks(world, pos, state, state.get(POWER));
+	}
+	
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder.add(FACING, POWER));
 	}
 	
 	@Override
@@ -70,19 +79,39 @@ public class ProjectedLightPanelBlock extends Block {
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		placeLightBlocks(world, pos, state, state.get(POWER));
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		//If it's replaced with another panel state, that's ok
+		if(newState.isOf(state.getBlock())) return;
+		
+		//Clean up any outstanding light blocks
+		Direction facing = state.get(FACING);
+		for(int i = 1; i < MAX_BEAM_LENGTH; i++) {
+			BlockPos p = pos.offset(facing, i);
+			LightAirBlockEntity be = DazzleBlockEntityTypes.LIGHT_AIR.get(world, p);
+			if(be == null) continue;
+			if(be.belongsTo(pos)) world.setBlockState(p, Blocks.AIR.getDefaultState());
+		}
 	}
 	
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
+	}
+	
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return SHAPES[state.get(FACING).ordinal()];
+	}
+	
+	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		placeLightBlocks(world, pos, state, state.get(POWER));
 	}
 	
 	public void check(World world, BlockPos pos, BlockState state) {
 		placeLightBlocks(world, pos, state, state.get(POWER));
 	}
-	
+
 	public void placeLightBlocks(World world, BlockPos panelPos, BlockState state, int panelPower) {
 		ItemPlacementContext automatically = new AutomaticItemPlacementContext(world, panelPos, Direction.UP, ItemStack.EMPTY, Direction.UP);
 		
@@ -108,35 +137,5 @@ public class ProjectedLightPanelBlock extends Block {
 		
 		//this method handles the case of placing a light source emitting zero light = placing air
 		DazzleBlocks.LIGHT_AIR.placeWithOwner(world, pos, level, panelPos);
-	}
-	
-	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		//If it's replaced with another panel state, that's ok
-		if(newState.isOf(state.getBlock())) return;
-		
-		//Clean up any outstanding light blocks
-		Direction facing = state.get(FACING);
-		for(int i = 1; i < MAX_BEAM_LENGTH; i++) {
-			BlockPos p = pos.offset(facing, i);
-			LightAirBlockEntity be = DazzleBlockEntityTypes.LIGHT_AIR.get(world, p);
-			if(be == null) continue;
-			if(be.belongsTo(pos)) world.setBlockState(p, Blocks.AIR.getDefaultState());
-		}
-	}
-	
-	private static final double THICKNESS = 2/16d;
-	private static final VoxelShape[] SHAPES = new VoxelShape[] {
-		VoxelShapes.cuboid(0, 1-THICKNESS, 0, 1, 1, 1),
-		VoxelShapes.cuboid(0, 0, 0, 1, THICKNESS, 1),
-		VoxelShapes.cuboid(0, 0, 1-THICKNESS, 1, 1, 1),
-		VoxelShapes.cuboid(0, 0, 0, 1, 1, THICKNESS),
-		VoxelShapes.cuboid(1-THICKNESS, 0, 0, 1, 1, 1),
-		VoxelShapes.cuboid(0, 0, 0, THICKNESS, 1, 1)
-	};
-	
-	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPES[state.get(FACING).ordinal()];
 	}
 }

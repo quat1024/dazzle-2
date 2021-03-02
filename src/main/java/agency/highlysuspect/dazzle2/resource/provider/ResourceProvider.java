@@ -1,8 +1,5 @@
 package agency.highlysuspect.dazzle2.resource.provider;
 
-import agency.highlysuspect.dazzle2.Init;
-import agency.highlysuspect.dazzle2.LampStyle;
-import com.google.common.collect.Iterators;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -23,18 +20,18 @@ public abstract class ResourceProvider {
 		//I didn't know you could make constructors with a throws clause, actually
 	}
 	
-	public abstract Optional<Supplier<InputStream>> get(Identifier id);
-	
-	public Stream<String> enumerate(String prefix) {
-		return Stream.empty();
-	}
-	
 	protected static InputStream writeString(String s) {
 		return new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	protected static String readResourceAsString(Resource in) throws IOException {
 		return IOUtils.toString(in.getInputStream(), StandardCharsets.UTF_8);
+	}
+	
+	public abstract Optional<Supplier<InputStream>> get(Identifier id);
+	
+	public Stream<String> enumerate(String prefix) {
+		return Stream.empty();
 	}
 	
 	public static abstract class IdPathRegexMatch extends ResourceProvider {

@@ -32,11 +32,14 @@ public class ClientInit implements ClientModInitializer {
 				int baseColor = lamp.style.color.color.getMaterialColor().color; //color 
 				int r = (baseColor & 0xFF0000) >> 16;
 				int g = (baseColor & 0x00FF00) >> 8;
-				int b =  baseColor & 0x0000FF;
+				int b = baseColor & 0x0000FF;
 				
-				r *= level; r &= 0xFF;
-				g *= level; g &= 0xFF;
-				b *= level; b &= 0xFF;
+				r *= level;
+				r &= 0xFF;
+				g *= level;
+				g &= 0xFF;
+				b *= level;
+				b &= 0xFF;
 				
 				return (r << 16) | (g << 8) | b;
 			} else return 0xFFFFFF;

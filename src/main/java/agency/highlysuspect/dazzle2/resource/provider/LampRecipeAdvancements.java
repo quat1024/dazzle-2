@@ -30,6 +30,11 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 	private final Map<LampStyle.Theme, String> recipeAdv = new HashMap<>();
 	private final String recipeAnalogAdv;
 	
+	private static String toRecipeId(String s) {
+		//crosscheck LampRecipes - yeah i know this is spaghetti
+		return "lamps/" + s;
+	}
+	
 	@Override
 	protected Optional<Supplier<InputStream>> getMatcher(Identifier id, Matcher matcher) {
 		String name = matcher.group(1);
@@ -44,7 +49,7 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 			Optional<Identifier> subst_ = style.color.findItemId();
 			if(!subst_.isPresent()) return Optional.empty();
 			else subst = subst_.get().toString();
-		} else if(style.mode == LampStyle.Mode.ANALOG){
+		} else if(style.mode == LampStyle.Mode.ANALOG) {
 			template = recipeAnalogAdv;
 			subst = style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString();
 		} else {
@@ -55,11 +60,6 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 			String unlockedRecipeId = Junk.mapPath(style.toIdentifier(), LampRecipeAdvancements::toRecipeId).toString();
 			return writeString(template.replaceAll("IN", subst).replaceAll("OUT", unlockedRecipeId));
 		});
-	}
-	
-	private static String toRecipeId(String s) {
-		//crosscheck LampRecipes - yeah i know this is spaghetti
-		return "lamps/" + s;
 	}
 	
 	@Override

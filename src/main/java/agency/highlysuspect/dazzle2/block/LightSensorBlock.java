@@ -26,11 +26,6 @@ public class LightSensorBlock extends Block implements BlockEntityProvider {
 	public static final DirectionProperty FACING = Properties.FACING;
 	
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder.add(FACING));
-	}
-	
-	@Override
 	public @Nullable BlockEntity createBlockEntity(BlockView world) {
 		return DazzleBlockEntityTypes.LIGHT_SENSOR.instantiate();
 	}
@@ -41,17 +36,22 @@ public class LightSensorBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder.add(FACING));
+	}
+	
+	@Override
 	public boolean emitsRedstonePower(BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
 		return power(state, world, pos, direction);
 	}
 	
 	@Override
-	public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
 		return power(state, world, pos, direction);
 	}
 	

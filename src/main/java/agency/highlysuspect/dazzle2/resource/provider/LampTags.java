@@ -1,6 +1,5 @@
 package agency.highlysuspect.dazzle2.resource.provider;
 
-import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.LampStyle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,10 +29,17 @@ public class LampTags extends ResourceProvider.IdPathRegexMatch {
 		
 		final Function<LampStyle, String> extractor;
 		switch(tagType) {
-			case "color": extractor = style -> style.color.color.getName(); break;
-			case "theme": extractor = style -> style.theme.name; break;
-			case "mode": extractor = style -> style.mode.name; break;
-			default: return Optional.empty();
+			case "color":
+				extractor = style -> style.color.color.getName();
+				break;
+			case "theme":
+				extractor = style -> style.theme.name;
+				break;
+			case "mode":
+				extractor = style -> style.mode.name;
+				break;
+			default:
+				return Optional.empty();
 		}
 		
 		return Optional.of(() -> {

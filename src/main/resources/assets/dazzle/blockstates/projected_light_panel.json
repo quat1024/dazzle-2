@@ -1,10 +1,29 @@
 {
 	"variants": {
-		"facing=up" : {"model": "dazzle:block/projected_light_panel"},
-		"facing=west" : {"model": "dazzle:block/projected_light_panel", "y": 270, "x": 90},
-		"facing=south": {"model": "dazzle:block/projected_light_panel", "x": 270},
-		"facing=north": {"model": "dazzle:block/projected_light_panel", "x": 90},
-		"facing=down"   : {"model": "dazzle:block/projected_light_panel", "x": 180},
-		"facing=east" : {"model": "dazzle:block/projected_light_panel", "y": 90, "x": 90}
+		"facing=up": {
+			"model": "dazzle:block/projected_light_panel"
+		},
+		"facing=west": {
+			"model": "dazzle:block/projected_light_panel",
+			"y": 270,
+			"x": 90
+		},
+		"facing=south": {
+			"model": "dazzle:block/projected_light_panel",
+			"x": 270
+		},
+		"facing=north": {
+			"model": "dazzle:block/projected_light_panel",
+			"x": 90
+		},
+		"facing=down": {
+			"model": "dazzle:block/projected_light_panel",
+			"x": 180
+		},
+		"facing=east": {
+			"model": "dazzle:block/projected_light_panel",
+			"y": 90,
+			"x": 90
+		}
 	}
 }

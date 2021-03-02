@@ -7,7 +7,6 @@ import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -25,8 +24,6 @@ import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 public class InvisibleTorchBlock extends Block {
 	public InvisibleTorchBlock(Settings settings) {
 		super(settings);
@@ -36,12 +33,6 @@ public class InvisibleTorchBlock extends Block {
 	
 	public static final IntProperty LIGHT = IntProperty.of("light", 1, 15);
 	public static final DirectionProperty FACING = DirectionProperty.of("facing", d -> d != Direction.UP);
-	public static final VoxelShape SHAPE = VoxelShapes.cuboid(3 / 16d, 3 / 16d, 3 / 16d, 13 / 16d, 13 / 16d, 13 / 16d);
-	
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(builder.add(LIGHT, FACING));
-	}
 	
 	public BlockState makeInvisible(World world, BlockPos pos, BlockState torchState) {
 		int light = world.getLightLevel(LightType.BLOCK, pos);
@@ -55,8 +46,8 @@ public class InvisibleTorchBlock extends Block {
 	}
 	
 	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(builder.add(LIGHT, FACING));
 	}
 	
 	@Override
@@ -72,9 +63,17 @@ public class InvisibleTorchBlock extends Block {
 			world.setBlockState(pos, state.with(LIGHT, nextLevel));
 			world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.6f, nextLevel / 15f + 0.5f);
 			return ActionResult.SUCCESS;
-		}
-		
-		else return super.onUse(state, world, pos, player, hand, hit);
+		} else return super.onUse(state, world, pos, player, hand, hit);
+	}
+	
+	@Override
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
+	}
+	
+	@Override
+	public boolean canReplace(BlockState state, ItemPlacementContext context) {
+		return false;
 	}
 	
 	@Override
@@ -89,10 +88,5 @@ public class InvisibleTorchBlock extends Block {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return VoxelShapes.empty();
-	}
-	
-	@Override
-	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return false;
 	}
 }

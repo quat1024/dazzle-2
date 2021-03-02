@@ -1,7 +1,6 @@
 package agency.highlysuspect.dazzle2.resource;
 
 import agency.highlysuspect.dazzle2.Init;
-import agency.highlysuspect.dazzle2.LampStyle;
 import agency.highlysuspect.dazzle2.resource.provider.*;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
@@ -15,7 +14,6 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DazzleResourcePack implements ResourcePack {
 	public DazzleResourcePack(ResourceType type, ResourceManager mgr) {
@@ -57,17 +55,13 @@ public class DazzleResourcePack implements ResourcePack {
 		}
 	}
 	
-	private interface IOExceptionThrowyFunction<A, B> {
-		B apply(A a) throws IOException;
-	}
-	
-	///////////////////////////////////////
-	
 	@Override
 	public InputStream openRoot(String fileName) throws IOException {
 		ensureInit();
 		return null; //used for pack.png, but this pack isn't even displayed in the menu so why bother
 	}
+	
+	///////////////////////////////////////
 	
 	@Override
 	public InputStream open(ResourceType type, Identifier id) throws IOException {
@@ -86,13 +80,14 @@ public class DazzleResourcePack implements ResourcePack {
 	public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
 		ensureInit();
 		if(!namespace.equals(Init.MODID)) return Collections.emptyList();
-		
-		//This is a massive hack that probably shouldn't work, but does.
-		//there's no actual filesystem to walk here, so when minecraft asks for everything under the "recipes" folder
-		//i happily will give it recipes/lamps/white_modern_digital_lamp.json or whatever
-		//but if minecraft asks for the contents of the "recipes/lamps" folder, i'll turn up empty-clawed.
-		//it just looks at the prefix verbatim, and nothing more.
-		else return providers.stream().flatMap(p -> p.enumerate(prefix)).filter(pathFilter).map(Identifier::new).collect(Collectors.toList());
+			
+			//This is a massive hack that probably shouldn't work, but does.
+			//there's no actual filesystem to walk here, so when minecraft asks for everything under the "recipes" folder
+			//i happily will give it recipes/lamps/white_modern_digital_lamp.json or whatever
+			//but if minecraft asks for the contents of the "recipes/lamps" folder, i'll turn up empty-clawed.
+			//it just looks at the prefix verbatim, and nothing more.
+		else
+			return providers.stream().flatMap(p -> p.enumerate(prefix)).filter(pathFilter).map(Identifier::new).collect(Collectors.toList());
 	}
 	
 	@Override
@@ -126,5 +121,9 @@ public class DazzleResourcePack implements ResourcePack {
 	@Override
 	public void close() {
 		//Nothing to do
+	}
+	
+	private interface IOExceptionThrowyFunction<A, B> {
+		B apply(A a) throws IOException;
 	}
 }

@@ -8,5 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(WallStandingBlockItem.class)
 public interface WallStandingBlockItemMixin {
-	@Invoker("getPlacementState") BlockState funkyGetPlacementState(ItemPlacementContext context);
+	@Invoker("getPlacementState")
+	BlockState funkyGetPlacementState(ItemPlacementContext context);
 }

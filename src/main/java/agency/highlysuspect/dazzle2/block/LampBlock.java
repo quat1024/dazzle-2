@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -36,20 +35,13 @@ public abstract class LampBlock extends Block implements Opcodes {
 	
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
 	
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		super.appendProperties(appendMoreProperties(builder.add(INVERTED)));
-	}
-	
 	@Environment(EnvType.CLIENT)
 	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
 		return style.theme.isTransparent && (stateFrom.isOf(this) || super.isSideInvisible(state, stateFrom, direction));
 	}
 	
 	@Override
-	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		return 1f;
-	}
+	public abstract void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify);
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -62,13 +54,20 @@ public abstract class LampBlock extends Block implements Opcodes {
 		return ActionResult.PASS;
 	}
 	
+	@Override
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+		return 1f;
+	}
+	
 	protected abstract StateManager.Builder<Block, BlockState> appendMoreProperties(StateManager.Builder<Block, BlockState> builder);
 	
 	@Override
 	public abstract BlockState getPlacementState(ItemPlacementContext ctx);
 	
 	@Override
-	public abstract void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify);
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		super.appendProperties(appendMoreProperties(builder.add(INVERTED)));
+	}
 	
 	public abstract int lightFromState(BlockState state);
 	
@@ -80,19 +79,14 @@ public abstract class LampBlock extends Block implements Opcodes {
 		
 		public static final IntProperty POWER = IntProperty.of("power", 0, 15);
 		
-		@Override
-		protected StateManager.Builder<Block, BlockState> appendMoreProperties(StateManager.Builder<Block, BlockState> builder) {
-			return builder.add(POWER);
-		}
-		
 		//annoyingly this is used in reference to a block.settings in the super() call, where non-static method references are illegal.
 		private static int lightFromStateStatic(BlockState state) {
 			return state.get(INVERTED) ? 15 - state.get(POWER) : state.get(POWER);
 		}
 		
 		@Override
-		public int lightFromState(BlockState state) {
-			return state.get(INVERTED) ? 15 - state.get(POWER) : state.get(POWER);
+		protected StateManager.Builder<Block, BlockState> appendMoreProperties(StateManager.Builder<Block, BlockState> builder) {
+			return builder.add(POWER);
 		}
 		
 		@Override
@@ -112,6 +106,11 @@ public abstract class LampBlock extends Block implements Opcodes {
 				world.setBlockState(pos, state.with(POWER, newPower), 2);
 			}
 		}
+		
+		@Override
+		public int lightFromState(BlockState state) {
+			return state.get(INVERTED) ? 15 - state.get(POWER) : state.get(POWER);
+		}
 	}
 	
 	public static class Digital extends LampBlock {
@@ -122,18 +121,13 @@ public abstract class LampBlock extends Block implements Opcodes {
 		
 		public static final BooleanProperty POWERED = Properties.POWERED;
 		
-		@Override
-		protected StateManager.Builder<Block, BlockState> appendMoreProperties(StateManager.Builder<Block, BlockState> builder) {
-			return builder.add(POWERED);
-		}
-		
 		public static int lightFromStateStatic(BlockState state) {
 			return state.get(INVERTED) ^ state.get(POWERED) ? 15 : 0;
 		}
 		
 		@Override
-		public int lightFromState(BlockState state) {
-			return state.get(INVERTED) ^ state.get(POWERED) ? 15 : 0;
+		protected StateManager.Builder<Block, BlockState> appendMoreProperties(StateManager.Builder<Block, BlockState> builder) {
+			return builder.add(POWERED);
 		}
 		
 		@Override
@@ -152,6 +146,11 @@ public abstract class LampBlock extends Block implements Opcodes {
 			if(newPowered != wasPowered) {
 				world.setBlockState(pos, state.with(POWERED, newPowered), 2);
 			}
+		}
+		
+		@Override
+		public int lightFromState(BlockState state) {
+			return state.get(INVERTED) ^ state.get(POWERED) ? 15 : 0;
 		}
 	}
 }

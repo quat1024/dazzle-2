@@ -44,7 +44,7 @@ public class DazzleBlocks {
 		.breakInstantly()
 		.breakByHand(true)
 		.drops(Init.id("blocks/dim_redstone_torch")) //Idk why, but if I don't have this the loot table is the same as air block
-	){
+	) {
 		//Protected constructor lmao, also i need to override this anyways
 		@Override
 		public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
@@ -57,7 +57,7 @@ public class DazzleBlocks {
 		.dropsLike(DIM_REDSTONE_TORCH)
 		.breakInstantly()
 		.breakByHand(true)
-	){
+	) {
 		//Protected constructor lmao, also i need to override this anyways
 		@Override
 		public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {

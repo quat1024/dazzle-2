@@ -28,6 +28,7 @@ public class LightAirBlock extends Block implements BlockEntityProvider {
 	}
 	
 	public static final IntProperty LIGHT = IntProperty.of("light", 1, 15);
+	private static boolean checking = false;
 	
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
@@ -41,13 +42,18 @@ public class LightAirBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		check(world, pos);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		recursiveCheck(world, pos);
 	}
 	
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-		recursiveCheck(world, pos);
+	public PistonBehavior getPistonBehavior(BlockState state) {
+		return PistonBehavior.DESTROY;
+	}
+	
+	@Override
+	public boolean canReplace(BlockState state, ItemPlacementContext context) {
+		return true;
 	}
 	
 	@Override
@@ -61,11 +67,10 @@ public class LightAirBlock extends Block implements BlockEntityProvider {
 	}
 	
 	@Override
-	public PistonBehavior getPistonBehavior(BlockState state) {
-		return PistonBehavior.DESTROY;
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		check(world, pos);
 	}
 	
-	private static boolean checking = false;
 	private void recursiveCheck(World world, BlockPos pos) {
 		if(checking) return;
 		
@@ -115,11 +120,6 @@ public class LightAirBlock extends Block implements BlockEntityProvider {
 	@Override
 	public @Nullable BlockEntity createBlockEntity(BlockView world) {
 		return DazzleBlockEntityTypes.LIGHT_AIR.instantiate();
-	}
-	
-	@Override
-	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return true;
 	}
 	
 	public void placeWithOwner(World world, BlockPos pos, int level, BlockPos ownerPos) {

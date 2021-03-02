@@ -17,9 +17,11 @@ import java.util.concurrent.Executor;
 
 @Mixin(value = ReloadableResourceManagerImpl.class, priority = 990)
 public abstract class ReloadableResourceManagerImplMixin {
-	@Shadow @Final private static Logger LOGGER;
 	@Shadow @Final private ResourceType type;
-	@Shadow public native void addPack(ResourcePack resourcePack);
+	@Shadow @Final private static Logger LOGGER;
+	
+	@Shadow
+	public native void addPack(ResourcePack resourcePack);
 	
 	@Inject(
 		method = "beginMonitoredReload",

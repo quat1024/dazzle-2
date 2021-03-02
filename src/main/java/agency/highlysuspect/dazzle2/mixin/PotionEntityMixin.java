@@ -3,7 +3,6 @@ package agency.highlysuspect.dazzle2.mixin;
 import agency.highlysuspect.dazzle2.block.DazzleBlockTags;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;

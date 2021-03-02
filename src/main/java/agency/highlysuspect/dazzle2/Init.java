@@ -14,6 +14,14 @@ public class Init implements ModInitializer {
 	public static final String MODID = "dazzle";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	
+	public static Identifier id(String path) {
+		return new Identifier(MODID, path);
+	}
+	
+	public static void log(String msg, Object... fmt) {
+		LOGGER.info(msg, fmt);
+	}
+	
 	@Override
 	public void onInitialize() {
 		DazzleBlocks.onInitialize();
@@ -22,13 +30,5 @@ public class Init implements ModInitializer {
 		
 		DazzleItems.onInitialize();
 		DazzleItemTags.onInitialize();
-	}
-	
-	public static Identifier id(String path) {
-		return new Identifier(MODID, path);
-	}
-	
-	public static void log(String msg, Object... fmt) {
-		LOGGER.info(msg, fmt);
 	}
 }

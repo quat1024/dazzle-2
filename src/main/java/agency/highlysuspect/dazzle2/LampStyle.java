@@ -29,6 +29,12 @@ public class LampStyle {
 		this((Color) list.get(0), (Theme) list.get(1), (Mode) list.get(2));
 	}
 	
+	public final Color color;
+	public final Theme theme;
+	public final Mode mode;
+	public static List<LampStyle> ALL = Lists.cartesianProduct(Color.ALL, Theme.ALL, Mode.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
+	public static Map<String, LampStyle> LOOKUP = ALL.stream().collect(Collectors.toMap(LampStyle::toName, Function.identity()));
+	
 	public static LampStyle fromName(String name) {
 		return LOOKUP.get(name);
 	}
@@ -36,10 +42,6 @@ public class LampStyle {
 	public static LampStyle fromIdentifier(Identifier id) {
 		return LOOKUP.get(id.getPath());
 	}
-	
-	public final Color color;
-	public final Theme theme;
-	public final Mode mode;
 	
 	public String toName() {
 		return color.color.getName() + '_' + theme.name + '_' + mode.name + "_lamp";
@@ -56,7 +58,7 @@ public class LampStyle {
 	public LampBlock instantiateBlock(Block.Settings settings) {
 		return mode.constructor.apply(this, theme.processSettings(settings));
 	}
-	
+
 	public LampStyle withMode(LampStyle.Mode newMode) {
 		//This sucks
 		LampStyle other = new LampStyle(color, theme, newMode);
@@ -66,8 +68,13 @@ public class LampStyle {
 		return other;
 	}
 	
-	public static List<LampStyle> ALL = Lists.cartesianProduct(Color.ALL, Theme.ALL, Mode.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
-	public static Map<String, LampStyle> LOOKUP = ALL.stream().collect(Collectors.toMap(LampStyle::toName, Function.identity()));
+	@Override
+	public int hashCode() {
+		int result = color.hashCode();
+		result = 31 * result + theme.hashCode();
+		result = 31 * result + mode.hashCode();
+		return result;
+	}
 	
 	@Override
 	public boolean equals(Object o) {
@@ -81,14 +88,6 @@ public class LampStyle {
 		return mode.equals(lampStyle.mode);
 	}
 	
-	@Override
-	public int hashCode() {
-		int result = color.hashCode();
-		result = 31 * result + theme.hashCode();
-		result = 31 * result + mode.hashCode();
-		return result;
-	}
-	
 	public interface Prop {}
 	
 	//btw, because these have a private constructor (they're basically enums) there's no need to override equals and hashcode.
@@ -100,6 +99,26 @@ public class LampStyle {
 		public final DyeColor color;
 		
 		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
+		private static final Map<DyeColor, Identifier> COLORS_TO_ITEM_IDS = new HashMap<>();
+		
+		static {
+			COLORS_TO_ITEM_IDS.put(DyeColor.WHITE, new Identifier("minecraft", "white_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.ORANGE, new Identifier("minecraft", "orange_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.MAGENTA, new Identifier("minecraft", "magenta_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.LIGHT_BLUE, new Identifier("minecraft", "light_blue_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.YELLOW, new Identifier("minecraft", "yellow_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.LIME, new Identifier("minecraft", "lime_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.PINK, new Identifier("minecraft", "pink_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.GRAY, new Identifier("minecraft", "gray_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.LIGHT_GRAY, new Identifier("minecraft", "light_gray_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.CYAN, new Identifier("minecraft", "cyan_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.PURPLE, new Identifier("minecraft", "purple_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.BLUE, new Identifier("minecraft", "blue_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.BROWN, new Identifier("minecraft", "brown_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.GREEN, new Identifier("minecraft", "green_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.RED, new Identifier("minecraft", "red_dye"));
+			COLORS_TO_ITEM_IDS.put(DyeColor.BLACK, new Identifier("minecraft", "black_dye"));
+		}
 		
 		public String englishLocalization(boolean murica) {
 			String nameLowercase = color.getName().replace('_', ' ');
@@ -128,39 +147,12 @@ public class LampStyle {
 			Init.LOGGER.error("Can't find an item corresponding to the dye " + color);
 			return Optional.empty();
 		}
-		
-		private static final Map<DyeColor, Identifier> COLORS_TO_ITEM_IDS = new HashMap<>();
-		
-		static {
-			COLORS_TO_ITEM_IDS.put(DyeColor.WHITE, new Identifier("minecraft", "white_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.ORANGE, new Identifier("minecraft", "orange_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.MAGENTA, new Identifier("minecraft", "magenta_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.LIGHT_BLUE, new Identifier("minecraft", "light_blue_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.YELLOW, new Identifier("minecraft", "yellow_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.LIME, new Identifier("minecraft", "lime_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.PINK, new Identifier("minecraft", "pink_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.GRAY, new Identifier("minecraft", "gray_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.LIGHT_GRAY, new Identifier("minecraft", "light_gray_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.CYAN, new Identifier("minecraft", "cyan_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.PURPLE, new Identifier("minecraft", "purple_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.BLUE, new Identifier("minecraft", "blue_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.BROWN, new Identifier("minecraft", "brown_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.GREEN, new Identifier("minecraft", "green_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.RED, new Identifier("minecraft", "red_dye"));
-			COLORS_TO_ITEM_IDS.put(DyeColor.BLACK, new Identifier("minecraft", "black_dye"));
-		}
 	}
 	
 	public static class Theme implements Prop {
 		private Theme(String name, boolean isTransparent) {
 			this.name = name;
 			this.isTransparent = isTransparent;
-		}
-		
-		public AbstractBlock.Settings processSettings(AbstractBlock.Settings in) {
-			if(isTransparent) {
-				return in.nonOpaque();
-			} else return in;
 		}
 		
 		public final String name;
@@ -171,8 +163,13 @@ public class LampStyle {
 		public static final Theme LANTERN = new Theme("lantern", false);
 		public static final Theme PULSATING = new Theme("pulsating", false);
 		public static final Theme ICY = new Theme("icy", true);
-		
 		public static final List<Theme> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
+		
+		public AbstractBlock.Settings processSettings(AbstractBlock.Settings in) {
+			if(isTransparent) {
+				return in.nonOpaque();
+			} else return in;
+		}
 		
 		public String englishLocalization() {
 			return WordUtils.capitalizeFully(name);
