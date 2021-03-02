@@ -21,10 +21,10 @@ public class LampRecipeAdvancements extends ResourceProvider.IdPathRegexMatch {
 		super(mgr, Pattern.compile("^advancements/recipes/lamps/([a-z_]+)\\.json$"));
 		
 		for(LampStyle.Theme theme : LampStyle.Theme.ALL) {
-			recipeAdv.put(theme, readResourceAsString(mgr.getResource(Init.id("templates/advancement/" + theme.name + ".json"))));
+			recipeAdv.put(theme, readResourceAsString(mgr.getResource(Init.id("templates/advancement/lamps/" + theme.name + ".json"))));
 		}
 		
-		recipeAnalogAdv = readResourceAsString(mgr.getResource(Init.id("templates/advancement/convert_to_analog.json")));
+		recipeAnalogAdv = readResourceAsString(mgr.getResource(Init.id("templates/advancement/lamps/convert_to_analog.json")));
 	}
 	
 	private final Map<LampStyle.Theme, String> recipeAdv = new HashMap<>();

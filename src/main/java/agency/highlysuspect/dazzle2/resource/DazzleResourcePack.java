@@ -29,16 +29,19 @@ public class DazzleResourcePack implements ResourcePack {
 	private void ensureInit() {
 		if(isInitialized) return;
 		
-		if(type == ResourceType.CLIENT_RESOURCES) initAssets(mgr);
-		if(type == ResourceType.SERVER_DATA) initDatapack(mgr);
-		
-		isInitialized = true;
+		synchronized(providers) {
+			if(type == ResourceType.CLIENT_RESOURCES) initAssets(mgr);
+			if(type == ResourceType.SERVER_DATA) initDatapack(mgr);
+			
+			isInitialized = true;
+		}
 	}
 	
 	private void initAssets(ResourceManager mgr) {
+		tryAddProvider(mgr, EnglishLocalizations::new);
+		
 		tryAddProvider(mgr, LampBlockstates::new);
 		tryAddProvider(mgr, LampItemModels::new);
-		tryAddProvider(mgr, EnglishLocalizations::new);
 		
 		tryAddProvider(mgr, FlareBlockstates::new);
 		tryAddProvider(mgr, FlareItemModels::new);
@@ -48,10 +51,10 @@ public class DazzleResourcePack implements ResourcePack {
 		tryAddProvider(mgr, LampLootTables::new);
 		tryAddProvider(mgr, LampRecipes::new);
 		tryAddProvider(mgr, LampRecipeAdvancements::new);
-		tryAddProvider(mgr, LampTags::new);
 		
 		tryAddProvider(mgr, FlareLootTables::new);
 		tryAddProvider(mgr, FlareRecipes::new);
+		tryAddProvider(mgr, FlareRecipeAdvancements::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {
@@ -75,9 +78,11 @@ public class DazzleResourcePack implements ResourcePack {
 		ensureInit();
 		if(!id.getNamespace().equals(Init.MODID)) return null;
 		
-		for(ResourceProvider p : providers) {
-			Optional<Supplier<InputStream>> input = p.get(id);
-			if(input.isPresent()) return input.get().get();
+		synchronized(providers) {
+			for(ResourceProvider p : providers) {
+				Optional<Supplier<InputStream>> input = p.get(id);
+				if(input.isPresent()) return input.get().get();
+			}
 		}
 		
 		return null;
@@ -93,8 +98,12 @@ public class DazzleResourcePack implements ResourcePack {
 			//i happily will give it recipes/lamps/white_modern_digital_lamp.json or whatever
 			//but if minecraft asks for the contents of the "recipes/lamps" folder, i'll turn up empty-clawed.
 			//it just looks at the prefix verbatim, and nothing more.
-		else
-			return providers.stream().flatMap(p -> p.enumerate(prefix)).filter(pathFilter).map(Identifier::new).collect(Collectors.toList());
+		else {
+			synchronized(providers) {
+				return providers.stream().flatMap(p -> p.enumerate(prefix)).filter(pathFilter).map(Identifier::new).collect(Collectors.toList());
+			}
+		}
+			
 	}
 	
 	@Override
@@ -102,8 +111,10 @@ public class DazzleResourcePack implements ResourcePack {
 		ensureInit();
 		if(!id.getNamespace().equals(Init.MODID)) return false;
 		
-		for(ResourceProvider p : providers) {
-			if(p.get(id).isPresent()) return true;
+		synchronized(providers) {
+			for(ResourceProvider p : providers) {
+				if(p.get(id).isPresent()) return true;
+			}
 		}
 		
 		return false;
