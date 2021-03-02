@@ -1,6 +1,5 @@
 package agency.highlysuspect.dazzle2.block.entity;
 
-import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.LightSensorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

@@ -22,11 +22,12 @@ public class DazzleBlocks {
 		.suffocates((state, world, pos) -> false)
 		.blockVision((state, world, pos) -> false)
 	);
-	public static final HiddenLightBlock.Nonplaceable NONPLACEABLE_HIDDEN_LIGHT = new HiddenLightBlock.Nonplaceable(FabricBlockSettings.of(Material.AIR)
+	public static final LightAirBlock LIGHT_AIR = new LightAirBlock(FabricBlockSettings.of(Material.AIR)
 		.nonOpaque().noCollision().breakByHand(true).breakInstantly()
-		.luminance(state -> state.get(HiddenLightBlock.LIGHT))
+		.luminance(state -> state.get(LightAirBlock.LIGHT))
 		.suffocates((state, world, pos) -> false)
 		.blockVision((state, world, pos) -> false)
+		.air() //is this a good idea?
 		.dropsNothing()
 		.ticksRandomly()
 	);
@@ -41,8 +42,8 @@ public class DazzleBlocks {
 		}
 		
 		Registry.register(Registry.BLOCK, Init.id("light_sensor"), LIGHT_SENSOR);
-		Registry.register(Registry.BLOCK, Init.id("placeable_hidden_light"), PLACEABLE_HIDDEN_LIGHT);
-		Registry.register(Registry.BLOCK, Init.id("nonplaceable_hidden_light"), NONPLACEABLE_HIDDEN_LIGHT);
+		Registry.register(Registry.BLOCK, Init.id("hidden_light"), PLACEABLE_HIDDEN_LIGHT);
+		Registry.register(Registry.BLOCK, Init.id("light_air"), LIGHT_AIR);
 		Registry.register(Registry.BLOCK, Init.id("projected_light_panel"), PROJECTED_LIGHT_PANEL);
 	}
 }

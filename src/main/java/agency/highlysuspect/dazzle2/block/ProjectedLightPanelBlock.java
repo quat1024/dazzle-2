@@ -1,12 +1,10 @@
 package agency.highlysuspect.dazzle2.block;
 
-import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
-import agency.highlysuspect.dazzle2.block.entity.NonplaceableHiddenLightBlockEntity;
+import agency.highlysuspect.dazzle2.block.entity.LightAirBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.AutomaticItemPlacementContext;
@@ -89,7 +87,7 @@ public class ProjectedLightPanelBlock extends Block {
 		for(int i = 1; i < MAX_BEAM_LENGTH; i++) {
 			BlockPos offsetPos = panelPos.offset(facing, i);
 			BlockState stateThere = world.getBlockState(offsetPos);
-			if(stateThere.isAir() || stateThere.isOf(DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT) || stateThere.canReplace(automatically)) {
+			if(stateThere.isAir() || stateThere.isOf(DazzleBlocks.LIGHT_AIR) || stateThere.canReplace(automatically)) {
 				setOrBreakLight(world, panelPos, offsetPos, hitWall ? 0 : MathHelper.clamp(panelPower - ((i - 1) / BEAM_SEGMENT_LENGTH), 0, 15));
 			} else {
 				hitWall = true;
@@ -98,14 +96,14 @@ public class ProjectedLightPanelBlock extends Block {
 	}
 	
 	private void setOrBreakLight(World world, BlockPos panelPos, BlockPos pos, int level) {
-		NonplaceableHiddenLightBlockEntity be = DazzleBlockEntityTypes.NONPLACEABLE_HIDDEN_LIGHT.get(world, pos);
+		LightAirBlockEntity be = DazzleBlockEntityTypes.LIGHT_AIR.get(world, pos);
 		if(be != null && !be.belongsTo(panelPos)) {
-			int lightLevelThere = world.getBlockState(pos).get(HiddenLightBlock.LIGHT);
+			int lightLevelThere = world.getBlockState(pos).get(LightAirBlock.LIGHT);
 			if(lightLevelThere > level) return; //Don't bother
 		}
 		
 		//this method handles the case of placing a light source emitting zero light = placing air
-		DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT.placeWithOwner(world, pos, level, panelPos);
+		DazzleBlocks.LIGHT_AIR.placeWithOwner(world, pos, level, panelPos);
 	}
 	
 	@Override
@@ -117,7 +115,7 @@ public class ProjectedLightPanelBlock extends Block {
 		Direction facing = state.get(FACING);
 		for(int i = 1; i < MAX_BEAM_LENGTH; i++) {
 			BlockPos p = pos.offset(facing, i);
-			NonplaceableHiddenLightBlockEntity be = DazzleBlockEntityTypes.NONPLACEABLE_HIDDEN_LIGHT.get(world, p);
+			LightAirBlockEntity be = DazzleBlockEntityTypes.LIGHT_AIR.get(world, p);
 			if(be == null) continue;
 			if(be.belongsTo(pos)) world.setBlockState(p, Blocks.AIR.getDefaultState());
 		}

@@ -2,8 +2,8 @@ package agency.highlysuspect.dazzle2.block.entity;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
-import agency.highlysuspect.dazzle2.block.HiddenLightBlock;
 import agency.highlysuspect.dazzle2.block.ProjectedLightPanelBlock;
+import agency.highlysuspect.dazzle2.block.LightAirBlock;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,9 +19,9 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.Optional;
 
-public class NonplaceableHiddenLightBlockEntity extends BlockEntity {
-	public NonplaceableHiddenLightBlockEntity() {
-		super(DazzleBlockEntityTypes.NONPLACEABLE_HIDDEN_LIGHT);
+public class LightAirBlockEntity extends BlockEntity {
+	public LightAirBlockEntity() {
+		super(DazzleBlockEntityTypes.LIGHT_AIR);
 	}
 	
 	//todo this isn't extensible to other reasons that nonplaceable hidden lights might be created, which was the intention.
@@ -33,7 +33,7 @@ public class NonplaceableHiddenLightBlockEntity extends BlockEntity {
 		assert world != null;
 		assert pos != null;
 		
-		if(!world.getBlockState(pos).isOf(DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT)) {
+		if(!world.getBlockState(pos).isOf(DazzleBlocks.LIGHT_AIR)) {
 			//what happpened here?
 			Init.log("stale light BE at {}?", pos);
 			return TriState.DEFAULT;
@@ -73,15 +73,15 @@ public class NonplaceableHiddenLightBlockEntity extends BlockEntity {
 		if(expectedLightLevel <= 0) {
 			bail();
 			return TriState.FALSE;
-		} else if(getCachedState().get(HiddenLightBlock.LIGHT) != expectedLightLevel) {
-			world.setBlockState(pos, getCachedState().with(HiddenLightBlock.LIGHT, expectedLightLevel));
+		} else if(getCachedState().get(LightAirBlock.LIGHT) != expectedLightLevel) {
+			world.setBlockState(pos, getCachedState().with(LightAirBlock.LIGHT, expectedLightLevel));
 		}
 		
 		//Make sure the path to the panel is not obstructed
 		ItemPlacementContext haha = new AutomaticItemPlacementContext(world, pos, Direction.UP, ItemStack.EMPTY, Direction.UP);
 		for(BlockPos iterpos : BlockPos.iterate(pos, panelPos)) {
 			BlockState there = world.getBlockState(iterpos);
-			if(there.isOf(DazzleBlocks.PROJECTED_LIGHT_PANEL) || there.isOf(DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT) || there.canReplace(haha)) continue;
+			if(there.isOf(DazzleBlocks.PROJECTED_LIGHT_PANEL) || there.isOf(DazzleBlocks.LIGHT_AIR) || there.canReplace(haha)) continue;
 			
 			bail();
 			return TriState.FALSE;

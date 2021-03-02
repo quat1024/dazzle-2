@@ -7,10 +7,10 @@ import net.minecraft.util.registry.Registry;
 
 public class DazzleBlockEntityTypes {
 	public static final BlockEntityType<LightSensorBlockEntity> LIGHT_SENSOR = BlockEntityType.Builder.create(LightSensorBlockEntity::new, DazzleBlocks.LIGHT_SENSOR).build(null);
-	public static final BlockEntityType<NonplaceableHiddenLightBlockEntity> NONPLACEABLE_HIDDEN_LIGHT = BlockEntityType.Builder.create(NonplaceableHiddenLightBlockEntity::new, DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT).build(null);
+	public static final BlockEntityType<LightAirBlockEntity> LIGHT_AIR = BlockEntityType.Builder.create(LightAirBlockEntity::new, DazzleBlocks.LIGHT_AIR).build(null);
 	
 	public static void onInitialize() {
 		Registry.register(Registry.BLOCK_ENTITY_TYPE, Init.id("light_sensor"), LIGHT_SENSOR);
-		Registry.register(Registry.BLOCK_ENTITY_TYPE, Init.id("nonplaceable_hidden_light"), NONPLACEABLE_HIDDEN_LIGHT);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, Init.id("light_air"), LIGHT_AIR);
 	}
 }

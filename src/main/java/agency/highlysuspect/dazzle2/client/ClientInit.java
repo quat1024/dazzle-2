@@ -17,7 +17,7 @@ public class ClientInit implements ClientModInitializer {
 		});
 		
 		BlockRenderLayerMap.INSTANCE.putBlock(DazzleBlocks.PLACEABLE_HIDDEN_LIGHT, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(DazzleBlocks.NONPLACEABLE_HIDDEN_LIGHT, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(DazzleBlocks.LIGHT_AIR, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(DazzleBlocks.PROJECTED_LIGHT_PANEL, RenderLayer.getCutout());
 		
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
