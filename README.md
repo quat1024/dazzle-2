@@ -14,6 +14,7 @@ fabric 1.16.4, yoinks a mixin from ARRP btw
 * light panels, which project light up to 45 blocks away depending on signal strength
   * should be a lot less buggy than the ones in dazzle 1, give em a look!
 * dim redstone torch - emits light level 3 and redstone signal 1
+* colored flare lights, emit happy little particles 
 
 ## todo
 
@@ -29,4 +30,3 @@ anyway
   * modern-style light bulbs and lampshades, maybe
   * art is hard ;)
 * some way to see the invisible lights (consider: like barrier blocks)
-* port the particle light flashes (maybe give em a block loot table this time lmao) 

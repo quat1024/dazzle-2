@@ -50,6 +50,7 @@ public class DazzleResourcePack implements ResourcePack {
 		tryAddProvider(mgr, LampTags::new);
 		
 		tryAddProvider(mgr, FlareLootTables::new);
+		tryAddProvider(mgr, FlareRecipes::new);
 	}
 	
 	private void tryAddProvider(ResourceManager mgr, IOExceptionThrowyFunction<ResourceManager, ResourceProvider> cons) {
