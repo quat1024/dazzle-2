@@ -28,10 +28,11 @@ public class DazzleResourcePack implements ResourcePack {
 	
 	private void ensureInit() {
 		if(isInitialized) return;
-		isInitialized = true;
 		
 		if(type == ResourceType.CLIENT_RESOURCES) initAssets(mgr);
 		if(type == ResourceType.SERVER_DATA) initDatapack(mgr);
+		
+		isInitialized = true;
 	}
 	
 	private void initAssets(ResourceManager mgr) {
