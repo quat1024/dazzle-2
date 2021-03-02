@@ -1,0 +1,58 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "dazzle:block/projected_light_panel/face",
+		"face": "dazzle:block/projected_light_panel/face",
+		"base": "dazzle:block/projected_light_panel/base",
+		"side": "dazzle:block/projected_light_panel/side"
+	},
+	"display": {
+		"firstperson_righthand": {
+			"rotation": [ 0, 45, 0 ],
+			"translation": [ 0, 3, 0 ],
+			"scale": [ 0.40, 0.40, 0.40 ]
+		},
+		"firstperson_lefthand": {
+			"rotation": [ 0, 225, 0 ],
+			"translation": [ 0, 3, 0 ],
+			"scale": [ 0.40, 0.40, 0.40 ]
+		}
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 2, 16],
+			"faces": {
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#base",
+					"cullface": "down"
+				},
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#face"
+				},
+				"north": {
+					"uv": [0, 0, 16, 2],
+					"texture": "#side",
+					"cullface": "north"
+				},
+				"south": {
+					"uv": [0, 2, 16, 4],
+					"texture": "#side",
+					"cullface": "south"
+				},
+				"east": {
+					"uv": [0, 4, 16, 6],
+					"texture": "#side",
+					"cullface": "east"
+				},
+				"west": {
+					"uv": [0, 6, 16, 8],
+					"texture": "#side",
+					"cullface": "west"
+				}
+			}
+		}
+	]
+}

@@ -5,6 +5,7 @@ import agency.highlysuspect.dazzle2.block.entity.LightAirBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.AutomaticItemPlacementContext;
@@ -18,6 +19,9 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +48,7 @@ public class ProjectedLightPanelBlock extends Block {
 	@Override
 	public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
 		return getDefaultState()
-			.with(FACING, ctx.getPlayerLookDirection())
+			.with(FACING, ctx.getSide())
 			.with(POWER, ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos()));
 	}
 	
@@ -119,5 +123,20 @@ public class ProjectedLightPanelBlock extends Block {
 			if(be == null) continue;
 			if(be.belongsTo(pos)) world.setBlockState(p, Blocks.AIR.getDefaultState());
 		}
+	}
+	
+	private static final double THICKNESS = 2/16d;
+	private static final VoxelShape[] SHAPES = new VoxelShape[] {
+		VoxelShapes.cuboid(0, 1-THICKNESS, 0, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, 1, THICKNESS, 1),
+		VoxelShapes.cuboid(0, 0, 1-THICKNESS, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, 1, 1, THICKNESS),
+		VoxelShapes.cuboid(1-THICKNESS, 0, 0, 1, 1, 1),
+		VoxelShapes.cuboid(0, 0, 0, THICKNESS, 1, 1)
+	};
+	
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return SHAPES[state.get(FACING).ordinal()];
 	}
 }

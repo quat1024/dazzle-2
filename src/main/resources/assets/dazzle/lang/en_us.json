@@ -1,5 +1,7 @@
 {
 	"itemGroup.dazzle.group": "Dazzle 2",
 	
-	"block.dazzle.light_sensor": "Light Sensor"
+	"block.dazzle.light_sensor": "Light Sensor",
+	"block.dazzle.projected_light_panel": "Light Panel",
+	"block.dazzle.invisible_torch": "Invisible Torch"
 }
