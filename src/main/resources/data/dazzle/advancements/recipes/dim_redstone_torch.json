@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:dim_redstone_torch"
+		]
+	},
+	"criteria": {
+		"has_torch": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:redstone_torch"
+					}
+				]
+			}
+		},
+		"has_carpet": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:black_carpet"
+					}
+				]
+			}
+		}
+	}
+}

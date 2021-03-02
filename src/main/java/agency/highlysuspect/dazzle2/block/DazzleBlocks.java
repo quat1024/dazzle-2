@@ -41,6 +41,9 @@ public class DazzleBlocks {
 	
 	public static final RedstoneTorchBlock DIM_REDSTONE_TORCH = new RedstoneTorchBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_TORCH)
 		.luminance(state -> state.get(Properties.LIT) ? 2 : 0)
+		.breakInstantly()
+		.breakByHand(true)
+		.drops(Init.id("blocks/dim_redstone_torch")) //Idk why, but if I don't have this the loot table is the same as air block
 	){
 		//Protected constructor lmao, also i need to override this anyways
 		@Override
@@ -52,6 +55,8 @@ public class DazzleBlocks {
 	public static final RedstoneTorchBlock DIM_REDSTONE_WALL_TORCH = new WallRedstoneTorchBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_WALL_TORCH)
 		.luminance(state -> state.get(Properties.LIT) ? 2 : 0)
 		.dropsLike(DIM_REDSTONE_TORCH)
+		.breakInstantly()
+		.breakByHand(true)
 	){
 		//Protected constructor lmao, also i need to override this anyways
 		@Override

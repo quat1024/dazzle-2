@@ -3,5 +3,6 @@
 	
 	"block.dazzle.light_sensor": "Light Sensor",
 	"block.dazzle.projected_light_panel": "Light Panel",
-	"block.dazzle.invisible_torch": "Invisible Torch"
+	"block.dazzle.invisible_torch": "Invisible Torch",
+	"block.dazzle.dim_redstone_torch": "Dim Redstone Torch"
 }
