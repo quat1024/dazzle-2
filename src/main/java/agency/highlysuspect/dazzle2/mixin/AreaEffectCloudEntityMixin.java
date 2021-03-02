@@ -1,6 +1,8 @@
 package agency.highlysuspect.dazzle2.mixin;
 
+import agency.highlysuspect.dazzle2.block.DazzleBlockTags;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,9 +29,10 @@ public class AreaEffectCloudEntityMixin {
 		
 		Box box = ((AreaEffectCloudEntity) (Object) this).getBoundingBox();
 		
-		BlockPos.stream(box).forEach(p -> {
-			if(world.getBlockState(p).isOf(Blocks.TORCH) || world.getBlockState(p).isOf(Blocks.WALL_TORCH)) { //TODO: block tag
-				world.setBlockState(p, DazzleBlocks.PLACEABLE_HIDDEN_LIGHT.withLightLevel(14));
+		BlockPos.stream(box).forEach(pos -> {
+			BlockState state = world.getBlockState(pos);
+			if(state.isIn(DazzleBlockTags.MAKE_INVISIBLE_TORCH)) {
+				world.setBlockState(pos, DazzleBlocks.INVISIBLE_TORCH.makeInvisible(world, pos, state));
 			}
 		});
 	}

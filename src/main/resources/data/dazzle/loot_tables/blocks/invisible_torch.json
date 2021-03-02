@@ -6,7 +6,7 @@
 			"entries": [
 				{
 					"type": "minecraft:item",
-					"name": "dazzle:hidden_light"
+					"name": "dazzle:invisible_torch"
 				}
 			],
 			"conditions": [

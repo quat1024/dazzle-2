@@ -16,9 +16,9 @@ public class DazzleBlocks {
 		.collect(Collectors.toList());
 	
 	public static final LightSensorBlock LIGHT_SENSOR = new LightSensorBlock(FabricBlockSettings.copyOf(Blocks.OBSERVER));
-	public static final HiddenLightBlock PLACEABLE_HIDDEN_LIGHT = new HiddenLightBlock(FabricBlockSettings.of(Material.AIR)
+	public static final InvisibleTorchBlock INVISIBLE_TORCH = new InvisibleTorchBlock(FabricBlockSettings.copyOf(Blocks.TORCH)
 		.nonOpaque().noCollision().breakByHand(true).breakInstantly()
-		.luminance(state -> state.get(HiddenLightBlock.LIGHT))
+		.luminance(state -> state.get(InvisibleTorchBlock.LIGHT))
 		.suffocates((state, world, pos) -> false)
 		.blockVision((state, world, pos) -> false)
 	);
@@ -42,7 +42,7 @@ public class DazzleBlocks {
 		}
 		
 		Registry.register(Registry.BLOCK, Init.id("light_sensor"), LIGHT_SENSOR);
-		Registry.register(Registry.BLOCK, Init.id("hidden_light"), PLACEABLE_HIDDEN_LIGHT);
+		Registry.register(Registry.BLOCK, Init.id("invisible_torch"), INVISIBLE_TORCH);
 		Registry.register(Registry.BLOCK, Init.id("light_air"), LIGHT_AIR);
 		Registry.register(Registry.BLOCK, Init.id("projected_light_panel"), PROJECTED_LIGHT_PANEL);
 	}

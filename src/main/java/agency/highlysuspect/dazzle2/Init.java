@@ -1,7 +1,9 @@
 package agency.highlysuspect.dazzle2;
 
+import agency.highlysuspect.dazzle2.block.DazzleBlockTags;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
+import agency.highlysuspect.dazzle2.item.DazzleItemTags;
 import agency.highlysuspect.dazzle2.item.DazzleItems;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
@@ -15,8 +17,11 @@ public class Init implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		DazzleBlocks.onInitialize();
+		DazzleBlockTags.onInitialize();
 		DazzleBlockEntityTypes.onInitialize();
+		
 		DazzleItems.onInitialize();
+		DazzleItemTags.onInitialize();
 	}
 	
 	public static Identifier id(String path) {
