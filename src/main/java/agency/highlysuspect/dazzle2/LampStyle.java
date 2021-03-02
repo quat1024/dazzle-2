@@ -1,5 +1,6 @@
 package agency.highlysuspect.dazzle2;
 
+import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.LampBlock;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -7,6 +8,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -41,6 +44,15 @@ public class LampStyle {
 	
 	public static LampStyle fromIdentifier(Identifier id) {
 		return LOOKUP.get(id.getPath());
+	}
+	
+	public static BlockState findLampBlockstate(LampStyle.Color color, LampStyle.Theme theme, LampStyle.Mode mode) {
+		LampStyle yes = new LampStyle(color, theme, mode);
+		for(LampBlock haha : DazzleBlocks.LAMPS) {
+			if(haha.style.equals(yes)) return haha.getDefaultState();
+		}
+		
+		return Blocks.AIR.getDefaultState();
 	}
 	
 	public String toName() {

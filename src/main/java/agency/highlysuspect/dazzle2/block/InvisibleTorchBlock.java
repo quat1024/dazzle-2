@@ -1,12 +1,15 @@
 package agency.highlysuspect.dazzle2.block;
 
+import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.Junk;
+import agency.highlysuspect.dazzle2.LampStyle;
 import agency.highlysuspect.dazzle2.item.DazzleItemTags;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -53,6 +56,25 @@ public class InvisibleTorchBlock extends Block {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack held = player.getStackInHand(hand);
+		
+		if(Init.DEBUG && held.getItem() == Items.BEDROCK) {
+			for(int i = 0; i < LampStyle.Theme.ALL.size(); i++) {
+				LampStyle.Theme theme = LampStyle.Theme.ALL.get(i);
+				int themeX = i * 4;
+				for(int j = 0; j < LampStyle.Color.ALL.size(); j++) {
+					LampStyle.Color color = LampStyle.Color.ALL.get(j);
+					
+					int colorX = j / 4;
+					int colorZ = j % 4;
+					
+					world.setBlockState(pos.add(themeX + colorX, 0, colorZ), LampStyle.findLampBlockstate(color, theme, LampStyle.Mode.DIGITAL));
+					world.setBlockState(pos.add(themeX + colorX, 0, colorZ + 4), LampStyle.findLampBlockstate(color, theme, LampStyle.Mode.DIGITAL).with(LampBlock.INVERTED, true));
+					world.setBlockState(pos.add(themeX + colorX, 0, colorZ + 9), LampStyle.findLampBlockstate(color, theme, LampStyle.Mode.ANALOG));
+					world.setBlockState(pos.add(themeX + colorX, 0, colorZ + 13), LampStyle.findLampBlockstate(color, theme, LampStyle.Mode.ANALOG).with(LampBlock.INVERTED, true));
+				}
+			}
+		}
+		
 		if(held.getItem().isIn(DazzleItemTags.WRENCHES)) {
 			int currentLevel = state.get(LIGHT);
 			int nextLevel = currentLevel + (hit.getSide().getAxis() == Direction.Axis.Y ? -1 : 1);

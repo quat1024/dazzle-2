@@ -15,6 +15,8 @@ public class Init implements ModInitializer {
 	public static final String MODID = "dazzle";
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	
+	public static final boolean DEBUG = false;
+	
 	public static Identifier id(String path) {
 		return new Identifier(MODID, path);
 	}
