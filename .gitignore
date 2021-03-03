@@ -31,3 +31,7 @@ bin/
 # fabric
 
 run/
+
+# God damn temp files from krita lmao
+
+*.*~
