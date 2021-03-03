@@ -4,8 +4,11 @@ import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.Junk;
 import agency.highlysuspect.dazzle2.LampStyle;
 import agency.highlysuspect.dazzle2.item.DazzleItemTags;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,6 +31,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class InvisibleTorchBlock extends Block {
 	public InvisibleTorchBlock(Settings settings) {
@@ -110,5 +117,11 @@ public class InvisibleTorchBlock extends Block {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return VoxelShapes.empty();
+	}
+	
+	@Environment(EnvType.CLIENT)
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+		tooltip.add(new TranslatableText("dazzle.craft_invisible_torch"));
 	}
 }

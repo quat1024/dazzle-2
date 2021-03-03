@@ -2,11 +2,14 @@ package agency.highlysuspect.dazzle2.block;
 
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
 import agency.highlysuspect.dazzle2.block.entity.LightAirBlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.ItemPlacementContext;
@@ -16,6 +19,8 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -25,6 +30,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 
 public class ProjectedLightPanelBlock extends Block {
@@ -137,5 +143,11 @@ public class ProjectedLightPanelBlock extends Block {
 		
 		//this method handles the case of placing a light source emitting zero light = placing air
 		DazzleBlocks.LIGHT_AIR.placeWithOwner(world, pos, level, panelPos);
+	}
+	
+	@Environment(EnvType.CLIENT)
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+		tooltip.add(new TranslatableText("dazzle.lmao"));
 	}
 }

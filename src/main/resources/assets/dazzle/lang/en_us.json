@@ -3,5 +3,8 @@
 	"block.dazzle.light_sensor": "Light Sensor",
 	"block.dazzle.projected_light_panel": "Light Panel",
 	"block.dazzle.invisible_torch": "Invisible Torch",
-	"block.dazzle.dim_redstone_torch": "Dim Redstone Torch"
+	"block.dazzle.dim_redstone_torch": "Dim Redstone Torch",
+	
+	"dazzle.craft_invisible_torch": "Throw a Splash Potion of Invisibility at a torch",
+	"dazzle.lmao": "Kinda buggy atm, use at your own risk!"
 }
