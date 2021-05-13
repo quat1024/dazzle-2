@@ -8,6 +8,7 @@ import net.minecraft.tag.Tag;
 public class DazzleItemTags {
 	public static final Tag<Item> WRENCHES = TagRegistry.item(Init.id("wrenches"));
 	
-	public static void onInitialize() {}
-	//run static init
+	public static void onInitialize() {
+		//run static init
+	}
 }

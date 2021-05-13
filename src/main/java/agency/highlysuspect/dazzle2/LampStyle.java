@@ -4,15 +4,12 @@ import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.LampBlock;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.*;
@@ -35,15 +32,11 @@ public class LampStyle {
 	public final Color color;
 	public final Theme theme;
 	public final Mode mode;
-	public static List<LampStyle> ALL = Lists.cartesianProduct(Color.ALL, Theme.ALL, Mode.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
-	public static Map<String, LampStyle> LOOKUP = ALL.stream().collect(Collectors.toMap(LampStyle::toName, Function.identity()));
+	public static final List<LampStyle> ALL = Lists.cartesianProduct(Color.ALL, Theme.ALL, Mode.ALL).stream().map(LampStyle::new).collect(Collectors.toList());
+	public static final Map<String, LampStyle> LOOKUP = ALL.stream().collect(Collectors.toMap(LampStyle::toName, Function.identity()));
 	
 	public static LampStyle fromName(String name) {
 		return LOOKUP.get(name);
-	}
-	
-	public static LampStyle fromIdentifier(Identifier id) {
-		return LOOKUP.get(id.getPath());
 	}
 	
 	public static BlockState findLampBlockstate(LampStyle.Color color, LampStyle.Theme theme, LampStyle.Mode mode) {

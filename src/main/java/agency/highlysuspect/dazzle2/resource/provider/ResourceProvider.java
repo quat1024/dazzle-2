@@ -51,5 +51,4 @@ public abstract class ResourceProvider {
 		
 		protected abstract Optional<Supplier<InputStream>> getMatcher(Identifier id, Matcher matcher);
 	}
-	
 }

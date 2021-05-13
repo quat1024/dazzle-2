@@ -2,7 +2,6 @@ package agency.highlysuspect.dazzle2.resource.provider;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.Junk;
-import agency.highlysuspect.dazzle2.LampStyle;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;

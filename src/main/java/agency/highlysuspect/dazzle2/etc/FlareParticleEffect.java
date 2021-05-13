@@ -24,6 +24,7 @@ public class FlareParticleEffect implements ParticleEffect {
 		buf.writeInt(color);
 	}
 	
+	@SuppressWarnings("ConstantConditions") //The particle was registered.
 	@Override
 	public String asString() {
 		return Registry.PARTICLE_TYPE.getId(DazzleParticleTypes.FLARE).toString();

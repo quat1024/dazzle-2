@@ -9,9 +9,9 @@ public class FlareParticle extends AnimatedParticle {
 	public FlareParticle(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, int color, SpriteProvider spriteProvider) {
 		super(world, x, y, z, spriteProvider, 0);
 		
-		velocityX = Junk.rangeRemap(random.nextFloat(), 0, 1, -0.01f, 0.01f);
-		velocityY = Junk.rangeRemap(random.nextFloat(), 0, 1, 0.05f, 0.1f);
-		velocityZ = Junk.rangeRemap(random.nextFloat(), 0, 1, -0.01f, 0.01f);
+		velocityX = Junk.rangeRemap(random.nextFloat(), 0, 1, -0.01f, 0.01f) + vx;
+		velocityY = Junk.rangeRemap(random.nextFloat(), 0, 1, 0.05f, 0.1f) + vy;
+		velocityZ = Junk.rangeRemap(random.nextFloat(), 0, 1, -0.01f, 0.01f) + vz;
 		maxAge = random.nextInt(10) + 20;
 		
 		setColor(color);
