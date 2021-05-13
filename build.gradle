@@ -73,8 +73,6 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
-	
-	exclude "*/en_us_include.json"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -98,6 +96,10 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+}
+
+jar {
+	exclude "en_us_include.json"
 }
 
 // configure the maven publication
