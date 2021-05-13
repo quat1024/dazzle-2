@@ -4,7 +4,6 @@
   "package": "agency.highlysuspect.dazzle2.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-		"ReloadableResourceManagerImplMixin",
 		"RedstoneWireBlockMixin",
 		"PotionEntityMixin",
 		"AreaEffectCloudEntityMixin",

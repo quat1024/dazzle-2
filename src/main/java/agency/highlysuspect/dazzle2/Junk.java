@@ -19,13 +19,8 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
 public class Junk {
-	public static Identifier mapPath(Identifier id, UnaryOperator<String> mapper) {
-		return new Identifier(id.getNamespace(), mapper.apply(id.getPath()));
-	}
-	
 	public static Optional<Direction> whatWouldTorchusDo(ItemPlacementContext ctx) {
 		WallStandingBlockItem wsbi = (WallStandingBlockItem) Items.TORCH;
 		BlockState torchState = ((WallStandingBlockItemMixin) wsbi).funkyGetPlacementState(ctx);
