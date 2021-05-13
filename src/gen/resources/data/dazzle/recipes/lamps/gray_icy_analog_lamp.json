@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "icy_analog_analog_convert",
+	"ingredients": [
+		{
+			"item": "dazzle:gray_icy_digital_lamp"
+		},
+		{
+			"item": "minecraft:comparator"
+		}
+	],
+	"result": {
+		"item": "dazzle:gray_icy_analog_lamp"
+	}
+}

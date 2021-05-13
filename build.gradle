@@ -13,13 +13,50 @@ group = project.maven_group
 sourceSets {
 	main {
 		resources {
-			srcDir "src/gen/resources"		
+			srcDirs += "src/gen/resources"		
 		}
 	}
 	
 	gen {
+		//i dont know what im dooinnggggg
 		compileClasspath += sourceSets.main.output
-		runtimeClasspath += sourceSets.main.output			
+		compileClasspath += sourceSets.main.compileClasspath
+		runtimeClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.runtimeClasspath
+	}
+}
+
+task runGenerator(type: JavaExec) {
+	classpath sourceSets.gen.runtimeClasspath
+	main = "agency.highlysuspect.dazzle2.Gen"
+	args += "${sourceSets.gen.resources.srcDirs[0]}"
+}
+
+task tellMeSourceSetStuff() {
+	doLast {
+		sourceSets.each {
+			println "[ ${it.name} ]"
+			
+			//Actually removing the "test" source set seems to make some Loom things explode
+			//But I don't care about what's in it
+			if (it.name == "test") {
+				println "(unimportant)"
+				return;			
+			}
+			
+			println "\tsrc dirs:"
+			it.allJava.srcDirs.each {
+				println "\t\t$it"
+			}
+			println "\tout dirs:"
+			it.output.each {
+      	println "\t\t$it"
+      }
+			println "\tcompile classpath:"
+			it.compileClasspath.files.each {
+				println "\t\t$it.path" //Prints a lot btw
+			}
+		}
 	}
 }
 
@@ -36,6 +73,8 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
+	
+	exclude "*/en_us_include.json"
 }
 
 tasks.withType(JavaCompile).configureEach {

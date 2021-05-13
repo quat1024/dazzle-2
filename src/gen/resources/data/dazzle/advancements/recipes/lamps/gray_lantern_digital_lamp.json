@@ -1,0 +1,40 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:lamps/gray_lantern_digital_lamp"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "redstone_lamp"
+					}
+				]
+			}
+		},
+		"has_dye": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:gray_dye"
+					}
+				]
+			}
+		},
+		"has_special": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:prismarine_crystals"
+					}
+				]
+			}
+		}
+	}
+}

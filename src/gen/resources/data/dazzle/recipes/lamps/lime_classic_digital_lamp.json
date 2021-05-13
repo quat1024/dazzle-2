@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "classic_digital",
+	"ingredients": [
+		{
+			"item": "minecraft:lime_dye"
+		},
+		{
+			"item": "minecraft:redstone_lamp"
+		}
+	],
+	"result": {
+		"item": "dazzle:lime_classic_digital_lamp"
+	}
+}

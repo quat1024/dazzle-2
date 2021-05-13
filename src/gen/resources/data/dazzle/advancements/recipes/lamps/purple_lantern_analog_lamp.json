@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:lamps/purple_lantern_analog_lamp"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "dazzle:purple_lantern_digital_lamp"
+					}
+				]
+			}
+		},
+		"has_comparator": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:comparator"
+					}
+				]
+			}
+		}
+	}
+}

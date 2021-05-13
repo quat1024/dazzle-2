@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:lamps/blue_icy_analog_lamp"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "dazzle:blue_icy_digital_lamp"
+					}
+				]
+			}
+		},
+		"has_comparator": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:comparator"
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,9 +1,23 @@
 Dazzle 2
 ========
 
-welcome to dazzle 2, the "i don't want to ship hundreds of json files this time" edition
+welcome to dazzle 2, ~~the "i don't want to ship hundreds of json files this time" edition~~ i am now shipping hundreds of json files
 
-fabric 1.16.4, yoinks a mixin from ARRP btw
+fabric 1.16.5 
+
+## building
+
+a lot of the assets/data for this mod are really really repetitive, so there's a gradle task `runGenerator` to generate them.
+
+**it's NOT a "datagen"**, I'm sorry to get your hopes up if you're looking how to do datagens in fabric. it's just shitty handrolled string-replacement stuff.
+
+process to update generated resources
+
+* run that task
+* run `clean` (for some reason the task compiles the mod lol)
+* copy the contents of `src/gen/resources/en_us_include.json` into `src/main/resources/assets/dazzle/lang/en_us.json` (yeah yeah I could automate this maybe)
+
+generated resources live in `src/gen/resources` and, due to source-set magic i cribbed from botania, can stay there.
 
 ## current featureset
 
@@ -14,13 +28,9 @@ fabric 1.16.4, yoinks a mixin from ARRP btw
 * light panels, which project light up to 45 blocks away depending on signal strength
   * should be a lot less buggy than the ones in dazzle 1, give em a look!
 * dim redstone torch - emits light level 3 and redstone signal 1
-* colored flare lights, emit happy little particles 
+* colored flare lights, emit happy little particles
 
 ## todo
-
-should really clean up the resource-gen code before i go adding more repetitive 16-colors content lmao
-* tbh i basically wanna make arrp 2 "generates stuff on-demand" edition
-* the code is patently terrible, i left some notes in a readme in that package of the source tree
 
 anyway
 

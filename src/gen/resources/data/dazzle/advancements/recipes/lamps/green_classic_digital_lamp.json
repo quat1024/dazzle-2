@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:lamps/green_classic_digital_lamp"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "redstone_lamp"
+					}
+				]
+			}
+		},
+		"has_dye": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:green_dye"
+					}
+				]
+			}
+		}
+	}
+}

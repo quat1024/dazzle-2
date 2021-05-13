@@ -1,0 +1,40 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:flare/yellow_flare"
+		]
+	},
+	"criteria": {
+		"has_glowstone": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:glowstone_dust"
+					}
+				]
+			}
+		},
+		"has_chorus": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:popped_chorus_fruit"
+					}
+				]
+			}
+		},
+		"has_dye": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:yellow_dye"
+					}
+				]
+			}
+		}
+	}
+}

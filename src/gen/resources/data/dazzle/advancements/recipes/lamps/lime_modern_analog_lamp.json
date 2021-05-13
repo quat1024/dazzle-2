@@ -1,0 +1,30 @@
+{
+	"parent": "dazzle:recipes/root",
+	"rewards": {
+		"recipes": [
+			"dazzle:lamps/lime_modern_analog_lamp"
+		]
+	},
+	"criteria": {
+		"has_lamp": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "dazzle:lime_modern_digital_lamp"
+					}
+				]
+			}
+		},
+		"has_comparator": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:comparator"
+					}
+				]
+			}
+		}
+	}
+}

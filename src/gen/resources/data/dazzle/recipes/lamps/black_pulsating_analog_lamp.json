@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "pulsating_analog_analog_convert",
+	"ingredients": [
+		{
+			"item": "dazzle:black_pulsating_digital_lamp"
+		},
+		{
+			"item": "minecraft:comparator"
+		}
+	],
+	"result": {
+		"item": "dazzle:black_pulsating_analog_lamp"
+	}
+}

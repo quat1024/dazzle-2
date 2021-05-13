@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "icy_digital",
+	"ingredients": [
+		{
+			"item": "minecraft:white_dye"
+		},
+		{
+			"item": "minecraft:redstone_lamp"
+		},
+		{
+			"item": "minecraft:ice"
+		}
+	],
+	"result": {
+		"item": "dazzle:white_icy_digital_lamp"
+	}
+}

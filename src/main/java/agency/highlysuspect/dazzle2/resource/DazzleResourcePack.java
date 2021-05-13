@@ -7,9 +7,15 @@ import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.resource.metadata.ResourceMetadataReader;
 import net.minecraft.util.Identifier;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -81,7 +87,20 @@ public class DazzleResourcePack implements ResourcePack {
 		synchronized(providers) {
 			for(ResourceProvider p : providers) {
 				Optional<Supplier<InputStream>> input = p.get(id);
-				if(input.isPresent()) return input.get().get();
+				if(input.isPresent()) {
+					InputStream is = input.get().get();
+					
+					String s = IOUtils.toString(is, StandardCharsets.UTF_8);
+					Path asdf = Paths.get("./generated_out/" + id.getNamespace() + "/" + id.getPath()).toAbsolutePath().normalize();
+					try {
+						Files.createDirectories(asdf.getParent());
+						Files.write(asdf, s.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+					
+					return input.get().get();
+				}
 			}
 		}
 		
@@ -92,18 +111,16 @@ public class DazzleResourcePack implements ResourcePack {
 	public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
 		ensureInit();
 		if(!namespace.equals(Init.MODID)) return Collections.emptyList();
-			
-			//This is a massive hack that probably shouldn't work, but does.
-			//there's no actual filesystem to walk here, so when minecraft asks for everything under the "recipes" folder
-			//i happily will give it recipes/lamps/white_modern_digital_lamp.json or whatever
-			//but if minecraft asks for the contents of the "recipes/lamps" folder, i'll turn up empty-clawed.
-			//it just looks at the prefix verbatim, and nothing more.
+		//This is a massive hack that probably shouldn't work, but does.
+		//there's no actual filesystem to walk here, so when minecraft asks for everything under the "recipes" folder
+		//i happily will give it recipes/lamps/white_modern_digital_lamp.json or whatever
+		//but if minecraft asks for the contents of the "recipes/lamps" folder, i'll turn up empty-clawed.
+		//it just looks at the prefix verbatim, and nothing more.
 		else {
 			synchronized(providers) {
 				return providers.stream().flatMap(p -> p.enumerate(prefix)).filter(pathFilter).map(Identifier::new).collect(Collectors.toList());
 			}
 		}
-			
 	}
 	
 	@Override

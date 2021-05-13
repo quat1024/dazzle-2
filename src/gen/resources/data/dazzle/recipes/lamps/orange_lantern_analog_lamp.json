@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "lantern_analog_analog_convert",
+	"ingredients": [
+		{
+			"item": "dazzle:orange_lantern_digital_lamp"
+		},
+		{
+			"item": "minecraft:comparator"
+		}
+	],
+	"result": {
+		"item": "dazzle:orange_lantern_analog_lamp"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "minecraft:popped_chorus_fruit"
+		},
+		{
+			"item": "minecraft:blue_dye"
+		}
+	],
+	"result": {
+		"item": "dazzle:blue_flare"
+	}
+}
