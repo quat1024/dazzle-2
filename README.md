@@ -7,17 +7,16 @@ fabric 1.16.5
 
 ## building
 
-a lot of the assets/data for this mod are really really repetitive, so there's a gradle task `runGenerator` to generate them.
+You will find some gradle tasks under the `d2` category.
 
-**it's NOT a "datagen"**, I'm sorry to get your hopes up if you're looking how to do datagens in fabric. it's just shitty handrolled string-replacement stuff.
+**it's not ~~yet~~ a "datagen"**, I'm sorry to get your hopes up if you're looking how to do datagens in fabric. it's just shitty handrolled string-replacement stuff.
 
-process to update generated resources
+`runGenerator`: launch the game, spew a bunch of generated assets and data into `src/gen_out/resources`, and exit.
+`cleanGeneratedResources`: delete `src/gen_out/resources`.
 
-* run that task
-* run `clean` (for some reason the task compiles the mod lol)
-* copy the contents of `src/gen/resources/en_us_include.json` into `src/main/resources/assets/dazzle/lang/en_us.json` (yeah yeah I could automate this maybe)
+make sure to copy the contents of `src/gen_out/resources/en_us_include.json` into `src/main/resources/assets/dazzle/lang/en_us.json` after running the generator, (yeah yeah, I could automate this, maybe)
 
-generated resources live in `src/gen/resources` and, due to source-set magic i cribbed from botania, can stay there.
+due to source-set magic i cribbed from botania the generated resources can stay in that directory
 
 ## current featureset
 
