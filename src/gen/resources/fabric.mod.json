@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "dazzle-gen",
+	"version": "${version}",
+	
+	"name": "Dazzle 2 Data Generator",
+	"description": "Data generator for Dazzle 2. Cribbed a lot from ae2-fabric (also lgpl) to set this up, thanks to them. If you're seeing this in a built mod JAR, uhh, that's a mistake.",
+	"authors": [
+		"quaternary"
+	],
+	
+	"license": "LGPL-3.0-or-later",
+	
+	"environment": "*",
+	"entrypoints": {
+		"preLaunch": [
+			"agency.highlysuspect.dazzle2.GenInit"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.7.4",
+		"fabric": "*",
+		"minecraft": "1.16.x"
+	}
+}

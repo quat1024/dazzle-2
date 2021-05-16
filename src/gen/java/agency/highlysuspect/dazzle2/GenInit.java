@@ -1,8 +1,10 @@
 package agency.highlysuspect.dazzle2;
 
 import com.google.gson.JsonObject;
+import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,34 +12,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Gen {
-	public static void main(String[] args) throws IOException {
-		System.out.println("RUNNING THE DATA GENERATOR!!!!!!!!!!!!!!!!!");
+public class GenInit implements PreLaunchEntrypoint {
+	public static final Logger LOG = LogManager.getLogger("dazzle2-gen");
+	
+	@Override
+	public void onPreLaunch() {
+		// current directory atm is the `run` directory, containing all the game data
+		Path p = Paths.get("../src/gen_out/resources").toAbsolutePath().normalize();
 		
-		System.out.println("arguments!!!");
-		for(String arg : args) {
-			System.out.print(arg);
-			System.out.print(" ");
-		}
-		System.out.println();
+		LOG.info("Path: {}", p);
 		
-		//Option parser doesn't work LOL
+		handrolledCrap(p);
 		
-//		OptionParser uwu = new OptionParser();
-//		OptionSpec<String> output = uwu.accepts("output", "Output file to put things into").withRequiredArg();
-//		uwu.printHelpOn(System.out);
-//		OptionSet set = uwu.parse(args);
-//		if(set.hasOptions() && set.hasArgument(output)) {
-//			Path p = Paths.get(output.value(set));
-//			System.out.println("Running in path " + p);
-//		} else {
-//			System.out.println("NOT RUNNING!!!!!");
-//			System.exit(50);
-//		}
-		Path output = Paths.get(args[0]).toAbsolutePath().normalize();
-		System.out.println("OUTPUT PATH: " + output);
-		
-		//TRYING TO USE DATA GENERATORS BUT THEY'RE TOO SPAGHETTYO IN FABRIC, SO HAVE SOME HANDROLLED CRAP !!!!
+		System.exit(0);
+	}
+	
+	public static void handrolledCrap(Path output) {
+		//HAVE SOME HANDROLLED CRAP !!!!
 		
 		for(LampStyle style : LampStyle.ALL) {
 			String jason = style.toName() + ".json";
@@ -73,12 +64,12 @@ public class Gen {
 		write(output, "assets/dazzle/lang/en_gb.json", otherLang);
 		write(output, "assets/dazzle/lang/en_nz.json", otherLang);
 		
-		System.out.println("Don't forget to copy en_us_include.json into en_us.json!!!!!!!!!!!!!!");
+		LOG.warn("Don't forget to copy en_us_include.json into en_us.json!!!!!!!!!!!!!!");
 	}
 	
 	private static void write(Path root, String next, String contents) {
 		Path target = root.resolve(next);
-		System.out.println("Writing to " + target);
+		LOG.info("Writing to " + target);
 		
 		try {
 			Files.createDirectories(target.getParent());

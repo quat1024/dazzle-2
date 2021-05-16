@@ -11,25 +11,41 @@ version = project.mod_version
 group = project.maven_group
 
 sourceSets {
+	//Main source code, shipped with the mod
 	main {
 		resources {
-			srcDirs += "src/gen/resources"		
+			//this line ships the generated resouces
+			srcDirs += "src/gen_out/resources"		
 		}
 	}
 	
+	//Source for data generators
 	gen {
-		//i dont know what im dooinnggggg
+		//Make sure I can refer to things in the mod and in Minecraft from this source set.
 		compileClasspath += sourceSets.main.output
 		compileClasspath += sourceSets.main.compileClasspath
 		runtimeClasspath += sourceSets.main.output
 		runtimeClasspath += sourceSets.main.runtimeClasspath
 	}
+	
+	//Source set that holds all the generated data
+	//(I doubt you need a full-on source set for this, a bare folder would work just as well
+	// as long as you add it to the srcDirs of the main source set. Idk. Let's try things.)
+	gen_out {
+		//idk if theres anything to put here	
+	}
 }
 
-task runGenerator(type: JavaExec) {
-	classpath sourceSets.gen.runtimeClasspath
-	main = "agency.highlysuspect.dazzle2.Gen"
-	args += "${sourceSets.gen.resources.srcDirs[0]}"
+//Do not ask me what any of this means, I stole it from ae2-fabric.
+task runGenerator(type: net.fabricmc.loom.task.RunClientTask, dependsOn: downloadAssets, group: "d2") {
+	classpath = configurations.runtimeClasspath
+	classpath sourceSets.main.output
+	classpath sourceSets.gen.output
+	systemProperty "d2.gen", "true"
+}
+
+task cleanGeneratedResources(type: Delete, group: "d2") {
+	delete sourceSets.gen_out.resources.srcDirs
 }
 
 task tellMeSourceSetStuff() {
@@ -92,14 +108,17 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
 
 jar {
 	exclude "en_us_include.json"
+	
+	//ae2 fabric has this little line, i dont know if it's important
+	finalizedBy "remapJar"
+	
+	from sourceSets.main.output.classesDirs
+	from sourceSets.main.output.resourcesDir
 }
 
 // configure the maven publication
