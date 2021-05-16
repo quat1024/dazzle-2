@@ -21,7 +21,8 @@ things that are generated:
 * language entries for lamps and flare lights
   * most are placed outside of the generated resources folder, in the main mod's `en_us.json` file (see note below)
   * `en_au`, `en_ca`, `en_gb`, and `en_nz` jsons are also generated, containing the entries that differ from en_us (gray/grey)
-* recipes and recipe advancements for lamps and flare lights
+* All recipes and recipe advancements
+* All tags
 
 ## Quick note on `en_us.json`
 

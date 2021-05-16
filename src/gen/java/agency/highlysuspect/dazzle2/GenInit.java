@@ -35,6 +35,7 @@ public class GenInit implements ModInitializer {
 			//data
 			dataGen.install(new BlockDropGen(output));
 			dataGen.install(new RecipeGen(output));
+			dataGen.install(new TagGen(output));
 			
 			dataGen.run();
 			

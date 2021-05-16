@@ -4,6 +4,8 @@ import agency.highlysuspect.dazzle2.block.DazzleBlocks;
 import agency.highlysuspect.dazzle2.block.LampBlock;
 import agency.highlysuspect.dazzle2.item.DazzleItems;
 import com.google.gson.JsonObject;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataCache;
@@ -60,6 +62,10 @@ public class RecipeGen implements DataProvider {
 				throw new RuntimeException(e);
 			}
 		};
+		
+		//"root" recipe advancement, referenced above in the saver.
+		JsonObject root = Advancement.Task.create().criterion("impossible", new ImpossibleCriterion.Conditions()).toJson();
+		DataProvider.writeToPath(GenInit.GSON, cache, root, outRoot.resolve("data/dazzle/advancements/recipes/root.json"));
 		
 		for(LampBlock lamp : DazzleBlocks.LAMPS) {
 			LampStyle style = lamp.style;

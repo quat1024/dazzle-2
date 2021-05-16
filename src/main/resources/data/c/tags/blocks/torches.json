@@ -1,8 +1,0 @@
-{
-	"replace": false,
-	"values": [
-		"dazzle:dim_redstone_torch",
-		"dazzle:dim_redstone_wall_torch",
-		"dazzle:invisible_torch"
-	]
-}
