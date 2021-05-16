@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["IGI","PPP","LLL"],"key":{"P":{"item":"minecraft:stone_pressure_plate"},"L":{"item":"minecraft:redstone_lamp"},"G":{"item":"minecraft:glass"},"I":{"item":"minecraft:iron_block"}},"result":{"item":"dazzle:projected_light_panel"}}

@@ -35,6 +35,11 @@ public class BlockDropGen implements DataProvider {
 		for(Block b : DazzleBlocks.FLARES.values()) {
 			doIt(cache, b);
 		}
+		
+		doIt(cache, DazzleBlocks.DIM_REDSTONE_TORCH);
+		doIt(cache, DazzleBlocks.INVISIBLE_TORCH);
+		doIt(cache, DazzleBlocks.LIGHT_SENSOR);
+		doIt(cache, DazzleBlocks.PROJECTED_LIGHT_PANEL);
 	}
 	
 	private void doIt(DataCache cache, Block b) throws IOException {

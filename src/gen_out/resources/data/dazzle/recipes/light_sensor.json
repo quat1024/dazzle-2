@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":[" G ","LOL"," G "],"key":{"O":{"item":"minecraft:observer"},"L":{"item":"minecraft:redstone_lamp"},"G":{"item":"minecraft:glowstone_dust"}},"result":{"item":"dazzle:light_sensor"}}
