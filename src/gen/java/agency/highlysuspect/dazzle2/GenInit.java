@@ -14,8 +14,8 @@ import java.util.Collections;
 public class GenInit implements ModInitializer {
 	public static final Logger LOG = LogManager.getLogger("dazzle2-gen");
 	
-	public static final Gson GSON = new GsonBuilder().create(); //No pretty-printing, why not cut the filesize down.
-	public static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create(); //No pretty-printing, why not cut the filesize down.
+	public static final Gson GSON_PRETTY = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 	
 	@Override
 	public void onInitialize() {
@@ -29,7 +29,7 @@ public class GenInit implements ModInitializer {
 			
 			//assets
 			dataGen.install(new BlockStateGen(output));
-			dataGen.install(new ItemModelGen(output));
+			dataGen.install(new ModelGen(output));
 			dataGen.install(new LangGen(output, en_usJson));
 			
 			//data
