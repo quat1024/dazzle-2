@@ -6,7 +6,6 @@ import agency.highlysuspect.dazzle2.block.LampBlock;
 import com.google.gson.JsonElement;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.client.model.ModelIds;
 import net.minecraft.data.client.model.SimpleModelSupplier;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

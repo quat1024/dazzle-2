@@ -59,10 +59,6 @@ public class LampStyle {
 		return Init.id(toName());
 	}
 	
-	public String englishLocalization(boolean murica) {
-		return color.englishLocalization(murica) + " " + theme.englishLocalization() + " " + mode.englishLocalization() + " Lamp";
-	}
-	
 	public LampBlock instantiateBlock(Block.Settings settings) {
 		return mode.constructor.apply(this, theme.processSettings(settings));
 	}
@@ -112,8 +108,8 @@ public class LampStyle {
 		
 		public static final List<Color> ALL = Arrays.stream(DyeColor.values()).map(Color::new).collect(Collectors.toList());
 		
-		public String englishLocalization(boolean murica) {
-			return Junk.prettyPrintDyeColor(color, murica);
+		public String getName() {
+			return color.getName();
 		}
 	}
 	
@@ -142,8 +138,8 @@ public class LampStyle {
 			} else return in;
 		}
 		
-		public String englishLocalization() {
-			return WordUtils.capitalizeFully(name);
+		public String getName() {
+			return name;
 		}
 	}
 	
@@ -161,8 +157,8 @@ public class LampStyle {
 		
 		public static final List<Mode> ALL = ImmutableList.of(DIGITAL, ANALOG);
 		
-		public String englishLocalization() {
-			return WordUtils.capitalizeFully(name);
+		public String getName() {
+			return name;
 		}
 	}
 }

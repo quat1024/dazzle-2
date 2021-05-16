@@ -9,14 +9,27 @@ fabric 1.16.5
 
 You will find some gradle tasks under the `d2` category.
 
-**it's not ~~yet~~ a "datagen"**, I'm sorry to get your hopes up if you're looking how to do datagens in fabric. it's just shitty handrolled string-replacement stuff.
-
 `runGenerator`: launch the game, spew a bunch of generated assets and data into `src/gen_out/resources`, and exit.
 `cleanGeneratedResources`: delete `src/gen_out/resources`.
 
-make sure to copy the contents of `src/gen_out/resources/en_us_include.json` into `src/main/resources/assets/dazzle/lang/en_us.json` after running the generator, (yeah yeah, I could automate this, maybe)
+These run real honest-to-goodness vanilla datagens (no more string replacement hackery, yahoo). due to source-set magic i cribbed from botania the generated resources can stay in that directory too.
 
-due to source-set magic i cribbed from botania the generated resources can stay in that directory
+things that are generated:
+
+* blockstates for lamps and flare lights
+* item models for lamps and flare lights (parents to the block model)
+* language entries for lamps and flare lights
+  * most are placed outside of the generated resources folder, in the main mod's `en_us.json` file (see note below)
+  * `en_au`, `en_ca`, `en_gb`, and `en_nz` jsons are also generated, containing the entries that differ from en_us (gray/grey)
+* recipes and recipe advancements for lamps and flare lights
+
+## Quick note on `en_us.json`
+
+You can't ship two language `.json`s for the same language in the mod, but i only want to generate some lang entries, so i made a compromise:
+
+running the datagens has a side-effect of overwriting `en_us.json` to include generated data at the bottom. This avoids a manual copy-and-paste step where you have to paste in generated item names.
+
+I make an effort to preserve the JSON formatting through the round-trip, including blank-lines. However it's kind of buggy so the json object inside `en_us.json` cannot end with a blank line, or it will fail to parse. The file has to end with "closing quote", "*exactly one* newline", then `}`.
 
 ## current featureset
 

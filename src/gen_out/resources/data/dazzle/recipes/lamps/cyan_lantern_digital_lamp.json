@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","group":"lantern_digital","ingredients":[{"item":"minecraft:redstone_lamp"},{"item":"minecraft:cyan_dye"},{"item":"minecraft:prismarine_crystals"}],"result":{"item":"dazzle:cyan_lantern_digital_lamp"}}

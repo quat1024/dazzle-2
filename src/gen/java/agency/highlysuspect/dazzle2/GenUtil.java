@@ -1,6 +1,5 @@
 package agency.highlysuspect.dazzle2;
 
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.DyeColor;

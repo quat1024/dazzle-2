@@ -69,9 +69,13 @@ public class RecipeGen implements DataProvider {
 				
 				Optional<Item> extra = style.theme.ingredient;
 				extra.ifPresent(ex -> inputAndCriterion(recipe, "has_special", ex));
+				
+				recipe.group(style.theme.getName() + "_" + style.mode.getName());
 			} else {
 				inputAndCriterion(recipe, "has_comparator", Blocks.COMPARATOR);
 				inputAndCriterion(recipe, "has_lamp", style.withMode(LampStyle.Mode.DIGITAL).lookupBlock());
+				
+				recipe.group(style.theme.getName() + "_" + style.mode.getName() + "_analog_convert");
 			}
 			
 			recipe.offerTo(saver, Init.id("lamps/" + style.toName())); //Keeping the old recipe ID around for legacy's sake
@@ -83,6 +87,8 @@ public class RecipeGen implements DataProvider {
 			inputAndCriterion(recipe, "has_fruit", Items.POPPED_CHORUS_FRUIT);
 			inputAndCriterion(recipe, "has_glowstone", Items.GLOWSTONE_DUST);
 			inputAndCriterion(recipe, "has_dye", GenUtil.dyeForColor(color));
+			
+			recipe.group("flare");
 			
 			recipe.offerTo(saver, Init.id("flare/" + color.getName() + "_flare")); //Keeping the old recipe ID around for legacy's sake
 		});

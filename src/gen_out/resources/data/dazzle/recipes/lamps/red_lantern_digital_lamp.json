@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","group":"lantern_digital","ingredients":[{"item":"minecraft:redstone_lamp"},{"item":"minecraft:red_dye"},{"item":"minecraft:prismarine_crystals"}],"result":{"item":"dazzle:red_lantern_digital_lamp"}}
