@@ -54,8 +54,9 @@ public class TagGen implements DataProvider {
 			.addAll(DazzleBlocks.FLARES.values())
 			.save(cache);
 		
-		//Worth noting that adding two of the same thing to a tag (here, both redstone torches map to the same item) is okay, it gets flattened.
+		//Worth noting that adding two of the same thing to a tag (here, "wall" and "standing" torch blocks map to the same item) is okay, it all gets flattened.
 		BlockAndItemTagBuilderWrapper.create(outRoot, new Identifier("c", "torches"))
+			.add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH)
 			.add(DazzleBlocks.INVISIBLE_TORCH, DazzleBlocks.DIM_REDSTONE_TORCH, DazzleBlocks.DIM_REDSTONE_WALL_TORCH)
 			.save(cache);
 		
