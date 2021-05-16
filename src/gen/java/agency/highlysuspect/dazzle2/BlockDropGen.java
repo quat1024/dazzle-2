@@ -56,11 +56,12 @@ public class BlockDropGen implements DataProvider {
 		//Copy and paste of private "drops(ItemConvertible drop)" from BlockLootTableGenerator.
 		//Also from there, private method addSurvivesExplosionCondition(ItemConvertible, LootConditionConsumingBuilder<T>) pasted into this class and inlined with intellij.
 		//Im sorry
-		LootTable.Builder funny = LootTable.builder().pool(((LootConditionConsumingBuilder<LootPool.Builder>) LootPool.builder().rolls(ConstantLootTableRange.create(1)).with(ItemEntry.builder(drop))).conditionally(SurvivesExplosionLootCondition.builder()));
-		//Maybe I should look into access wideners and subclass that
-		
-		funny.type(LootContextTypes.BLOCK);
-		return funny.build();
+		return LootTable.builder().pool(
+			LootPool.builder().rolls(ConstantLootTableRange.create(1))
+				.with(ItemEntry.builder(drop))
+				.conditionally(SurvivesExplosionLootCondition.builder()))
+			.type(LootContextTypes.BLOCK)
+			.build();
 	}
 	
 	@Override
