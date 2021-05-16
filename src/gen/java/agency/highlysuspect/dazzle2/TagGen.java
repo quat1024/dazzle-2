@@ -54,7 +54,7 @@ public class TagGen implements DataProvider {
 			.addAll(DazzleBlocks.FLARES.values())
 			.save(cache);
 		
-		BlockAndItemTagBuilderWrapper.create(outRoot, new Identifier("redstone_lamps"))
+		BlockAndItemTagBuilderWrapper.create(outRoot, new Identifier("c", "redstone_lamps"))
 			.addOptionalTag(Init.id("lamps/all"))
 			.save(cache);
 		
