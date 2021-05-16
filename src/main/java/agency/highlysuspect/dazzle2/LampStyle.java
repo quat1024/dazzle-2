@@ -8,8 +8,11 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.*;
@@ -63,6 +66,10 @@ public class LampStyle {
 	public LampBlock instantiateBlock(Block.Settings settings) {
 		return mode.constructor.apply(this, theme.processSettings(settings));
 	}
+	
+	public LampBlock lookupBlock() {
+		return (LampBlock) Registry.BLOCK.get(toIdentifier());
+	}
 
 	public LampStyle withMode(LampStyle.Mode newMode) {
 		//This sucks
@@ -108,26 +115,25 @@ public class LampStyle {
 		public String englishLocalization(boolean murica) {
 			return Junk.prettyPrintDyeColor(color, murica);
 		}
-		
-		public Optional<Identifier> findItemId() {
-			return Junk.itemIdForDye(color);
-		}
 	}
 	
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType") //bad Java design decision, imo.
 	public static class Theme implements Prop {
-		private Theme(String name, boolean isTransparent) {
+		private Theme(String name, Optional<Item> ingredient, boolean isTransparent) {
 			this.name = name;
+			this.ingredient = ingredient;
 			this.isTransparent = isTransparent;
 		}
 		
 		public final String name;
 		public final boolean isTransparent; //kind of a hack rn
+		public final Optional<Item> ingredient;
 		
-		public static final Theme CLASSIC = new Theme("classic", false);
-		public static final Theme MODERN = new Theme("modern", false);
-		public static final Theme LANTERN = new Theme("lantern", false);
-		public static final Theme PULSATING = new Theme("pulsating", false);
-		public static final Theme ICY = new Theme("icy", true);
+		public static final Theme CLASSIC = new Theme("classic", Optional.empty(), false);
+		public static final Theme MODERN = new Theme("modern", Optional.of(Items.STONE_PRESSURE_PLATE), false);
+		public static final Theme LANTERN = new Theme("lantern", Optional.of(Items.PRISMARINE_CRYSTALS), false);
+		public static final Theme PULSATING = new Theme("pulsating", Optional.of(Items.END_ROD), false);
+		public static final Theme ICY = new Theme("icy", Optional.of(Items.ICE), true);
 		public static final List<Theme> ALL = ImmutableList.of(CLASSIC, MODERN, LANTERN, PULSATING, ICY);
 		
 		public AbstractBlock.Settings processSettings(AbstractBlock.Settings in) {

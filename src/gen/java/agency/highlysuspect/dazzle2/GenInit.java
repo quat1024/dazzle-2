@@ -1,7 +1,10 @@
 package agency.highlysuspect.dazzle2;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.util.DyeColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,48 +14,44 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 
-public class GenInit implements PreLaunchEntrypoint {
+public class GenInit implements ModInitializer {
 	public static final Logger LOG = LogManager.getLogger("dazzle2-gen");
 	
+	public static final Gson GSON = new GsonBuilder().create(); //No pretty-printing, why not cut the filesize down.
+	public static final Gson PRETTY_PRINT = new GsonBuilder().setPrettyPrinting().create();
+	
 	@Override
-	public void onPreLaunch() {
+	public void onInitialize() {
 		// current directory atm is the `run` directory, containing all the game data
-		Path p = Paths.get("../src/gen_out/resources").toAbsolutePath().normalize();
+		Path output = Paths.get("../src/gen_out/resources").toAbsolutePath().normalize();
+		LOG.info("Path: {}", output);
 		
-		LOG.info("Path: {}", p);
+		//handrolledCrap(output);
 		
-		handrolledCrap(p);
-		
-		System.exit(0);
+		try {
+			DataGenerator dataGen = new DataGenerator(output, Collections.emptyList());
+			
+			//assets
+			dataGen.install(new BlockStateGen(output));
+			dataGen.install(new ItemModelGen(output));
+			
+			//data
+			dataGen.install(new BlockDropGen(output));
+			dataGen.install(new RecipeGen(output));
+			
+			dataGen.run();
+			
+			LOG.warn("Data generation success. Exiting game");
+			System.exit(0);
+		} catch (Exception e) {
+			LOG.fatal(e);
+			System.exit(420);
+		}
 	}
 	
 	public static void handrolledCrap(Path output) {
-		//HAVE SOME HANDROLLED CRAP !!!!
-		
-		for(LampStyle style : LampStyle.ALL) {
-			String jason = style.toName() + ".json";
-			
-			write(output, "assets/dazzle/blockstates/" + jason, lampBlockstate(style));
-			write(output, "assets/dazzle/models/item/" + jason, lampItemModel(style));
-			
-			write(output, "data/dazzle/loot_tables/blocks/" + jason, simpleLootTable(style.toIdentifier().toString()));
-			write(output, "data/dazzle/recipes/lamps/" + jason, lampRecipe(style));
-			write(output, "data/dazzle/advancements/recipes/lamps/" + jason, lampRecipeAdvancement(style));
-		}
-		
-		for(DyeColor color : DyeColor.values()) {
-			String itemId = "dazzle:" + color.getName() + "_flare";
-			String jason = color.getName() + "_flare.json";
-			
-			write(output, "assets/dazzle/blockstates/" + jason, flareBlockstate());
-			write(output, "assets/dazzle/models/item/" + jason, flareItemModel());
-			
-			write(output, "data/dazzle/loot_tables/blocks/" + jason, simpleLootTable(itemId));
-			write(output, "data/dazzle/recipes/flare/" + jason, flareRecipe(color, itemId));
-			write(output, "data/dazzle/advancements/recipes/flare/" + jason, flareRecipeAdvancement(color));
-		}
-		
 		String muricaLang = generateLang(true);
 		String otherLang = generateLang(false);
 		
@@ -77,344 +76,6 @@ public class GenInit implements PreLaunchEntrypoint {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	private static String lampBlockstate(LampStyle style) {
-		String template = "{\n" +
-			"\t\"variants\": {\n" +
-			"\t\t\"\": {\n" +
-			"\t\t\t\"model\": \"dazzle:block/lamp/XXX\"\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-		
-		return template.replace("XXX", style.theme.name);
-	}
-	
-	private static String lampItemModel(LampStyle style) {
-		String template = "{\n" +
-			"\t\"parent\": \"dazzle:block/lamp/XXX\"\n" +
-			"}";
-		
-		return template.replace("XXX", style.theme.name);
-	}
-	
-	private static String simpleLootTable(String s) {
-		String template = "{\n" +
-			"\t\"type\": \"minecraft:block\",\n" +
-			"\t\"pools\": [\n" +
-			"\t\t{\n" +
-			"\t\t\t\"rolls\": 1,\n" +
-			"\t\t\t\"entries\": [\n" +
-			"\t\t\t\t{\n" +
-			"\t\t\t\t\t\"type\": \"minecraft:item\",\n" +
-			"\t\t\t\t\t\"name\": \"XXX\"\n" +
-			"\t\t\t\t}\n" +
-			"\t\t\t],\n" +
-			"\t\t\t\"conditions\": [\n" +
-			"\t\t\t\t{\n" +
-			"\t\t\t\t\t\"condition\": \"minecraft:survives_explosion\"\n" +
-			"\t\t\t\t}\n" +
-			"\t\t\t]\n" +
-			"\t\t}\n" +
-			"\t]\n" +
-			"}";
-		
-		return template.replace("XXX", s);
-	}
-	
-	private static String getRequiredItem(LampStyle style) {
-		switch(style.theme.name) {
-			case "icy": return "minecraft:ice";
-			case "lantern": return "minecraft:prismarine_crystals";
-			case "modern": return "minecraft:stone_pressure_plate";
-			case "pulsating": return "minecraft:end_rod";
-			default: throw new IllegalArgumentException(style.theme.name);
-		}
-	}
-	
-	@SuppressWarnings("DuplicateExpressions") //just fuck me up fam
-	private static String lampRecipe(LampStyle style) {
-		String noExtraItem = "{\n" +
-			"\t\"type\": \"minecraft:crafting_shapeless\",\n" +
-			"\t\"group\": \"GROUP\",\n" +
-			"\t\"ingredients\": [\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"IN\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"minecraft:redstone_lamp\"\n" +
-			"\t\t}\n" +
-			"\t],\n" +
-			"\t\"result\": {\n" +
-			"\t\t\"item\": \"OUT\"\n" +
-			"\t}\n" +
-			"}\n";
-		
-		String hasExtraItem = "{\n" +
-			"\t\"type\": \"minecraft:crafting_shapeless\",\n" +
-			"\t\"group\": \"GROUP\",\n" +
-			"\t\"ingredients\": [\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"IN\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"minecraft:redstone_lamp\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"EXTRA\"\n" +
-			"\t\t}\n" +
-			"\t],\n" +
-			"\t\"result\": {\n" +
-			"\t\t\"item\": \"OUT\"\n" +
-			"\t}\n" +
-			"}\n";
-		
-		String convertToAnalog = "{\n" +
-			"\t\"type\": \"minecraft:crafting_shapeless\",\n" +
-			"\t\"group\": \"GROUP\",\n" +
-			"\t\"ingredients\": [\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"IN\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"minecraft:comparator\"\n" +
-			"\t\t}\n" +
-			"\t],\n" +
-			"\t\"result\": {\n" +
-			"\t\t\"item\": \"OUT\"\n" +
-			"\t}\n" +
-			"}\n";
-		
-		if(style.mode == LampStyle.Mode.ANALOG) {
-			return convertToAnalog
-				.replace("GROUP", style.theme.name + '_' + style.mode.name + "_analog_convert")
-				.replace("IN", style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString())
-				.replace("OUT", style.toIdentifier().toString());
-		} else {
-			if(style.theme == LampStyle.Theme.CLASSIC) {
-				return noExtraItem
-					.replace("GROUP", style.theme.name + '_' + style.mode.name)
-					.replace("IN", style.color.findItemId().get().toString())
-					.replace("OUT", style.toIdentifier().toString());
-			} else {
-				return hasExtraItem
-					.replace("EXTRA", getRequiredItem(style))
-					.replace("GROUP", style.theme.name + '_' + style.mode.name)
-					.replace("IN", style.color.findItemId().get().toString())
-					.replace("OUT", style.toIdentifier().toString());
-			}
-		}
-	}
-	
-	private static String lampRecipeAdvancement(LampStyle style) {
-		String noExtraItem = "{\n" +
-			"\t\"parent\": \"dazzle:recipes/root\",\n" +
-			"\t\"rewards\": {\n" +
-			"\t\t\"recipes\": [\n" +
-			"\t\t\t\"dazzle:lamps/OUT\"\n" +
-			"\t\t]\n" +
-			"\t},\n" +
-			"\t\"criteria\": {\n" +
-			"\t\t\"has_lamp\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"redstone_lamp\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_dye\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"IN\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-		
-		String hasExtraItem = "{\n" +
-			"\t\"parent\": \"dazzle:recipes/root\",\n" +
-			"\t\"rewards\": {\n" +
-			"\t\t\"recipes\": [\n" +
-			"\t\t\t\"dazzle:lamps/OUT\"\n" +
-			"\t\t]\n" +
-			"\t},\n" +
-			"\t\"criteria\": {\n" +
-			"\t\t\"has_lamp\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"redstone_lamp\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_dye\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"IN\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_special\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"EXTRA\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-		
-		String convertToAnalog = "{\n" +
-			"\t\"parent\": \"dazzle:recipes/root\",\n" +
-			"\t\"rewards\": {\n" +
-			"\t\t\"recipes\": [\n" +
-			"\t\t\t\"dazzle:lamps/OUT\"\n" +
-			"\t\t]\n" +
-			"\t},\n" +
-			"\t\"criteria\": {\n" +
-			"\t\t\"has_lamp\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"IN\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_comparator\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"minecraft:comparator\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-		
-		if(style.mode == LampStyle.Mode.ANALOG) {
-			return convertToAnalog
-				.replace("IN", style.withMode(LampStyle.Mode.DIGITAL).toIdentifier().toString())
-				.replace("OUT", style.toIdentifier().getPath());
-		} else {
-			if(style.theme == LampStyle.Theme.CLASSIC) {
-				return noExtraItem
-					.replace("IN", style.color.findItemId().get().toString())
-					.replace("OUT", style.toIdentifier().getPath());
-			} else {
-				return hasExtraItem
-					.replace("EXTRA", getRequiredItem(style))
-					.replace("IN", style.color.findItemId().get().toString())
-					.replace("OUT", style.toIdentifier().getPath());
-			}
-		}
-	}
-	
-	private static String flareBlockstate() {
-		return "{\n" +
-			"\t\"variants\": {\n" +
-			"\t\t\"\": {\n" +
-			"\t\t\t\"model\": \"dazzle:block/flare\"\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-	}
-	
-	private static String flareItemModel() {
-		return "{\n" +
-			"\t\"parent\": \"item/generated\",\n" +
-			"\t\"textures\": {\n" +
-			"\t\t\"layer0\": \"dazzle:item/flare/base\",\n" +
-			"\t\t\"layer1\": \"dazzle:item/flare/color\"\n" +
-			"\t}\n" +
-			"}";
-	}
-	
-	private static String flareRecipe(DyeColor color, String itemId) {
-		String template = "{\n" +
-			"\t\"type\": \"minecraft:crafting_shapeless\",\n" +
-			"\t\"ingredients\": [\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"minecraft:glowstone_dust\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"minecraft:popped_chorus_fruit\"\n" +
-			"\t\t},\n" +
-			"\t\t{\n" +
-			"\t\t\t\"item\": \"DYE\"\n" +
-			"\t\t}\n" +
-			"\t],\n" +
-			"\t\"result\": {\n" +
-			"\t\t\"item\": \"RESULT\"\n" +
-			"\t}\n" +
-			"}";
-				
-		return template.replace("DYE", Junk.itemIdForDye(color).get().toString())
-			.replace("RESULT", itemId);
-	}
-	
-	private static String flareRecipeAdvancement(DyeColor color) {
-		String template = "{\n" +
-			"\t\"parent\": \"dazzle:recipes/root\",\n" +
-			"\t\"rewards\": {\n" +
-			"\t\t\"recipes\": [\n" +
-			"\t\t\t\"OUT\"\n" +
-			"\t\t]\n" +
-			"\t},\n" +
-			"\t\"criteria\": {\n" +
-			"\t\t\"has_glowstone\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"minecraft:glowstone_dust\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_chorus\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"minecraft:popped_chorus_fruit\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t},\n" +
-			"\t\t\"has_dye\": {\n" +
-			"\t\t\t\"trigger\": \"minecraft:inventory_changed\",\n" +
-			"\t\t\t\"conditions\": {\n" +
-			"\t\t\t\t\"items\": [\n" +
-			"\t\t\t\t\t{\n" +
-			"\t\t\t\t\t\t\"item\": \"DYE\"\n" +
-			"\t\t\t\t\t}\n" +
-			"\t\t\t\t]\n" +
-			"\t\t\t}\n" +
-			"\t\t}\n" +
-			"\t}\n" +
-			"}";
-		
-		return template.replace("DYE", Junk.itemIdForDye(color).get().toString()).replace("OUT", "dazzle:flare/" + color.getName() + "_flare");
 	}
 	
 	private static String generateLang(boolean murica) {

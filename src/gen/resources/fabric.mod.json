@@ -13,7 +13,7 @@
 	
 	"environment": "*",
 	"entrypoints": {
-		"preLaunch": [
+		"main": [
 			"agency.highlysuspect.dazzle2.GenInit"
 		]
 	},

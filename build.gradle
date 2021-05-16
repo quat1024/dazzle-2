@@ -41,7 +41,6 @@ task runGenerator(type: net.fabricmc.loom.task.RunClientTask, dependsOn: downloa
 	classpath = configurations.runtimeClasspath
 	classpath sourceSets.main.output
 	classpath sourceSets.gen.output
-	systemProperty "d2.gen", "true"
 }
 
 task cleanGeneratedResources(type: Delete, group: "d2") {
@@ -112,9 +111,13 @@ java {
 }
 
 jar {
+	//A file that (for now) must be manually copied into en_us.json after generation
 	exclude "en_us_include.json"
 	
-	//ae2 fabric has this little line, i dont know if it's important
+	//Mojang datagenerator .cache file
+	exclude ".cache"
+	
+	//ae2 fabric has this little line, i dont know if it's important!
 	finalizedBy "remapJar"
 	
 	from sourceSets.main.output.classesDirs
