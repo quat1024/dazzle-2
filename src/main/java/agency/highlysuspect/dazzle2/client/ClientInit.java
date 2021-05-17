@@ -156,5 +156,6 @@ public class ClientInit implements ClientModInitializer {
 	
 	private static void registerParticles() {
 		ParticleFactoryRegistry.getInstance().register(DazzleParticleTypes.FLARE, FlareParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(DazzleParticleTypes.DYED_END_ROD, DyedEndRodParticle.Factory::new);
 	}
 }
