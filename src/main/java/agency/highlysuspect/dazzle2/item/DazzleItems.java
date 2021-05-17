@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DazzleItems {
 	public static final ItemGroup owo = FabricItemGroupBuilder.build(Init.id("group"), DazzleItems::icon);
 	
-	public static final List<BlockItem> LAMP_ITEMS = DazzleBlocks.LAMPS.stream().map(DazzleItems::blockItem).collect(Collectors.toList());
+	public static final List<BlockItem> LAMPS = DazzleBlocks.LAMPS.stream().map(DazzleItems::blockItem).collect(Collectors.toList());
 	public static final BlockItem LIGHT_SENSOR = blockItem(DazzleBlocks.LIGHT_SENSOR);
 	public static final BlockItem INVISIBLE_TORCH = blockItem(DazzleBlocks.INVISIBLE_TORCH);
 	public static final BlockItem PROJECTED_LIGHT_PANEL = blockItem(DazzleBlocks.PROJECTED_LIGHT_PANEL);
@@ -31,7 +31,7 @@ public class DazzleItems {
 	public static final EnumMap<DyeColor, BlockItem> DYED_POLISHED_SHROOMLIGHTS = sixteenColorBlockItems(DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS);
 	
 	public static void onInitialize() {
-		LAMP_ITEMS.forEach(DazzleItems::registerBlockItem);
+		LAMPS.forEach(DazzleItems::registerBlockItem);
 		
 		registerBlockItem(LIGHT_SENSOR);
 		registerBlockItem(INVISIBLE_TORCH);

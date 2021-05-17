@@ -1,7 +1,6 @@
 package agency.highlysuspect.dazzle2.block;
 
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -14,7 +13,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
-public class FlareBlock extends ColorHolderBlock implements BlockEntityProvider {
+public class FlareBlock extends ColorHolderBlock.Simple implements BlockEntityProvider {
 	public FlareBlock(DyeColor color, Settings settings) {
 		super(color, settings);
 	}

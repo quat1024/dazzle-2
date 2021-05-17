@@ -3,11 +3,22 @@ package agency.highlysuspect.dazzle2.block;
 import net.minecraft.block.Block;
 import net.minecraft.util.DyeColor;
 
-public class ColorHolderBlock extends Block {
-	public ColorHolderBlock(DyeColor color, Settings settings) {
-		super(settings);
-		this.color = color;
-	}
+// Some block that has 16 colors.
+public interface ColorHolderBlock {
+	DyeColor getColor();
 	
-	public final DyeColor color;
+	// Can be implemented if your block doesn't extend anything else.
+	class Simple extends Block implements ColorHolderBlock {
+		public Simple(DyeColor color, Settings settings) {
+			super(settings);
+			this.color = color;
+		}
+		
+		private final DyeColor color;
+		
+		@Override
+		public DyeColor getColor() {
+			return color;
+		}
+	}
 }

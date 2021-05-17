@@ -2,7 +2,6 @@ package agency.highlysuspect.dazzle2.client;
 
 import agency.highlysuspect.dazzle2.block.ColorHolderBlock;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
-import agency.highlysuspect.dazzle2.block.FlareBlock;
 import agency.highlysuspect.dazzle2.block.LampBlock;
 import agency.highlysuspect.dazzle2.etc.DazzleParticleTypes;
 import agency.highlysuspect.dazzle2.item.DazzleItems;
@@ -53,43 +52,32 @@ public class ClientInit implements ClientModInitializer {
 	private static void createColorProviders() {
 		//Redstone lamps
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			if(tintIndex == 0) {
-				LampBlock lamp = (LampBlock) state.getBlock();
-				
-				int baseColor = lamp.style.color.color.getMaterialColor().color; //color
-				return multiplyAll(baseColor, lamp.lightFromState(state) / 15f * 0.8f + 0.2f);
-			} else return 0xFFFFFF;
+			LampBlock lamp = (LampBlock) state.getBlock();
+			return lamp(tintIndex, lamp.getColor(), lamp.lightFromState(state));
 		}, blocks(DazzleBlocks.LAMPS));
 		
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			if(tintIndex == 0) {
-				//No darkening need be applied because lamps always appear fully lit in the inventory.
-				LampBlock lamp = (LampBlock) ((BlockItem) stack.getItem()).getBlock();
-				return lamp.style.color.color.getMaterialColor().color; //color
-			} else return 0xFFFFFF;
-		}, items(DazzleItems.LAMP_ITEMS));
+			LampBlock lamp = (LampBlock) ((BlockItem) stack.getItem()).getBlock();
+			return lamp(tintIndex, lamp.getColor(), 15);
+		}, items(DazzleItems.LAMPS));
 		
 		//Flares
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> ((ColorHolderBlock) state.getBlock()).color.getMaterialColor().color,
+		//Even though the block model itself is invisible, this is visible on blockcrack particles.
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> ((ColorHolderBlock) state.getBlock()).getColor().getMaterialColor().color,
 			blocks(DazzleBlocks.FLARES.values()));
 		
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 			if(tintIndex == 1) {
-				return ((FlareBlock) ((BlockItem) stack.getItem()).getBlock()).color.getMaterialColor().color; //color
+				return ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor().getMaterialColor().color; //color
 			} else return 0xFFFFFF;
 		}, items(DazzleItems.FLARES.values()));
 		
 		//Dyed shroomlights
-		//Copypate orz im sorry
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-			if(tintIndex == 0) return shroomColorTable[((ColorHolderBlock) state.getBlock()).color.ordinal()];
-			else return 0xFFFFFF;
-		}, blocks(DazzleBlocks.DYED_SHROOMLIGHTS.values(), DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()));
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> shroom(tintIndex, ((ColorHolderBlock) state.getBlock()).getColor()),
+			blocks(DazzleBlocks.DYED_SHROOMLIGHTS.values(), DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()));
 		
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-			if(tintIndex == 0) return shroomColorTable[((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).color.ordinal()];
-			else return 0xFFFFFF;
-		}, items(DazzleItems.DYED_SHROOMLIGHTS.values(), DazzleItems.DYED_POLISHED_SHROOMLIGHTS.values()));
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> shroom(tintIndex, ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor()),
+			items(DazzleItems.DYED_SHROOMLIGHTS.values(), DazzleItems.DYED_POLISHED_SHROOMLIGHTS.values()));
 	}
 	
 	private static int multiplyAll(int color, float mult) {
@@ -109,6 +97,16 @@ public class ClientInit implements ClientModInitializer {
 		b = MathHelper.clamp(b, 0, 255);
 		
 		return (r << 16) | (g << 8) | b;
+	}
+	
+	private static int lamp(int tintIndex, DyeColor color, int power) {
+		if(tintIndex == 0) return multiplyAll(color.getMaterialColor().color, power / 15f * 0.8f + 0.2f);
+		else return 0xFFFFFF;
+	}
+	
+	private static int shroom(int tintIndex, DyeColor color) {
+		if(tintIndex == 0) return shroomColorTable[color.ordinal()];
+		else return 0xFFFFFF;
 	}
 	
 	private static final int[] shroomColorTable;

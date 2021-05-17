@@ -76,11 +76,11 @@ public class DazzleBlocks {
 		}
 	});
 	
-	public static final EnumMap<DyeColor, ColorHolderBlock> DYED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
+	public static final EnumMap<DyeColor, ColorHolderBlock.Simple> DYED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock.Simple(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
 	
 	public static final Block POLISHED_SHROOMLIGHT = new Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES));
 	
-	public static final EnumMap<DyeColor, ColorHolderBlock> DYED_POLISHED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
+	public static final EnumMap<DyeColor, ColorHolderBlock.Simple> DYED_POLISHED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock.Simple(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
 	
 	public static void onInitialize() {
 		for(LampBlock lamp : LAMPS) {

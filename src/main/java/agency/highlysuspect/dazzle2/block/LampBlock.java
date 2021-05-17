@@ -21,11 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.objectweb.asm.Opcodes;
 
-public abstract class LampBlock extends Block implements Opcodes {
+public abstract class LampBlock extends ColorHolderBlock.Simple {
 	public LampBlock(LampStyle style, Settings settings) {
-		super(settings);
+		super(style.color.color, settings);
 		this.style = style;
 		
 		setDefaultState(getDefaultState().with(INVERTED, false));
