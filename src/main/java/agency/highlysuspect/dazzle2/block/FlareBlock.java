@@ -14,14 +14,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
-public class FlareBlock extends Block implements BlockEntityProvider {
+public class FlareBlock extends ColorHolderBlock implements BlockEntityProvider {
 	public FlareBlock(DyeColor color, Settings settings) {
-		super(settings);
-		
-		this.color = color;
+		super(color, settings);
 	}
-	
-	public final DyeColor color;
 	
 	public static final VoxelShape OUTLINE = VoxelShapes.cuboid(3/16d, 3/16d, 3/16d, 13/16d, 15/16d, 13/16d);
 	

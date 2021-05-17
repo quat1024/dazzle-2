@@ -1,6 +1,7 @@
 package agency.highlysuspect.dazzle2;
 
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataProvider;
@@ -9,7 +10,6 @@ import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.LootConditionConsumingBuilder;
 import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.loot.entry.ItemEntry;
@@ -28,24 +28,35 @@ public class BlockDropGen implements DataProvider {
 	
 	@Override
 	public void run(DataCache cache) throws IOException {
-		for(Block b : DazzleBlocks.LAMPS) {
-			doIt(cache, b);
-		}
-		
-		for(Block b : DazzleBlocks.FLARES.values()) {
-			doIt(cache, b);
-		}
-		
-		doIt(cache, DazzleBlocks.DIM_REDSTONE_TORCH);
-		doIt(cache, DazzleBlocks.INVISIBLE_TORCH);
-		doIt(cache, DazzleBlocks.LIGHT_SENSOR);
-		doIt(cache, DazzleBlocks.PROJECTED_LIGHT_PANEL);
+		doItAll(cache,
+			DazzleBlocks.LAMPS,
+			
+			ImmutableList.of(
+				DazzleBlocks.DIM_REDSTONE_TORCH,
+				DazzleBlocks.INVISIBLE_TORCH,
+				DazzleBlocks.LIGHT_SENSOR,
+				DazzleBlocks.PROJECTED_LIGHT_PANEL
+			),
+			
+			DazzleBlocks.FLARES.values(),
+			
+			DazzleBlocks.DYED_SHROOMLIGHTS.values(),
+			ImmutableList.of(
+				DazzleBlocks.POLISHED_SHROOMLIGHT
+			),
+			DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()
+		);
 	}
 	
-	private void doIt(DataCache cache, Block b) throws IOException {
-		Identifier id = Registry.BLOCK.getId(b);
-		LootTable dropTable = drops(b);
-		DataProvider.writeToPath(GenInit.GSON, cache, LootManager.toJson(dropTable), outPath(id));
+	@SafeVarargs
+	private final void doItAll(DataCache cache, Iterable<? extends Block>... listOfLists) throws IOException {
+		for(Iterable<? extends Block> list : listOfLists) {
+			for(Block b : list) {
+				Identifier id = Registry.BLOCK.getId(b);
+				LootTable dropTable = drops(b);
+				DataProvider.writeToPath(GenInit.GSON, cache, LootManager.toJson(dropTable), outPath(id));
+			}
+		}
 	}
 	
 	private Path outPath(Identifier id) {

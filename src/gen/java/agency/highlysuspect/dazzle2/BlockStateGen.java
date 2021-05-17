@@ -45,6 +45,16 @@ public class BlockStateGen implements DataProvider {
 		write(cache, VariantsBlockStateSupplier.create(DazzleBlocks.DIM_REDSTONE_WALL_TORCH)
 			.coordinate(eastDefaultFourWayRotation())
 			.coordinate(booleanModelMap(Properties.LIT, Init.id("block/dim_torch/wall_on"), Init.id("block/dim_torch/wall_off"))));
+		
+		for(Block shroom : DazzleBlocks.DYED_SHROOMLIGHTS.values()) {
+			write(cache, model(shroom, Init.id("block/shroom/dyed")));
+		}
+		
+		write(cache, model(DazzleBlocks.POLISHED_SHROOMLIGHT, Init.id("block/shroom/polished")));
+		
+		for(Block shroom : DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()) {
+			write(cache, model(shroom, Init.id("block/shroom/dyed_polished")));
+		}
 	}
 	
 	//All blockstates map to this block model.

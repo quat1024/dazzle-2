@@ -65,6 +65,16 @@ public class ModelGen implements DataProvider {
 		layer0(DazzleItems.INVISIBLE_TORCH, consumer);
 		blockModelParent(DazzleBlocks.LIGHT_SENSOR, cache);
 		blockModelParent(DazzleBlocks.PROJECTED_LIGHT_PANEL, cache);
+		
+		for(Block shroom : DazzleBlocks.DYED_SHROOMLIGHTS.values()) {
+			blockModelParent(shroom, Init.id("block/shroom/dyed"), cache);
+		}
+		
+		blockModelParent(DazzleBlocks.POLISHED_SHROOMLIGHT, Init.id("block/shroom/polished"), cache);
+		
+		for(Block shroom : DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()) {
+			blockModelParent(shroom, Init.id("block/shroom/dyed_polished"), cache);
+		}
 	}
 	
 	@SuppressWarnings("SameParameterValue")

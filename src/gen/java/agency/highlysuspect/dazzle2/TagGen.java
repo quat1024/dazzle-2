@@ -54,16 +54,6 @@ public class TagGen implements DataProvider {
 			.addAll(DazzleBlocks.FLARES.values())
 			.save(cache);
 		
-		BlockAndItemTagBuilderWrapper.create(outRoot, new Identifier("c", "redstone_lamps"))
-			.addOptionalTag(Init.id("lamps/all"))
-			.save(cache);
-		
-		//Worth noting that adding two of the same thing to a tag (here, "wall" and "standing" torch blocks map to the same item) is okay, it all gets flattened.
-		BlockAndItemTagBuilderWrapper.create(outRoot, new Identifier("c", "torches"))
-			.add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH)
-			.add(DazzleBlocks.INVISIBLE_TORCH, DazzleBlocks.DIM_REDSTONE_TORCH, DazzleBlocks.DIM_REDSTONE_WALL_TORCH)
-			.save(cache);
-		
 		TagBuilderWrapper.items(outRoot, Init.id("wrenches"))
 			.addOptionalTag(new Identifier("c", "wrenches"))
 			.add(Items.REDSTONE_TORCH, DazzleItems.INVISIBLE_TORCH, DazzleItems.DIM_REDSTONE_TORCH)
@@ -73,6 +63,35 @@ public class TagGen implements DataProvider {
 			.addOptionalTag(new Identifier("c", "torches"))
 			.add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH)
 			.save(cache);
+		
+		BlockAndItemTagBuilderWrapper.create(outRoot, Init.id("shroomlights"))
+			.addAll(DazzleBlocks.DYED_SHROOMLIGHTS.values())
+			.add(DazzleBlocks.POLISHED_SHROOMLIGHT)
+			.addAll(DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values())
+			.save(cache);
+		
+		addCommonTags(cache);
+	}
+	
+	private void addCommonTags(DataCache cache) throws IOException {
+		//Worth noting that adding two of the same thing to a tag (here, "wall" and "standing" torch blocks map to the same item) is okay, it all gets flattened.
+		BlockAndItemTagBuilderWrapper.create(outRoot, c("torches"))
+			.add(Blocks.TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_TORCH, Blocks.SOUL_WALL_TORCH) //vanilla
+			.add(DazzleBlocks.INVISIBLE_TORCH, DazzleBlocks.DIM_REDSTONE_TORCH, DazzleBlocks.DIM_REDSTONE_WALL_TORCH)
+			.save(cache);
+		
+		BlockAndItemTagBuilderWrapper.create(outRoot, c("redstone_lamps"))
+			.addOptionalTag(Init.id("lamps/all"))
+			.save(cache);
+		
+		BlockAndItemTagBuilderWrapper.create(outRoot, c("shroomlights"))
+			.add(Blocks.SHROOMLIGHT) //vanilla
+			.addOptionalTag(Init.id("shroomlights"))
+			.save(cache);
+	}
+	
+	private static Identifier c(String path) {
+		return new Identifier("c", path);
 	}
 	
 	//Based on a copy-paste of abstract class AbstractTagProvider.ObjectBuilder<T>.

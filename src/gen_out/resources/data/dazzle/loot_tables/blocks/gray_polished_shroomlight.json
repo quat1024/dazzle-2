@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"entries":[{"type":"minecraft:item","name":"dazzle:gray_polished_shroomlight"}],"conditions":[{"condition":"minecraft:survives_explosion"}]}]}

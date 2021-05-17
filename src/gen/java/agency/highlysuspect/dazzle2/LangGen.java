@@ -37,7 +37,10 @@ public class LangGen implements DataProvider {
 		}
 		
 		for(DyeColor color : DyeColor.values()) {
-			localizeFlare(color, en_us, otherEnglish);
+			//This is crappy, i should fix it
+			localizeSuffix(color, en_us, otherEnglish, "_flare", "Flare");
+			localizeSuffix(color, en_us, otherEnglish, "_shroomlight", "Shroomlight");
+			localizeSuffix(color, en_us, otherEnglish, "_polished_shroomlight", "Polished Shroomlight");
 		}
 		
 		mergeEnUsJson(en_us);
@@ -77,11 +80,11 @@ public class LangGen implements DataProvider {
 		}
 	}
 	
-	private void localizeFlare(DyeColor color, JsonObject en_us, JsonObject otherEnglish) {
-		String key = "block.dazzle." + color.getName() + "_flare";
+	private void localizeSuffix(DyeColor color, JsonObject en_us, JsonObject otherEnglish, String suffix, String realName) {
+		String key = "block.dazzle." + color.getName() + suffix;
 		
 		String colorNameEnUs = spellColorEnUs(color);
-		String valueEnUs = colorNameEnUs + " Flare";
+		String valueEnUs = colorNameEnUs + " " + realName;
 		
 		en_us.addProperty(key, valueEnUs);
 		if(americaSpecificColorSpelling(color)) {

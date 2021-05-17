@@ -104,6 +104,39 @@ public class RecipeGen implements DataProvider {
 		dimTorch(saver);
 		lightSensor(saver);
 		projectedLightPanel(saver);
+		
+		DazzleBlocks.DYED_SHROOMLIGHTS.forEach((color, shroom) -> {
+			ShapelessRecipeJsonFactory recipe = ShapelessRecipeJsonFactory.create(shroom);
+			
+			inputAndCriterion(recipe, "has_shroom", Blocks.SHROOMLIGHT);
+			inputAndCriterion(recipe, "has_dye", GenUtil.dyeForColor(color));
+			
+			recipe.group("dyed_shroom");
+			
+			recipe.offerTo(saver);
+		});
+		
+		polishedShroomlight(saver);
+		
+		DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.forEach((color, shroom) -> {
+			ShapelessRecipeJsonFactory recipe = ShapelessRecipeJsonFactory.create(shroom);
+			
+			inputAndCriterion(recipe, "has_polished_shroom", DazzleBlocks.POLISHED_SHROOMLIGHT);
+			inputAndCriterion(recipe, "has_dye", GenUtil.dyeForColor(color));
+			
+			recipe.group("dyed_polished_shroom");
+			
+			recipe.offerTo(saver);
+			
+			ShapedRecipeJsonFactory recipe2 = ShapedRecipeJsonFactory.create(shroom, 4);
+			recipe2.pattern("XX");
+			recipe2.pattern("XX");
+			inputAndCriterion(recipe2, "has_unpolished", 'X', DazzleBlocks.DYED_SHROOMLIGHTS.get(color));
+			
+			recipe2.group("dyed_polished_shroom");
+			
+			recipe2.offerTo(saver, Init.id(color.getName() + "_polished_shroomlight_2"));
+		});
 	}
 	
 	private static void dimTorch(Consumer<RecipeJsonProvider> saver) {
@@ -135,6 +168,15 @@ public class RecipeGen implements DataProvider {
 		inputAndCriterion(recipe, "has_lamp", 'L', Blocks.REDSTONE_LAMP);
 		inputAndCriterion(recipe, "has_glass", 'G', Blocks.GLASS);
 		inputAndCriterion(recipe, "has_iron_block", 'I', Blocks.IRON_BLOCK);
+		
+		recipe.offerTo(saver);
+	}
+	
+	private static void polishedShroomlight(Consumer<RecipeJsonProvider> saver) {
+		ShapedRecipeJsonFactory recipe = ShapedRecipeJsonFactory.create(DazzleItems.POLISHED_SHROOMLIGHT, 4);
+		recipe.pattern("XX");
+		recipe.pattern("XX");
+		inputAndCriterion(recipe, "has_shroomlight", 'X', Blocks.SHROOMLIGHT);
 		
 		recipe.offerTo(saver);
 	}

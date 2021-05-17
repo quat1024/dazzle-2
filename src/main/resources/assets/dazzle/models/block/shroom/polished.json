@@ -1,0 +1,6 @@
+{
+	"parent": "dazzle:block/shroom/base",
+	"textures": {
+		"all": "dazzle:block/shroom/polished"
+	}
+}

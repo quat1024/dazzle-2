@@ -3,6 +3,7 @@ package agency.highlysuspect.dazzle2.block;
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.LampStyle;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -14,6 +15,7 @@ import net.minecraft.world.BlockView;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DazzleBlocks {
@@ -74,6 +76,12 @@ public class DazzleBlocks {
 		}
 	});
 	
+	public static final EnumMap<DyeColor, ColorHolderBlock> DYED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
+	
+	public static final Block POLISHED_SHROOMLIGHT = new Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES));
+	
+	public static final EnumMap<DyeColor, ColorHolderBlock> DYED_POLISHED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
+	
 	public static void onInitialize() {
 		for(LampBlock lamp : LAMPS) {
 			Registry.register(Registry.BLOCK, lamp.style.toIdentifier(), lamp);
@@ -88,5 +96,17 @@ public class DazzleBlocks {
 		Registry.register(Registry.BLOCK, Init.id("dim_redstone_wall_torch"), DIM_REDSTONE_WALL_TORCH);
 		
 		FLARES.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_flare"), block));
+		
+		DYED_SHROOMLIGHTS.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_shroomlight"), block));
+		Registry.register(Registry.BLOCK, Init.id("polished_shroomlight"), POLISHED_SHROOMLIGHT);
+		DYED_POLISHED_SHROOMLIGHTS.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_polished_shroomlight"), block));
+	}
+	
+	private static <T> EnumMap<DyeColor, T> sixteenColors(Function<DyeColor, T> maker) {
+		EnumMap<DyeColor, T> map = new EnumMap<>(DyeColor.class);
+		for(DyeColor color : DyeColor.values()) {
+			map.put(color, maker.apply(color));
+		}
+		return map;
 	}
 }

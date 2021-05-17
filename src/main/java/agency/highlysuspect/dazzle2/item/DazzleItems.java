@@ -7,11 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DazzleItems {
@@ -24,26 +24,26 @@ public class DazzleItems {
 	
 	public static final WallStandingBlockItem DIM_REDSTONE_TORCH = new WallStandingBlockItem(DazzleBlocks.DIM_REDSTONE_TORCH, DazzleBlocks.DIM_REDSTONE_WALL_TORCH, settings());
 	
-	public static final EnumMap<DyeColor, BlockItem> FLARES = Util.make(new EnumMap<>(DyeColor.class), map -> {
-		DazzleBlocks.FLARES.forEach((color, block) -> map.put(color, blockItem(block)));
-	});
+	public static final EnumMap<DyeColor, BlockItem> FLARES = sixteenColorBlockItems(DazzleBlocks.FLARES);
+	
+	public static final EnumMap<DyeColor, BlockItem> DYED_SHROOMLIGHTS = sixteenColorBlockItems(DazzleBlocks.DYED_SHROOMLIGHTS);
+	public static final BlockItem POLISHED_SHROOMLIGHT = blockItem(DazzleBlocks.POLISHED_SHROOMLIGHT);
+	public static final EnumMap<DyeColor, BlockItem> DYED_POLISHED_SHROOMLIGHTS = sixteenColorBlockItems(DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS);
 	
 	public static void onInitialize() {
-		for(BlockItem item : LAMP_ITEMS) {
-			Identifier id = Registry.BLOCK.getId(item.getBlock());
-			Registry.register(Registry.ITEM, id, item);
-		}
+		LAMP_ITEMS.forEach(DazzleItems::registerBlockItem);
 		
-		Registry.register(Registry.ITEM, Init.id("light_sensor"), LIGHT_SENSOR);
-		Registry.register(Registry.ITEM, Init.id("invisible_torch"), INVISIBLE_TORCH);
-		Registry.register(Registry.ITEM, Init.id("projected_light_panel"), PROJECTED_LIGHT_PANEL);
+		registerBlockItem(LIGHT_SENSOR);
+		registerBlockItem(INVISIBLE_TORCH);
+		registerBlockItem(PROJECTED_LIGHT_PANEL);
 		
-		Registry.register(Registry.ITEM, Init.id("dim_redstone_torch"), DIM_REDSTONE_TORCH);
+		registerBlockItem(DIM_REDSTONE_TORCH);
 		
-		for(BlockItem item : FLARES.values()) {
-			Identifier id = Registry.BLOCK.getId(item.getBlock());
-			Registry.register(Registry.ITEM, id, item);
-		}
+		FLARES.values().forEach(DazzleItems::registerBlockItem);
+		
+		DYED_SHROOMLIGHTS.values().forEach(DazzleItems::registerBlockItem);
+		registerBlockItem(POLISHED_SHROOMLIGHT);
+		DYED_POLISHED_SHROOMLIGHTS.values().forEach(DazzleItems::registerBlockItem);
 	}
 	
 	private static Item.Settings settings() {
@@ -57,5 +57,22 @@ public class DazzleItems {
 	private static ItemStack icon() {
 		//Oh Java, you and your "illegal forward reference"s.
 		return new ItemStack(LIGHT_SENSOR);
+	}
+	
+	private static <T> EnumMap<DyeColor, T> sixteenColors(Function<DyeColor, T> maker) {
+		EnumMap<DyeColor, T> map = new EnumMap<>(DyeColor.class);
+		for(DyeColor color : DyeColor.values()) {
+			map.put(color, maker.apply(color));
+		}
+		return map;
+	}
+	
+	private static EnumMap<DyeColor, BlockItem> sixteenColorBlockItems(EnumMap<DyeColor, ? extends Block> blockMap) {
+		return sixteenColors(color -> blockItem(blockMap.get(color)));
+	}
+	
+	private static void registerBlockItem(BlockItem item) {
+		Identifier id = Registry.BLOCK.getId(item.getBlock());
+		Registry.register(Registry.ITEM, id, item);
 	}
 }
