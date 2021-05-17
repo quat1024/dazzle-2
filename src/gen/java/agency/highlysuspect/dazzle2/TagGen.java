@@ -70,6 +70,10 @@ public class TagGen implements DataProvider {
 			.addAll(DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values())
 			.save(cache);
 		
+		BlockAndItemTagBuilderWrapper.create(outRoot, Init.id("end_rods"))
+			.addAll(DazzleBlocks.DYED_END_RODS.values())
+			.save(cache);
+		
 		addCommonTags(cache);
 	}
 	
@@ -87,6 +91,11 @@ public class TagGen implements DataProvider {
 		BlockAndItemTagBuilderWrapper.create(outRoot, c("shroomlights"))
 			.add(Blocks.SHROOMLIGHT) //vanilla
 			.addOptionalTag(Init.id("shroomlights"))
+			.save(cache);
+		
+		BlockAndItemTagBuilderWrapper.create(outRoot, c("end_rods"))
+			.add(Blocks.END_ROD)
+			.addOptionalTag(Init.id("end_rods"))
 			.save(cache);
 	}
 	

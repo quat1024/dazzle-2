@@ -19,7 +19,7 @@ public class FlareBlockEntity extends BlockEntity implements Tickable {
 		
 		Block block = getCachedState().getBlock();
 		if(!(block instanceof FlareBlock)) return; //how
-		int color = ((FlareBlock) block).color.getMaterialColor().color; //color
+		int color = ((FlareBlock) block).getColor().getMaterialColor().color; //color
 		
 		world.addParticle(new FlareParticleEffect(color), true,pos.getX() + .5, pos.getY() + .2, pos.getZ() + .5, 0, 0, 0);
 	}

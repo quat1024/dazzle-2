@@ -41,6 +41,7 @@ public class LangGen implements DataProvider {
 			localizeSuffix(color, en_us, otherEnglish, "_flare", "Flare");
 			localizeSuffix(color, en_us, otherEnglish, "_shroomlight", "Shroomlight");
 			localizeSuffix(color, en_us, otherEnglish, "_polished_shroomlight", "Polished Shroomlight");
+			localizeSuffix(color, en_us, otherEnglish, "_end_rod", "End Rod");
 		}
 		
 		mergeEnUsJson(en_us);

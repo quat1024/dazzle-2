@@ -75,6 +75,10 @@ public class ModelGen implements DataProvider {
 		for(Block shroom : DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()) {
 			blockModelParent(shroom, Init.id("block/shroom/dyed_polished"), cache);
 		}
+		
+		for(Block rod : DazzleBlocks.DYED_END_RODS.values()) {
+			blockModelParent(rod, Init.id("block/end_rod"), cache);
+		}
 	}
 	
 	@SuppressWarnings("SameParameterValue")

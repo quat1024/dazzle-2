@@ -35,3 +35,4 @@ run/
 # God damn temp files from krita lmao
 
 *.*~
+*.kra

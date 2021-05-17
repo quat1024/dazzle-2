@@ -55,6 +55,10 @@ public class BlockStateGen implements DataProvider {
 		for(Block shroom : DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()) {
 			write(cache, model(shroom, Init.id("block/shroom/dyed_polished")));
 		}
+		
+		for(Block rod : DazzleBlocks.DYED_END_RODS.values()) {
+			write(cache, model(rod, Init.id("block/end_rod")).coordinate(upDefaultSixWayRotation()));
+		}
 	}
 	
 	//All blockstates map to this block model.

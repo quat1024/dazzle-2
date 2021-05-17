@@ -77,10 +77,10 @@ public class DazzleBlocks {
 	});
 	
 	public static final EnumMap<DyeColor, ColorHolderBlock.Simple> DYED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock.Simple(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
-	
 	public static final Block POLISHED_SHROOMLIGHT = new Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES));
-	
 	public static final EnumMap<DyeColor, ColorHolderBlock.Simple> DYED_POLISHED_SHROOMLIGHTS = sixteenColors(color -> new ColorHolderBlock.Simple(color, FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).breakByTool(FabricToolTags.HOES).materialColor(color)));
+	
+	public static final EnumMap<DyeColor, DyedEndRodBlock> DYED_END_RODS = sixteenColors(color -> new DyedEndRodBlock(color, FabricBlockSettings.copyOf(Blocks.END_ROD).materialColor(color)));
 	
 	public static void onInitialize() {
 		for(LampBlock lamp : LAMPS) {
@@ -100,6 +100,8 @@ public class DazzleBlocks {
 		DYED_SHROOMLIGHTS.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_shroomlight"), block));
 		Registry.register(Registry.BLOCK, Init.id("polished_shroomlight"), POLISHED_SHROOMLIGHT);
 		DYED_POLISHED_SHROOMLIGHTS.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_polished_shroomlight"), block));
+		
+		DYED_END_RODS.forEach((color, block) -> Registry.register(Registry.BLOCK, Init.id(color.asString() + "_end_rod"), block));
 	}
 	
 	private static <T> EnumMap<DyeColor, T> sixteenColors(Function<DyeColor, T> maker) {

@@ -44,7 +44,8 @@ public class BlockDropGen implements DataProvider {
 			ImmutableList.of(
 				DazzleBlocks.POLISHED_SHROOMLIGHT
 			),
-			DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values()
+			DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values(),
+			DazzleBlocks.DYED_END_RODS.values()
 		);
 	}
 	

@@ -137,6 +137,17 @@ public class RecipeGen implements DataProvider {
 			
 			recipe2.offerTo(saver, Init.id(color.getName() + "_polished_shroomlight_2"));
 		});
+		
+		DazzleBlocks.DYED_END_RODS.forEach((color, rod) -> {
+			ShapelessRecipeJsonFactory recipe = ShapelessRecipeJsonFactory.create(rod);
+			
+			inputAndCriterion(recipe, "has_end_rod", Blocks.END_ROD);
+			inputAndCriterion(recipe, "has_dye", GenUtil.dyeForColor(color));
+			
+			recipe.group("dyed_end_rod");
+			
+			recipe.offerTo(saver);
+		});
 	}
 	
 	private static void dimTorch(Consumer<RecipeJsonProvider> saver) {

@@ -2,6 +2,7 @@ package agency.highlysuspect.dazzle2.item;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
+import agency.highlysuspect.dazzle2.block.DyedEndRodBlock;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
@@ -9,6 +10,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
@@ -30,8 +32,10 @@ public class DazzleItems {
 	public static final BlockItem POLISHED_SHROOMLIGHT = blockItem(DazzleBlocks.POLISHED_SHROOMLIGHT);
 	public static final EnumMap<DyeColor, BlockItem> DYED_POLISHED_SHROOMLIGHTS = sixteenColorBlockItems(DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS);
 	
+	public static final EnumMap<DyeColor, BlockItem> DYED_END_RODS = sixteenColorBlockItems(DazzleBlocks.DYED_END_RODS);
+	
 	public static void onInitialize() {
-		LAMPS.forEach(DazzleItems::registerBlockItem);
+		registerBlockItems(LAMPS);
 		
 		registerBlockItem(LIGHT_SENSOR);
 		registerBlockItem(INVISIBLE_TORCH);
@@ -39,11 +43,13 @@ public class DazzleItems {
 		
 		registerBlockItem(DIM_REDSTONE_TORCH);
 		
-		FLARES.values().forEach(DazzleItems::registerBlockItem);
+		registerBlockItems(FLARES.values());
 		
-		DYED_SHROOMLIGHTS.values().forEach(DazzleItems::registerBlockItem);
+		registerBlockItems(DYED_SHROOMLIGHTS.values());
 		registerBlockItem(POLISHED_SHROOMLIGHT);
-		DYED_POLISHED_SHROOMLIGHTS.values().forEach(DazzleItems::registerBlockItem);
+		registerBlockItems(DYED_POLISHED_SHROOMLIGHTS.values());
+		
+		registerBlockItems(DYED_END_RODS.values());
 	}
 	
 	private static Item.Settings settings() {
@@ -74,5 +80,9 @@ public class DazzleItems {
 	private static void registerBlockItem(BlockItem item) {
 		Identifier id = Registry.BLOCK.getId(item.getBlock());
 		Registry.register(Registry.ITEM, id, item);
+	}
+	
+	private static void registerBlockItems(Collection<BlockItem> blockItems) {
+		blockItems.forEach(DazzleItems::registerBlockItem);
 	}
 }

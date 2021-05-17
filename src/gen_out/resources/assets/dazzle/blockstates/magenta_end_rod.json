@@ -1,0 +1,1 @@
+{"variants":{"facing=down":{"model":"dazzle:block/end_rod","x":180},"facing=east":{"model":"dazzle:block/end_rod","x":90,"y":90},"facing=north":{"model":"dazzle:block/end_rod","x":90},"facing=south":{"model":"dazzle:block/end_rod","x":90,"y":180},"facing=up":{"model":"dazzle:block/end_rod"},"facing=west":{"model":"dazzle:block/end_rod","x":90,"y":270}}}

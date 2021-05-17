@@ -47,6 +47,8 @@ public class ClientInit implements ClientModInitializer {
 		//these use very odd opacity blending so i'll try the translucent layer
 		DazzleBlocks.DYED_SHROOMLIGHTS.values().forEach(b -> BlockRenderLayerMap.INSTANCE.putBlock(b, translucent));
 		DazzleBlocks.DYED_POLISHED_SHROOMLIGHTS.values().forEach(b -> BlockRenderLayerMap.INSTANCE.putBlock(b, translucent));
+		
+		DazzleBlocks.DYED_END_RODS.values().forEach(b -> BlockRenderLayerMap.INSTANCE.putBlock(b, cutoutMipped));
 	}
 	
 	private static void createColorProviders() {
@@ -78,6 +80,13 @@ public class ClientInit implements ClientModInitializer {
 		
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> shroom(tintIndex, ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor()),
 			items(DazzleItems.DYED_SHROOMLIGHTS.values(), DazzleItems.DYED_POLISHED_SHROOMLIGHTS.values()));
+		
+		//End rods
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> rod(tintIndex, ((ColorHolderBlock) state.getBlock()).getColor()),
+			blocks(DazzleBlocks.DYED_END_RODS.values()));
+		
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> rod(tintIndex, ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor()),
+			items(DazzleItems.DYED_END_RODS.values()));
 	}
 	
 	private static int multiplyAll(int color, float mult) {
@@ -106,6 +115,12 @@ public class ClientInit implements ClientModInitializer {
 	
 	private static int shroom(int tintIndex, DyeColor color) {
 		if(tintIndex == 0) return shroomColorTable[color.ordinal()];
+		else return 0xFFFFFF;
+	}
+	
+	private static int rod(int tintIndex, DyeColor color) {
+		if(tintIndex == 0) return shroomColorTable[color.ordinal()];
+		else if(tintIndex == 1) return multiplyAll(color.getMaterialColor().color, 0.5f);
 		else return 0xFFFFFF;
 	}
 	
