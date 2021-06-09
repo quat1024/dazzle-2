@@ -2,10 +2,13 @@ package agency.highlysuspect.dazzle2.block;
 
 import agency.highlysuspect.dazzle2.block.entity.DazzleBlockEntityTypes;
 import agency.highlysuspect.dazzle2.block.entity.LightSensorBlockEntity;
+import agency.highlysuspect.dazzle2.etc.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -13,6 +16,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class LightSensorBlock extends Block implements BlockEntityProvider {
@@ -25,9 +29,17 @@ public class LightSensorBlock extends Block implements BlockEntityProvider {
 	//The "face" side, redstone signal is emitted from the other side.
 	public static final DirectionProperty FACING = Properties.FACING;
 	
+	@Nullable
 	@Override
-	public @Nullable BlockEntity createBlockEntity(BlockView world) {
-		return DazzleBlockEntityTypes.LIGHT_SENSOR.instantiate();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return DazzleBlockEntityTypes.LIGHT_SENSOR.instantiate(pos, state);
+	}
+	
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		if(!world.isClient) return Util.castTicker(type, DazzleBlockEntityTypes.LIGHT_SENSOR, LightSensorBlockEntity::tickServer);
+		else return null;
 	}
 	
 	@Override

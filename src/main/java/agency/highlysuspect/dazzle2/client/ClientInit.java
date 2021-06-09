@@ -65,12 +65,12 @@ public class ClientInit implements ClientModInitializer {
 		
 		//Flares
 		//Even though the block model itself is invisible, this is visible on blockcrack particles.
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> ((ColorHolderBlock) state.getBlock()).getColor().getMaterialColor().color,
+		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> ((ColorHolderBlock) state.getBlock()).getColor().getMapColor().color,
 			blocks(DazzleBlocks.FLARES.values()));
 		
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 			if(tintIndex == 1) {
-				return ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor().getMaterialColor().color; //color
+				return ((ColorHolderBlock) ((BlockItem) stack.getItem()).getBlock()).getColor().getMapColor().color; //color
 			} else return 0xFFFFFF;
 		}, items(DazzleItems.FLARES.values()));
 		
@@ -109,7 +109,7 @@ public class ClientInit implements ClientModInitializer {
 	}
 	
 	private static int lamp(int tintIndex, DyeColor color, int power) {
-		if(tintIndex == 0) return multiplyAll(color.getMaterialColor().color, power / 15f * 0.8f + 0.2f);
+		if(tintIndex == 0) return multiplyAll(color.getMapColor().color, power / 15f * 0.8f + 0.2f);
 		else return 0xFFFFFF;
 	}
 	
@@ -120,7 +120,7 @@ public class ClientInit implements ClientModInitializer {
 	
 	private static int rod(int tintIndex, DyeColor color) {
 		if(tintIndex == 0) return shroomColorTable[color.ordinal()];
-		else if(tintIndex == 1) return multiplyAll(color.getMaterialColor().color, 0.5f);
+		else if(tintIndex == 1) return multiplyAll(color.getMapColor().color, 0.5f);
 		else return 0xFFFFFF;
 	}
 	
@@ -129,7 +129,7 @@ public class ClientInit implements ClientModInitializer {
 	static {
 		shroomColorTable = new int[DyeColor.values().length];
 		for(DyeColor color : DyeColor.values()) {
-			shroomColorTable[color.ordinal()] = multiplyRgb(color.getMaterialColor().color, 1.7f, 1.5f, 1.4f);
+			shroomColorTable[color.ordinal()] = multiplyRgb(color.getMapColor().color, 1.7f, 1.5f, 1.4f);
 		}
 		
 		//Orange looks kinda yellowish so uhh poke it back down a bit

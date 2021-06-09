@@ -117,9 +117,10 @@ public class LightAirBlock extends Block implements BlockEntityProvider {
 		else return TriState.DEFAULT;
 	}
 	
+	@Nullable
 	@Override
-	public @Nullable BlockEntity createBlockEntity(BlockView world) {
-		return DazzleBlockEntityTypes.LIGHT_AIR.instantiate();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return DazzleBlockEntityTypes.LIGHT_AIR.instantiate(pos, state);
 	}
 	
 	public void placeWithOwner(World world, BlockPos pos, int level, BlockPos ownerPos) {

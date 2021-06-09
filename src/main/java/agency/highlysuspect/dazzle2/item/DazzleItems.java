@@ -2,7 +2,6 @@ package agency.highlysuspect.dazzle2.item;
 
 import agency.highlysuspect.dazzle2.Init;
 import agency.highlysuspect.dazzle2.block.DazzleBlocks;
-import agency.highlysuspect.dazzle2.block.DyedEndRodBlock;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;

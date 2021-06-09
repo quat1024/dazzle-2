@@ -47,7 +47,7 @@ public class FlareParticle extends AnimatedParticle {
 		
 		@Override
 		public Particle createParticle(FlareParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-			return new FlareParticle(world, x, y, z, velocityX, velocityY, velocityZ, parameters.color, hoo);
+			return new FlareParticle(world, x, y, z, velocityX, velocityY, velocityZ, parameters.getColor(), hoo);
 		}
 	}
 }

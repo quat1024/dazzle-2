@@ -9,12 +9,10 @@ import net.minecraft.util.registry.Registry;
 
 //Copypaste of FlareParticleEffect
 //Don't learn how to write particles from this. I'm just slapping stuff together.
-public class DyedEndRodParticleEffect implements ParticleEffect {
-	public DyedEndRodParticleEffect(int color) {
-		this.color = color;
+public record DyedEndRodParticleEffect(int color) implements ParticleEffect {
+	public int getColor() {
+		return color;
 	}
-	
-	public final int color;
 	
 	@Override
 	public ParticleType<?> getType() {

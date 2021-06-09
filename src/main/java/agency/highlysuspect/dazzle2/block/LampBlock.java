@@ -44,7 +44,7 @@ public abstract class LampBlock extends ColorHolderBlock.Simple {
 	
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if(player.getStackInHand(hand).getItem().isIn(DazzleItemTags.WRENCHES)) {
+		if(DazzleItemTags.WRENCHES.contains(player.getStackInHand(hand).getItem())) {
 			boolean newInverted = !state.get(INVERTED);
 			world.setBlockState(pos, state.with(INVERTED, newInverted));
 			world.playSound(player, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.9f, newInverted ? 1.3f : 1f);

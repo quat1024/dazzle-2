@@ -11,7 +11,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -20,8 +20,8 @@ import net.minecraft.util.math.MathHelper;
 import java.util.Optional;
 
 public class LightAirBlockEntity extends BlockEntity {
-	public LightAirBlockEntity() {
-		super(DazzleBlockEntityTypes.LIGHT_AIR);
+	public LightAirBlockEntity(BlockPos pos, BlockState state) {
+		super(DazzleBlockEntityTypes.LIGHT_AIR, pos, state);
 	}
 	
 	//todo this isn't extensible to other reasons that nonplaceable hidden lights might be created, which was the intention.
@@ -57,7 +57,7 @@ public class LightAirBlockEntity extends BlockEntity {
 		
 		//Make sure that I'm in line with the panel
 		Optional<Direction> dirBetween_ = findDirBetween(pos, panelPos);
-		if(!dirBetween_.isPresent()) return TriState.FALSE;
+		if(dirBetween_.isEmpty()) return TriState.FALSE;
 		Direction dirBetween = dirBetween_.get();
 		
 		//don't worry about it right now, wait for the panel to be loaded as well
@@ -128,14 +128,14 @@ public class LightAirBlockEntity extends BlockEntity {
 	}
 	
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		panelPos = NbtHelper.toBlockPos(tag.getCompound("LightPanelPos"));
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.put("LightPanelPos", NbtHelper.fromBlockPos(panelPos));
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 }

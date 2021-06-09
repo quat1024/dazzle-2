@@ -3,7 +3,10 @@ package agency.highlysuspect.dazzle2.client;
 import agency.highlysuspect.dazzle2.etc.DyedEndRodParticleEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.AnimatedParticle;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
@@ -22,7 +25,7 @@ public class DyedEndRodParticle extends AnimatedParticle {
 		
 		setColor(tint);
 		
-		float magicNumber = tint == DyeColor.WHITE.getMaterialColor().color ? 0.9f : 0.6f;
+		float magicNumber = tint == DyeColor.WHITE.getMapColor().color ? 0.9f : 0.6f;
 		
 		int r = (tint & 0xFF0000) >> 16;
 		int g = (tint & 0x00FF00) >> 8;
@@ -54,7 +57,7 @@ public class DyedEndRodParticle extends AnimatedParticle {
 		}
 		
 		public Particle createParticle(DyedEndRodParticleEffect ef, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-			return new DyedEndRodParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider, ef.color);
+			return new DyedEndRodParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider, ef.getColor());
 		}
 	}
 }

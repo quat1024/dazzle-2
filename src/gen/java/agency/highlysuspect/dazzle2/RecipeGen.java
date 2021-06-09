@@ -205,7 +205,7 @@ public class RecipeGen implements DataProvider {
 	}
 	
 	private static InventoryChangedCriterion.Conditions cond(ItemConvertible item) {
-		return new InventoryChangedCriterion.Conditions(EntityPredicate.Extended.EMPTY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new ItemPredicate[] {ItemPredicate.Builder.create().item(item).build()});
+		return new InventoryChangedCriterion.Conditions(EntityPredicate.Extended.EMPTY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new ItemPredicate[] {ItemPredicate.Builder.create().items(item).build()});
 	}
 	
 	@Override

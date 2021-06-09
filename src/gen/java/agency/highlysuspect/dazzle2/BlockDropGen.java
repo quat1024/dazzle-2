@@ -6,13 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataProvider;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -69,7 +69,7 @@ public class BlockDropGen implements DataProvider {
 		//Also from there, private method addSurvivesExplosionCondition(ItemConvertible, LootConditionConsumingBuilder<T>) pasted into this class and inlined with intellij.
 		//Im sorry
 		return LootTable.builder().pool(
-			LootPool.builder().rolls(ConstantLootTableRange.create(1))
+			LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
 				.with(ItemEntry.builder(drop))
 				.conditionally(SurvivesExplosionLootCondition.builder()))
 			.type(LootContextTypes.BLOCK)

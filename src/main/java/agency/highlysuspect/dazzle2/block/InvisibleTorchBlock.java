@@ -82,7 +82,7 @@ public class InvisibleTorchBlock extends Block {
 			}
 		}
 		
-		if(held.getItem().isIn(DazzleItemTags.WRENCHES)) {
+		if(DazzleItemTags.WRENCHES.contains(held.getItem())) {
 			int currentLevel = state.get(LIGHT);
 			int nextLevel = currentLevel + (hit.getSide().getAxis() == Direction.Axis.Y ? -1 : 1);
 			

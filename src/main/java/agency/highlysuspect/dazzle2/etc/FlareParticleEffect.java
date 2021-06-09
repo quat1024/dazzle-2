@@ -7,13 +7,7 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.registry.Registry;
 
-public class FlareParticleEffect implements ParticleEffect {
-	public FlareParticleEffect(int color) {
-		this.color = color;
-	}
-	
-	public final int color;
-	
+public record FlareParticleEffect(int color) implements ParticleEffect {
 	@Override
 	public ParticleType<?> getType() {
 		return DazzleParticleTypes.FLARE;
@@ -22,6 +16,10 @@ public class FlareParticleEffect implements ParticleEffect {
 	@Override
 	public void write(PacketByteBuf buf) {
 		buf.writeInt(color);
+	}
+	
+	public int getColor() {
+		return color;
 	}
 	
 	@SuppressWarnings("ConstantConditions") //The particle was registered.

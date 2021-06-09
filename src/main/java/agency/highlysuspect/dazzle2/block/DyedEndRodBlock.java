@@ -1,10 +1,8 @@
 package agency.highlysuspect.dazzle2.block;
 
-import agency.highlysuspect.dazzle2.etc.DazzleParticleTypes;
 import agency.highlysuspect.dazzle2.etc.DyedEndRodParticleEffect;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EndRodBlock;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -36,7 +34,7 @@ public class DyedEndRodBlock extends EndRodBlock implements ColorHolderBlock {
 		double g = (0.4F - (random.nextFloat() + random.nextFloat()) * 0.4F);
 		if (random.nextInt(5) == 0) {
 			//Aaand change the particle effect
-			world.addParticle(new DyedEndRodParticleEffect(color.getMaterialColor().color), d + (double)direction.getOffsetX() * g, e + (double)direction.getOffsetY() * g, f + (double)direction.getOffsetZ() * g, random.nextGaussian() * 0.005D, random.nextGaussian() * 0.005D, random.nextGaussian() * 0.005D);
+			world.addParticle(new DyedEndRodParticleEffect(color.getMapColor().color), d + (double)direction.getOffsetX() * g, e + (double)direction.getOffsetY() * g, f + (double)direction.getOffsetZ() * g, random.nextGaussian() * 0.005D, random.nextGaussian() * 0.005D, random.nextGaussian() * 0.005D);
 		}
 	}
 }
